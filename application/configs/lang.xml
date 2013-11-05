@@ -1,0 +1,300 @@
+<?xml version="1.0" ?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+    <header
+        creationtoolversion="1.0.0"
+        datatype="winres"
+        segtype="sentence"
+        adminlang="en-us"
+        srclang="en-us"
+        o-tmf="abc"
+        creationtool="Netbeans" 
+    ></header>
+    <body>
+        <tu tuid='slogan'>
+            <tuv xml:lang="en"><seg>message1</seg></tuv>
+            <tuv xml:lang="ru"><seg>Secure and private temporary photo sharing</seg></tuv>
+        </tu>
+        <tu tuid="slogan">
+            <tuv xml:lang="ru"><seg>Приватный фотохостинг</seg></tuv>
+            <tuv xml:lang="en"><seg>Secure and private temporary photo sharing</seg></tuv>
+        </tu>
+        <tu tuid="walther">
+            <tuv xml:lang="ru"><seg>Unsee</seg></tuv>
+            <tuv xml:lang="en"><seg>Unsee</seg></tuv>
+        </tu>
+        <tu tuid="outdated">
+            <tuv xml:lang="ru"><seg><![CDATA[Вы используете устаревшую версию браузера. Пожалуйста <a href="http://browsehappy.com/">обновите Ваш браузер</a> или установите <a href="http://www.google.com/chromeframe/?redirect=true">Google Chrome Frame</a> чтобы улучшить отображение страницы.]]></seg></tuv>
+            <tuv xml:lang="en"><seg><![CDATA[You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.]]></seg></tuv>
+        </tu>
+        <tu tuid="click">
+            <tuv xml:lang="ru"><seg>Нажмите на кнопку чтобы выбрать и загрузить ваши изображения.</seg></tuv>
+            <tuv xml:lang="en"><seg>Click the button to select and upload your images.</seg></tuv>
+        </tu>
+        <tu tuid="delete">
+            <tuv xml:lang="ru"><seg>Они будут удалены</seg></tuv>
+            <tuv xml:lang="en"><seg>They will be deleted</seg></tuv>
+        </tu>
+
+        <tu tuid="after_view">
+            <tuv xml:lang="ru"><seg>после просмотра</seg></tuv>
+            <tuv xml:lang="en"><seg>after first view</seg></tuv>
+        </tu>
+        <tu tuid="after_hour">
+            <tuv xml:lang="ru"><seg>через час</seg></tuv>
+            <tuv xml:lang="en"><seg>in one hour</seg></tuv>
+        </tu>
+        <tu tuid="after_day">
+            <tuv xml:lang="ru"><seg>через сутки</seg></tuv>
+            <tuv xml:lang="en"><seg>in one day</seg></tuv>
+        </tu>
+        <tu tuid="choose_images">
+            <tuv xml:lang="ru"><seg>Выберите изображения</seg></tuv>
+            <tuv xml:lang="en"><seg>Choose images</seg></tuv>
+        </tu>
+        <tu tuid="uploaded">
+            <tuv xml:lang="ru"><seg>Изображения загружены</seg></tuv>
+            <tuv xml:lang="en"><seg>Upload successfull</seg></tuv>
+        </tu>
+        <tu tuid="copy">
+            <tuv xml:lang="ru"><seg>Скопировать ссылку</seg></tuv>
+            <tuv xml:lang="en"><seg>Copy lik</seg></tuv>
+        </tu>
+        <tu tuid="open">
+            <tuv xml:lang="ru"><seg>Предпросмотр</seg></tuv>
+            <tuv xml:lang="en"><seg>Preview</seg></tuv>
+        </tu>
+        <tu tuid="about">
+            <tuv xml:lang="ru"><seg>О сайте</seg></tuv>
+            <tuv xml:lang="en"><seg>About</seg></tuv>
+        </tu>
+        <tu tuid="terms">
+            <tuv xml:lang="ru"><seg>Правила пользования</seg></tuv>
+            <tuv xml:lang="en"><seg>Terms</seg></tuv>
+        </tu>
+        <tu tuid="privacy">
+            <tuv xml:lang="ru"><seg>Конфиденциальность</seg></tuv>
+            <tuv xml:lang="en"><seg>Privacy</seg></tuv>
+        </tu>
+        <tu tuid="contact">
+            <tuv xml:lang="ru"><seg>Обратная связь</seg></tuv>
+            <tuv xml:lang="en"><seg>Contact</seg></tuv>
+        </tu>
+        <tu tuid="about_text">
+            <tuv xml:lang="ru"><seg>
+                <![CDATA[
+    <p>
+    Unsee.cc - это первый в мире фотохостинг, работающий по принципу "сжечь после просмотра".
+    </p>
+
+    <p>
+    Зачем это может быть нужно лично вам?
+    </p>
+
+    <p>
+    В постфэйсбуковом мире у пользователя сети есть стремящееся к бесконечности количество способов поделиться своими фотографиями со всем миром. Но не всеми фотографиями хочется делиться c десятками друзей в социальных сетях.
+    Есть вещи, которые хочется отправить только самым близкими людям и быть уверенными, что кроме них этой фотографии не увидит действительно никто.
+    </p>
+                ]]>
+
+            </seg></tuv>
+            <tuv xml:lang="en"><seg>
+                <![CDATA[
+    <p>
+    <b>Unsee</b> &mdash; is the first in its kind image hosting that works by the principle "burn after reading".
+    </p>
+
+    <p>
+    There are photos that you might consider private. And, of course, you would like to keep them this way. Unsee can
+    help you with this.
+    </p>
+    <p>
+    With Unsee your images:
+    </p>
+
+    <ul id="coolness">
+        <li>Are privately available for a customizable amount of time</li>
+        <li>Are copy protected</li>
+        <li>Physically deleted when the time comes</li>
+        <li>As safe as not shared.</li>
+    </ul>
+                ]]>
+            </seg></tuv>
+        </tu>
+        <tu tuid="message_type">
+            <tuv xml:lang="ru"><seg>Тип сообщения</seg></tuv>
+            <tuv xml:lang="en"><seg>Message type</seg></tuv>
+        </tu>
+
+        <tu tuid="general_questions">
+            <tuv xml:lang="ru"><seg>Общие вопросы</seg></tuv>
+            <tuv xml:lang="en"><seg>General questions</seg></tuv>
+        </tu>
+        <tu tuid="report_bug">
+            <tuv xml:lang="ru"><seg>Сообщить об ошибке</seg></tuv>
+            <tuv xml:lang="en"><seg>Report a bug</seg></tuv>
+        </tu>
+        <tu tuid="suggest_feature">
+            <tuv xml:lang="ru"><seg>Предложить улучшение</seg></tuv>
+            <tuv xml:lang="en"><seg>Suggest a feature</seg></tuv>
+        </tu>
+        <tu tuid="name">
+            <tuv xml:lang="ru"><seg>Имя</seg></tuv>
+            <tuv xml:lang="en"><seg>Contact name</seg></tuv>
+        </tu>
+        <tu tuid="name">
+            <tuv xml:lang="ru"><seg>Имя</seg></tuv>
+            <tuv xml:lang="en"><seg>Contact name</seg></tuv>
+        </tu>
+        <tu tuid="email">
+            <tuv xml:lang="ru"><seg>Email</seg></tuv>
+            <tuv xml:lang="en"><seg>Contact email</seg></tuv>
+        </tu>
+        <tu tuid="message_sent">
+            <tuv xml:lang="ru"><seg>Сообщение успешно отправлено, спасибо.</seg></tuv>
+            <tuv xml:lang="en"><seg>Message sent, thank you.</seg></tuv>
+        </tu>
+        <tu tuid="message_errors">
+            <tuv xml:lang="ru"><seg>Пожалуйста исправьте ошибки</seg></tuv>
+            <tuv xml:lang="en"><seg>Please review fields marked with red</seg></tuv>
+        </tu>
+        <tu tuid="send">
+            <tuv xml:lang="ru"><seg>Отправить</seg></tuv>
+            <tuv xml:lang="en"><seg>Send</seg></tuv>
+        </tu>
+
+        <tu tuid="privacy_text">
+            <tuv xml:lang="ru"><seg>
+                <![CDATA[
+    <pre>
+    Конфиденциальность - основной приоритет для unsee.cc
+
+    Загружая фото на сайт, Вы выбираете как долго оно будет храниться.
+
+    Возможные варианты - удалить после первого просмотра, через 1 час после загрузки, через 1 день после загрузки.
+
+    По истечении обозначенного срока или после просмотра картинки адрестатом (при выборе соответствующей опции) фото становится недоступно по ссылке.
+
+    В отличие от конкурентов, мы не только помечаем фотографию, как удаленную, а действительно физически удаляем ее из файлового хранилища. Такой подход максимизирует конфиденциальность Ваших данных.
+
+    Мы гарантируем, что Ваши данные не будут переданы третьей стороне, опубликованы или иначе использованы без вашего согласия по одной простой причине - эти данные перестанут существовать в обозначенное Вами время.
+    </pre>
+                ]]>
+            </seg></tuv>
+            <tuv xml:lang="en"><seg>
+                <![CDATA[
+    <pre>
+    Privacy is the main point of this service.
+
+    Uploading a photo you decide how long it is here to stay. It gets physically deleted afterwards. We don't even use backups to keep to this principle.
+
+    We guarantee that your data will not be shared with third party, reposted or in other way used without your notice.
+    </pre>
+                ]]>
+            </seg></tuv>
+        </tu>
+
+
+
+        <tu tuid="terms_text">
+            <tuv xml:lang="ru"><seg>
+                <![CDATA[
+    <pre>
+     Основные термины и определения
+
+    1.1.	Сайт — совокупность веб-страниц, размещённых в сети Интернет по адресу http://www.unsee.cc (http://unsee.cc) и всех субдоменах;
+    1.2.	Сервис – любая из функций и/или возможностей Сайта
+    1.3.	Администрация — группа лиц, уполномоченная на управление Сайтом и взаимодействие с Пользователями;
+    1.4.	Пользователь — лицо, посещающее или использующее Сайт, либо осуществляющее обращения к Сайту иным способом;
+    1.5.	Условия - Условия использования Сервиса, изложенные в данном документе
+
+
+    2.	Общие положения
+
+    2.1.	Начиная использовать Сервис, Пользователь считается принявшим настоящие Условия в полном объеме, без всяких оговорок и исключений. В случае несогласия Пользователя с какими-либо из положений Условий, Пользователь не вправе использовать Сервис.
+
+    2.2.	Настоящие Условия могут быть изменены Администрацией без какого-либо специального уведомления, новая редакция Условий вступает в силу с момента ее размещения в сети Интернет по указанному в настоящем абзаце адресу, если иное не предусмотрено новой редакцией Условий. Действующая редакция Условий всегда находится на странице по адресу: http://unsee.cc/terms/ .
+
+    2.3.	В случае если Администрацией были внесены какие-либо изменения в настоящие Условия, в порядке, предусмотренном п. 2.2. настоящих Условий, с которыми Пользователь не согласен, он обязан прекратить использование Сервиса.
+
+
+    3.	Использование Сервиса
+
+    3.1.	Сервис предоставляется «как есть», без каких-либо гарантий, явных или подразумеваемых.
+
+    3.2.	Сервис предоставляет Пользователю возможность бесплатного размещения изображений Сайте, просмотра изображений, размещенных другими Пользователями, а также использования Сервиса иными способами, не противоречащими положениям настоящих Условий. Размещение Пользователем того или иного изображения осуществляется путем загрузки этого изображения на Сайт и его отображения пользователям Сервиса по прямой ссылке, переданной им Пользователем, загрузившим контент.
+
+    3.2.	Пользователь имеет право установить время хранения фотографии. По умолчанию всем загружаемым изображениям присваивается статус «Удалить после первого просмотра», что означает, что изображение будет физически удалено сразу после того, как будет просмотрено один раз Пользователем, отличным от Пользователя, загрузившего контент.
+
+    3.3.	Администрация применяет технические средства защиты контента от сохранения Пользователями, однако не несет ответственности за случаи обхода данной защиты.
+
+    3.4.	Запрещается использование сервиса для публикации порнографии, сцен насилия, изображений антигосударственной направленности, изображений, нарушающих право личности на частную жизнь, изображений, публикация которых иным образом противоречит законам Российской Федерации и нормам морали.
+
+    3.5.	Администрация не несет ответственности за соблюдение авторского права на размещаемые изображения, однако предупреждает пользователей о необходимости учитывать и соблюдать его нормы.
+
+    3.6.	Загружаемые изображения не модерируются, однако Администрация оставляет за собой право на свое усмотрение без уведомления удалять любые изображения, нарушающие настоящие Условия в случае получения письменной жалобы от Пользователя.
+
+    3.7.	Администрация оставляет за собой право ограничить доступ Пользователя к Сервису (или к определенным функциям Сервиса, если это возможно технологически) при неоднократном нарушении настоящих Условий, либо применить к Пользователю иные меры с целью соблюдения требований законодательства или прав и законных интересов третьих лиц.
+    </pre>
+                ]]>
+            </seg></tuv>
+            <tuv xml:lang="en"><seg>
+                <![CDATA[<p>Just be smart and watch what you're sharing.]]>
+            </seg></tuv>
+        </tu>
+
+        <tu tuid="deleted">
+            <tuv xml:lang="ru"><seg>Увы, изображения удалены согласно пожеланию автора.</seg></tuv>
+            <tuv xml:lang="en"><seg>Alas, the images were deleted as requested.</seg></tuv>
+        </tu>
+
+        <tu tuid="back">
+            <tuv xml:lang="ru"><seg>Вернуться на главную</seg></tuv>
+            <tuv xml:lang="en"><seg>Back to main page</seg></tuv>
+        </tu>
+
+        <tu tuid="intro">
+            <tuv xml:lang="ru"><seg><![CDATA[<p>Очень часто хочется поделиться фотографиями лишь с ограниченным кругом людей &mdash; друзей, родственников, коллег.</p>
+                <p>К тому же хочется быть уверенным, что Ваши файлы будут просмотрены исключительно теми, кому они дествительно предназначены,
+                даже если это малознакомый Вам человек.</p>
+                <p>Всё это возможно благодаря сервису <a href="/about/">Unsee</a>.</p>
+                <p>Только Вы решаете кто увидит Ваши фотографии.</p>]]></seg></tuv>
+            <tuv xml:lang="en"><seg><![CDATA[
+            <p>Quite often we find ourselves in need to share certain photos within a narrow circle of people &mdash; friends, relatives, collegues.</p>
+            <p>And we would really love to keep it private and make sure the images don't go all over the internet. Even if we don't trust the other person.</p>
+            <p>All this is possible thanks to <b>Unsee</b>.</p>
+            <p>You are in control of what others can see.</p>
+            ]]>
+            </seg></tuv>
+        </tu>
+
+        <tu tuid="keywords">
+            <tuv xml:lang="ru"><seg>фотохостинг, unsee, приватные фото, приватные альбомы, мои фотки</seg></tuv>
+            <tuv xml:lang="en"><seg>image hosting, private photos, private images, unsee</seg></tuv>
+        </tu>
+
+        <tu tuid="drag">
+            <tuv xml:lang="ru"><seg>(или перетащите их на страницу)</seg></tuv>
+            <tuv xml:lang="en"><seg>(or drag them to this page)</seg></tuv>
+        </tu>
+
+        <tu tuid="usual">
+            <tuv xml:lang="ru"><seg><![CDATA[Мне нужен обычный хостинг картинок]]></seg></tuv>
+            <tuv xml:lang="en"><seg>Meh, I need a regular image hosting</seg></tuv>
+        </tu>
+
+        <tu tuid="error_uploading">
+            <tuv xml:lang="ru"><seg>Не получилось загрузить изображения</seg></tuv>
+            <tuv xml:lang="en"><seg>Could not upload images</seg></tuv>
+        </tu>
+
+        <tu tuid="delete_first">
+            <tuv xml:lang="ru"><seg>Эта страница будет удалена после просмотра другим человеком</seg></tuv>
+            <tuv xml:lang="en"><seg>This page will be deleted after the first view by the other party.</seg></tuv>
+        </tu>
+        <tu tuid="delete_time">
+            <tuv xml:lang="ru"><seg>Эта страница будет удалена в %s</seg></tuv>
+            <tuv xml:lang="en"><seg>This page will be deleted at %s</seg></tuv>
+        </tu>
+    </body>
+</tmx>

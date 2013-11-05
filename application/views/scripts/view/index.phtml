@@ -1,0 +1,22 @@
+<div id="header">
+    <a href="/"><img src="/static/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
+    <p><?=$this->translate('slogan')?></p>
+</div>
+
+<?php
+if (empty($this->images)) {
+?>
+<h2><?=$this->translate('deleted') ?></h2>
+<a href="/"><h2><?=$this->translate('back')?></h2></a>
+<?php
+} else {
+?>
+<div id="screen"></div>
+<div id="imgMessage"> <?=$this->deleteTime?> </div>
+<?php
+}
+
+
+foreach ($this->images as $image) {
+    
+}

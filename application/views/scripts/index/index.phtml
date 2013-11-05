@@ -1,43 +1,56 @@
-<style>
-    a:link,
-    a:visited
-    {
-        color: #0398CA;
-    }
+<div id="usual"><a href="http://piccy.info"><?=$this->translate('usual')?></a> <span>&rarr;</span></div>
 
-    span#zf-name
-    {
-        color: #91BE3F;
-    }
+<div id="header">
+    <img src="/static/img/logo.png" id="logo" alt="Walther" width="200" height="144" />
+    <p><?=$this->translate('slogan')?></p>
+</div>
 
-    div#welcome
-    {
-        color: #FFFFFF;
-        background-image: url(http://framework.zend.com/images/bkg_header.jpg);
-        width:  600px;
-        height: 400px;
-        border: 2px solid #444444;
-        overflow: hidden;
-        text-align: center;
-    }
+<div id="langs">
+    <p></p>
+</div>
 
-    div#more-information
-    {
-        background-image: url(http://framework.zend.com/images/bkg_body-bottom.gif);
-        height: 100%;
-    }
-</style>
-<div id="welcome">
-    <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
-
-    <h3>This is your project's main page</h3>
-
-    <div id="more-information">
-        <p><img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /></p>
-        <p>
-            Helpful Links: <br />
-            <a href="http://framework.zend.com/">Zend Framework Website</a> |
-            <a href="http://framework.zend.com/manual/en/">Zend Framework Manual</a>
+<div id="body">
+    <div id="info">
+        <p class="info">
+            <span><?=$this->translate('click')?></span>
+            <span id="life_time_container">
+                <b>
+                    <?=$this->translate('delete')?>
+                    <span id="life_time_selectors_container">
+                    <select id="life_time">
+                        <option value="1"><?=$this->translate('after_view')?></option>
+                        <option value="2"><?=$this->translate('after_hour')?></option>
+                        <option value="3"><?=$this->translate('after_day')?></option>
+                    </select>
+                    <a id="fake_select" href="" onclick="return false;"><?=$this->translate('after_view')?></a>
+                </span>
+                </b>
+            </span>
         </p>
+    </div>
+    <div class="arrow_container">
+        <div class="arrow"></div>
+    </div>
+
+    <div class="button">
+        <input type="file" id="fakeFileupload" name="image[]" multiple />
+        <p><?=$this->translate('choose_images')?></p>
+        <span><?=$this->translate('drag')?></span>
+    </div>
+
+    <div id="loading">
+        <img src="/static/img/loading.gif" alt="loading..."/>
+    </div>
+    <div id="success">
+        <div id="about">
+            <?=$this->translate('intro')?>
+        </div>
+
+        <strong><?=$this->translate('uploaded')?></strong>
+        <input id="imgLink" type="text" value="" />
+        <button id="view" class="copy"><?=$this->translate('open')?></button>
+    </div>
+    <div id="error">
+        <strong></strong>
     </div>
 </div>

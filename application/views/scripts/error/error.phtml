@@ -7,7 +7,7 @@
 <body>
   <h1>An error occurred</h1>
   <h2><?php echo $this->message ?></h2>
-
+  
   <?php if (isset($this->exception)): ?>
   
   <h3>Exception information:</h3>
@@ -25,5 +25,11 @@
 
   <?php endif ?>
 
+  
+    <?php
+    
+    print_r($_SERVER['REQUEST_URI']);
+    ?>
+  
 </body>
 </html>
