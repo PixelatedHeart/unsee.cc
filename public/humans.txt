@@ -1,0 +1,18 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Michael Goreanski -- Development, design -- umkus.com
+    Jaroslaw Shvets -- Analytics, usability
+
+# THANKS
+
+    Moms and girlfriends. For paitence.
+    Igor Sysoev. For nginx.
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    jQuery, Modernizr, Zend Framework
+    Php, mongo, nginx

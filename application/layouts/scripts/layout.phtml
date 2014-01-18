@@ -16,24 +16,26 @@
 
         <!-- Link css resources -->
         <?php echo $this->headLink(); ?>
+
+        <!-- Link js scripts -->
+        <?= $this->headScript() ?>
     </head>
     <body>
         <!--[if lt IE 8]>
         <p class="chromeframe">outdated</p>
         <![endif]-->
 
-        <?php echo $this->layout()->content; ?>
+        <?=$this->layout()->content?>
 
         <div id="footer">
+            <!--
             <ul>
                 <li><a href="/about/"><?=$this->translate('about')?></a></li>
                 <li><a href="/terms/"><?=$this->translate('terms')?></a></li>
                 <li><a href="/privacy/"><?=$this->translate('privacy')?></a></li>
                 <li><a href="/contact/"><?=$this->translate('contact')?></a></li>
             </ul>
+            -->
         </div>
-
-        <!-- Link js scripts -->
-        <?php echo $this->headScript(); ?>
     </body>
 </html>

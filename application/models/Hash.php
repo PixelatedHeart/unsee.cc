@@ -6,12 +6,12 @@ class Unsee_Hash
     private $hash = '';
     protected $vovels = '';
     protected $consonants = '';
-    protected $syllableNum = '';
+    protected $syllableNum = 3;
 
     public function __construct()
     {
         $hashConf = Zend_Registry::get('config')->hash->toArray();
-        
+
         $this->vovels = $hashConf['vovels'];
         $this->consonants = $hashConf['consonants'];
         $this->syllableNum = $hashConf['syllables'];
@@ -49,12 +49,14 @@ class Unsee_Hash
         return $hash;
     }
 
-    protected function hashExists ($hash) {
-        return (bool) Unsee_Mongo_Document_Hash::one(array('hash'=>$hash));
+    protected function hashExists($hash)
+    {
+        return (bool) Unsee_Mongo_Document_Hash::one(array('hash' => $hash));
     }
 
     public function validate($hash)
     {
-        return preg_match('~^((?:['.$this->consonants.']['.$this->vovels.']){'.$this->syllableNum.'})$~i', $hash);
+        return preg_match('~^((?:[' . $this->consonants . '][' . $this->vovels . ']){' . $this->syllableNum . '})$~i',
+                          $hash);
     }
 }
