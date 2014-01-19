@@ -3,6 +3,22 @@
 class ErrorController extends Zend_Controller_Action
 {
 
+    public function init()
+    {
+        $assetsDomain = Zend_Registry::get('config')->assetsDomain;
+
+        $this->view->headScript()->appendFile($assetsDomain . '/js/vendor/modernizr-2.6.2.min.js');
+
+        if (APPLICATION_ENV != 'development') {
+            $this->view->headScript()->appendFile($assetsDomain . '/js/track.js');
+        }
+
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/normalize.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/h5bp.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/main.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/sizes.css');
+    }
+
     public function errorAction()
     {
         $errors = $this->_getParam('error_handler');
@@ -16,6 +32,11 @@ class ErrorController extends Zend_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
+
+                // TODO: create a normal 404 page
+                header('Location: /');
+                die();
+
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
                 $priority = Zend_Log::NOTICE;
@@ -40,7 +61,7 @@ class ErrorController extends Zend_Controller_Action
             $this->view->exception = $errors->exception;
         }
 
-        $this->view->request   = $errors->request;
+        $this->view->request = $errors->request;
     }
 
     public function getLog()
@@ -52,7 +73,4 @@ class ErrorController extends Zend_Controller_Action
         $log = $bootstrap->getResource('Log');
         return $log;
     }
-
-
 }
-

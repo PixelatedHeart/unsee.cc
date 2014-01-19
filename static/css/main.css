@@ -454,3 +454,7 @@ table #error strong
     font-weight: bold;
     font-size: 13px;
 }
+
+.error_message {
+    padding-top: 200px;
+}

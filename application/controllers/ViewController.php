@@ -58,7 +58,11 @@ class ViewController extends Zend_Controller_Action
 
         $deleteMessage = !$hashDoc->ttl ? 'delete_first' : 'delete_time';
 
-        $this->view->deleteTime = $this->view->translate($deleteMessage, array(date("c", $ttd)));
+        // Don't show 'other party' text to the 'other party'
+        if ($hashDoc->isOwner() || $hashDoc->ttl) {
+            $this->view->deleteTime = $this->view->translate($deleteMessage, array(date("c", $ttd)));
+        }
+
         $imagesList = $hashDoc->getImagesIds();
 
         $this->view->images = array();
@@ -76,6 +80,7 @@ class ViewController extends Zend_Controller_Action
 
     public function deletedAction()
     {
+        $this->render('deleted');
         return $this->getResponse()->setHttpResponseCode(310);
     }
 
