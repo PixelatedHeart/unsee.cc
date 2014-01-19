@@ -5,17 +5,21 @@ class ViewController extends Zend_Controller_Action
 
     public function init()
     {
-        $this->view->headScript()->appendFile('/static/js/view.js');
+        $assetsDomain = Zend_Registry::get('config')->assetsDomain;
+        $this->view->headScript()->appendFile($assetsDomain . '/js/view.js');
 
-        if (APPLICATION_ENV != 'development') {
-            $this->view->headScript()->appendFile('/static/js/track.js');
+        $request = new Zend_Controller_Request_Http();
+        $dnt = $request->getHeader('DNT');
+
+        if (!$dnt) {
+            $this->view->headScript()->appendFile($assetsDomain . '/js/track.js');
         }
 
-        $this->view->headLink()->appendStylesheet('/static/css/normalize.css');
-        $this->view->headLink()->appendStylesheet('/static/css/h5bp.css');
-        $this->view->headLink()->appendStylesheet('/static/css/view.css');
-        $this->view->headLink()->appendStylesheet('/static/css/main.css');
-        $this->view->headLink()->appendStylesheet('/static/css/subpage.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/normalize.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/h5bp.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/view.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/main.css');
+        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/subpage.css');
     }
 
     public function indexAction()

@@ -10,6 +10,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         return $config;
     }
+    
+    public function _initViewVars()
+    {
+        $this->bootstrap('layout');
+        $this->bootstrap('view');
+        $view = $this->getResource('layout')->getView();
+        $config = Zend_Registry::get('config');
+        $view->assetsDomain = '//' . $config->assetsSubdomain . '.' . $config->domainName;
+        $config->assetsDomain = $view->assetsDomain;
+    }
 
     public function _initTimezone()
     {
