@@ -66,9 +66,8 @@ class ViewController extends Zend_Controller_Action
         $imagesList = $hashDoc->getImagesIds();
 
         $this->view->images = array();
-        foreach ($imagesList as $imageId) {
-            $ticketTtd = $_SERVER['REQUEST_TIME'] + 2;
-
+        foreach ($imagesList as $key => $imageId) {
+            $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + 1; // Each image would be loaded a second later
             // Preparing a hash for nginx's secure link
             $md5 = base64_encode(md5($imageId . $ticketTtd, true));
             $md5 = strtr($md5, '+/', '-_');
@@ -98,58 +97,11 @@ class ViewController extends Zend_Controller_Action
         }
 
         $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
-
-        // Create objects
-        $image = new Imagick();
-        $image->readimageblob(base64_decode($imgDoc->data));
-        $image->stripimage();
-
-        // Watermark text
-        $watermark = new Imagick();
-        $text = $_SERVER['REMOTE_ADDR'];
-
-        // Create a new drawing palette
-        $draw = new ImagickDraw();
-        $watermark->newImage(140, 80, new ImagickPixel('none'));
-
-        // Set font properties
-        $draw->setFont('Arial');
-        $draw->setFillColor('White');
-        $draw->setFillOpacity(.4);
-
-        // Position text at the top left of the watermark
-        $draw->setGravity(Imagick::GRAVITY_NORTHWEST);
-
-        // Draw text on the watermark
-        $watermark->annotateImage($draw, 10, 10, 0, $text);
-
-        // Position text at the bottom right of the watermark
-        $draw->setGravity(Imagick::GRAVITY_SOUTHEAST);
-
-        // Repeatedly overlay watermark on image
-        for ($w = 0; $w < $image->getImageWidth(); $w += 300) {
-            for ($h = 0; $h < $image->getImageHeight(); $h += 300) {
-                $image->compositeImage($watermark, Imagick::COMPOSITE_OVER, $w, $h);
-            }
-        }
-
-        list(, $format) = explode('/', $imgDoc->type);
-
-        // Set output image format
-        $image->setImageFormat($format);
-
-        $comment = 'The image was not intended for sharing, ' . 
-                'but was fouly taken from https://www.unsee.cc/ ' .
-                'on ' . date('c') . '.' . PHP_EOL .
-                'Below is info on the bad person:' . PHP_EOL .
-                'IP: ' . $_SERVER['REMOTE_ADDR'] . PHP_EOL .
-                'User agent: ' . $_SERVER['HTTP_USER_AGENT'] . PHP_EOL;
-
-        $image->commentimage($comment);
+        $imgDoc->watermark();
 
         header('Content-type: ' . $imgDoc->type);
-        header('Content-length: ' . strlen($image));
-        die($image);
+        header('Content-length: ' . strlen($imgDoc->data));
+        print $imgDoc->data;
     }
 
     protected function getImageData($imgId)
