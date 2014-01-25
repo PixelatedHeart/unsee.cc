@@ -13,12 +13,14 @@
         <meta name="description" content="<?=$this->translate('slogan')?>" />
         <meta name="keywords" content="<?=$this->translate('keywords')?>" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=2.0, user-scalable=1, target-densitydpi=device-dpi" />
+        <?=$this->headMeta()?>
 
         <!-- Link css resources -->
-        <?php echo $this->headLink(); ?>
+        <?=$this->cssHelper()?>
 
         <!-- Link js scripts -->
-        <?= $this->headScript() ?>
+        <?=$this->javascriptHelper()?>
+
     </head>
     <body>
         <!--[if lt IE 8]>

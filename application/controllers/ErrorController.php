@@ -5,18 +5,16 @@ class ErrorController extends Zend_Controller_Action
 
     public function init()
     {
-        $assetsDomain = Zend_Registry::get('config')->assetsDomain;
-
-        $this->view->headScript()->appendFile($assetsDomain . '/js/vendor/modernizr-2.6.2.min.js');
+        $this->view->headScript()->appendFile('js/vendor/modernizr-2.6.2.min.js');
 
         if (APPLICATION_ENV != 'development') {
-            $this->view->headScript()->appendFile($assetsDomain . '/js/track.js');
+            $this->view->headScript()->appendFile('js/track.js');
         }
 
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/normalize.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/h5bp.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/main.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/sizes.css');
+        $this->view->headLink()->appendStylesheet('css/normalize.css');
+        $this->view->headLink()->appendStylesheet('css/h5bp.css');
+        $this->view->headLink()->appendStylesheet('css/main.css');
+        $this->view->headLink()->appendStylesheet('css/sizes.css');
     }
 
     public function errorAction()

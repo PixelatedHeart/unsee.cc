@@ -12,11 +12,17 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         'hashId' => array('Required', 'Validator:MongoId')
     );
 
+    protected function init()
+    {
+        $this->data = base64_decode($this->data);
+        parent::init();
+    }
+
     public function watermark()
     {
         // Create objects
         $image = new Imagick();
-        $image->readimageblob(base64_decode($this->data));
+        $image->readimageblob($this->data);
 
         // Watermark text
         $watermark = new Imagick();

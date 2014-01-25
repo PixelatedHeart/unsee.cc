@@ -5,21 +5,18 @@ class ViewController extends Zend_Controller_Action
 
     public function init()
     {
-        $assetsDomain = Zend_Registry::get('config')->assetsDomain;
-        $this->view->headScript()->appendFile($assetsDomain . '/js/view.js');
+        $this->view->headScript()->appendFile('js/view.js');
 
         $request = new Zend_Controller_Request_Http();
-        $dnt = $request->getHeader('DNT');
-
-        if (!$dnt) {
-            $this->view->headScript()->appendFile($assetsDomain . '/js/track.js');
+        if (!$request->getHeader('DNT')) {
+            $this->view->headScript()->appendFile('js/track.js');
         }
 
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/normalize.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/h5bp.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/view.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/main.css');
-        $this->view->headLink()->appendStylesheet($assetsDomain . '/css/subpage.css');
+        $this->view->headLink()->appendStylesheet('css/normalize.css');
+        $this->view->headLink()->appendStylesheet('css/h5bp.css');
+        $this->view->headLink()->appendStylesheet('css/view.css');
+        $this->view->headLink()->appendStylesheet('css/main.css');
+        $this->view->headLink()->appendStylesheet('css/subpage.css');
     }
 
     public function indexAction()
@@ -30,6 +27,7 @@ class ViewController extends Zend_Controller_Action
             return $this->deletedAction();
         }
 
+        $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
         // Hash (ababab)
         $hashString = $params['hash'];
 
@@ -49,6 +47,8 @@ class ViewController extends Zend_Controller_Action
             $hashDoc->delete();
             return $this->deletedAction();
         }
+
+        $this->view->isOwner = $hashDoc->isOwner();
 
         // If viewer is the creator - don't count their view
         if (!$hashDoc->isOwner()) {
@@ -97,7 +97,9 @@ class ViewController extends Zend_Controller_Action
         }
 
         $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
-        $imgDoc->watermark();
+        $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
+
+        !$hashDoc->isOwner() && $imgDoc->watermark();
 
         header('Content-type: ' . $imgDoc->type);
         header('Content-length: ' . strlen($imgDoc->data));

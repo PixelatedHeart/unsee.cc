@@ -3,6 +3,15 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+    protected function _initDocType()
+    {
+        // Strangely it works just like this
+        $this->bootstrap('View');
+
+        $doctypeHelper = new Zend_View_Helper_Doctype();
+        $doctypeHelper->doctype('XHTML1_STRICT');
+    }
+
     protected function _initConfig()
     {
         $config = new Zend_Config($this->getOptions(), true);
@@ -14,10 +23,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     public function _initViewVars()
     {
         $this->bootstrap('layout');
-        $this->bootstrap('view');
         $view = $this->getResource('layout')->getView();
         $config = Zend_Registry::get('config');
-        $view->assetsDomain = '//' . $config->assetsSubdomain . '.' . $config->domainName;
+        $view->assetsDomain = '//' . $config->assetsSubdomain . '.' . $config->domainName . '/';
         $config->assetsDomain = $view->assetsDomain;
     }
 

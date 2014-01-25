@@ -1,9 +1,19 @@
+<?php
+$this->headMeta()->appendName('robots', 'noindex');
+?>
+
 <div id="header">
     <a href="/"><img src="<?=$this->assetsDomain;?>/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
     <p><?= $this->translate('slogan') ?></p>
 </div>
 
+<?php
+if (!$this->isOwner) {
+?>
 <div id="screen"></div>
+<?php
+}
+?>
 <div id="imgMessage"> <?=$this->deleteTime?> </div>
 <?php
 foreach ($this->images as $imageId => $imageData) {
