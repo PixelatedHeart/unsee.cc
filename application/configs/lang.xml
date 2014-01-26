@@ -290,11 +290,15 @@
 
         <tu tuid="delete_first">
             <tuv xml:lang="ru"><seg>Эта страница будет удалена после просмотра другим человеком</seg></tuv>
-            <tuv xml:lang="en"><seg>This page will be deleted after the first view by the other party.</seg></tuv>
+            <tuv xml:lang="en"><seg>This page will be deleted after the first view by the other party</seg></tuv>
         </tu>
         <tu tuid="delete_time">
             <tuv xml:lang="ru"><seg>Эта страница будет удалена в %s</seg></tuv>
             <tuv xml:lang="en"><seg>This page will be deleted at %s</seg></tuv>
+        </tu>
+        <tu tuid="click_settings">
+            <tuv xml:lang="ru"><seg>Нажмите здесь, чтобы изменить настройки</seg></tuv>
+            <tuv xml:lang="en"><seg>Click here to change settings</seg></tuv>
         </tu>
     </body>
 </tmx>

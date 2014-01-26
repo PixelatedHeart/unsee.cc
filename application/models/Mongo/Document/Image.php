@@ -60,7 +60,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         $image->setImageFormat($format);
 
         $comment = 'The image was not intended for sharing, ' .
-                'but was fouly taken from https://www.unsee.cc/ ' .
+                'but was foully taken from https://www.unsee.cc/ ' .
                 'on ' . date('c') . '.' . PHP_EOL .
                 'Below is info on the bad person:' . PHP_EOL .
                 'IP: ' . $_SERVER['REMOTE_ADDR'] . PHP_EOL .

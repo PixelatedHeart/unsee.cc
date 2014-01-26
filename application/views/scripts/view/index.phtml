@@ -1,20 +1,139 @@
 <?php
 $this->headMeta()->appendName('robots', 'noindex');
+
 ?>
 
 <div id="header">
-    <a href="/"><img src="<?=$this->assetsDomain;?>/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
+    <a href="/"><img src="<?= $this->assetsDomain; ?>/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
     <p><?= $this->translate('slogan') ?></p>
+    <div id="settings">
+
+        <ul>
+            <li class="active">Info<div /></li>
+            <li>Security<div /></li>
+            <li>Access<div /></li>
+            <li>Embedded<div /></li>
+            <li>Delete<div /></li>
+            <li>Schedule<div /></li>
+        </ul>
+
+        <table class="Info">
+            <tr>
+                <td class="key"><label for="info_title">Title</label></td>
+                <td class="separator" rowspan="2"><div/></td>
+                <td class="value"><input type="text" id='info_title'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="info_description">Description</label></td>
+                <td class="value">
+                    <textarea rows="6" cols="40" id="info_description"></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <table class="Security">
+            <tr>
+                <td class="key"><label for="security_download">Prevent image download</label></td>
+                <td class="separator" rowspan="4"><div/></td>
+                <td class="value"><input type="checkbox" checked="checked" id='security_download'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="security_password">Password protect</label></td>
+                <td class="value"><input type="password" id='security_password'/></td>
+            </tr>
+        </table>
+
+        <table class="Embedded">
+            <tr>
+                <td class="key"><label for="security_watermark">Watermark viewer's IP</label></td>
+                <td class="separator" rowspan="3"><div/></td>
+                <td class="value"><input type="checkbox" checked="checked" id="security_watermark" /></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="security_exif">Strip EXIF data</label></td>
+                <td class="value"><input type="checkbox" checked="checked" id="security_exif" /></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="security_comment">Add image comment</label></td>
+                <td class="value">
+                    <textarea rows="6" cols="40" id="security_comment">The image was not intended for sharing,
+but was fouly taken from https://www.unsee.cc/
+on %date%.
+Below is info on the bad person:
+IP: %ip%
+User agent: %user_agent%</textarea>
+                </td>
+            </tr>
+        </table>
+
+        <table class="Access">
+            <tr>
+                <td class="key"><label for="access_domain">Allow from domain</label></td>
+                <td class="separator" rowspan="4"><div/></td>
+                <td class="value"><input type="text" id='access_domain'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="access_country">Allow from country</label></td>
+                <td class="value"><input type="text" id='access_country'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="access_continent">Allow from continent</label></td>
+                <td class="value">
+                    <select id='access_continent'>
+                        <option value="0">Globally</option>
+                        <option value="4">Africa</option>
+                        <option value="7">Antarctica</option>
+                        <option value="5">Asia</option>
+                        <option value="6">Australia</option>
+                        <option value="3">Europe</option>
+                        <option value="1">North America</option>
+                        <option value="2">South America</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="key"><label for="access_ip">Allow from IP</label></td>
+                <td class="value"><input type="text" id='access_ip'/></td>
+            </tr>
+        </table>
+
+        <table class="Delete">
+            <tr>
+                <td class="key"><label for="delete_now">Right now</label></td>
+                <td class="separator" rowspan="5"><div/></td>
+                <td class="value"><input type="radio" name="delete_time[]" id='delete_now'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="delete_first">After first view</label></td>
+                <td class="value"><input type="radio" name="delete_time[]" id='delete_first' checked="checked"/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="delete_hour">In one hour</label></td>
+                <td class="value"><input type="radio" name="delete_time[]" id='delete_hour'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="delete_day">In one day</label></td>
+                <td class="value"><input type="radio" name="delete_time[]" id='delete_day'/></td>
+            </tr>
+            <tr>
+                <td class="key"><label for="delete_3days">In three days</label></td>
+                <td class="value"><input type="radio" name="delete_time[]" id='delete_3days'/></td>
+            </tr>
+        </table>
+
+    </div>
 </div>
 
 <?php
 if (!$this->isOwner) {
-?>
-<div id="screen"></div>
-<?php
+
+    ?>
+    <div id="screen"></div>
+    <?php
 }
+
 ?>
-<div id="imgMessage"> <?=$this->deleteTime?> </div>
+    <div id="imgMessage"> <b><?= $this->deleteTime ?></b> <span>(<?=$this->translate('click_settings');?>)</span> </div>
 <?php
 foreach ($this->images as $imageId => $imageData) {
 

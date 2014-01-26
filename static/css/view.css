@@ -6,10 +6,128 @@ html
 body
 {
     width: 100%;
-    background-color: #444;
+    background-color: #c9c9c9;
     padding:0;
     margin: 0;
     text-align: center;
+}
+
+#settings
+{
+    display: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,.5);
+    background-color: #222;
+    text-align: center;
+    color: #BBB;
+    position: relative;
+}
+
+#settings table {
+    margin: 0 auto;
+    width: 90%;
+
+}
+#settings table:not(.Info) {
+    display: none;
+}
+
+#settings table td {
+    padding: 5px;
+    height: 20px;
+}
+
+#settings table td.key,
+#settings table td.value
+{
+    width:40%;
+    font-size: 12px;
+}
+
+#settings table td.value input[type="text"],
+#settings table td.value textarea
+{
+    width: 70%;
+}
+
+#settings table td.key {
+    text-align: right;
+}
+
+#settings table td.value {
+    text-align: left;
+}
+
+#settings table td.separator {
+    height: 100%;
+    width: 5%;
+    text-align: center;
+}
+
+#settings table td.separator div {
+
+    margin: 0 auto;
+    width: 1px;
+    height: 80%;
+    border-left: 1px solid #666;
+    display: inline-block;
+}
+
+#settings ul {
+    margin: 0;
+    margin-bottom: 20px;
+    padding: 0px;
+    background: url('/img/stripes.png');
+    height: 30px;
+    cursor: default;
+    white-space: nowrap;
+}
+
+#settings input, 
+#settings textarea
+{
+    border: 1px solid;
+}
+
+#settings ul li,
+#settings ul li.active {
+    display: inline-block;
+    width: 80px;
+    height: 100%;
+    line-height: 30px;
+    vertical-align: middle;
+    color: White;
+    position: relative;
+    text-align: center;
+    font-family: Arial, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#settings ul li.active {
+    background-color: #EEE;
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+}
+
+#settings ul li.active div {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+
+    margin-left: -10px;
+    
+    width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #EEE;
+    
 }
 
 img{
@@ -30,21 +148,32 @@ img{
 
 h2
 {
-	color: #444;
+    color: #444;
 }
 
 a
 {
-	color: #F36532;
-	position: relative;
-	z-index: 100;
+    color: #F36532;
+    position: relative;
+    z-index: 100;
 }
 
 #imgMessage
 {
     margin-bottom: 10px;
     font-size: 12px;
-    font-style: italic;
+    width: 100%;
+    background: url('/img/stripes.png');
+    height: 30px;
+    line-height: 30px;
+    color: White;
+    opacity: .6;
+}
+
+#imgMessage:hover
+{
+    opacity: 1;
+    cursor: pointer;
 }
 
 /*

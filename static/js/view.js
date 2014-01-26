@@ -1,29 +1,14 @@
-(function() {
-    function f() {
+$(function() {
+    $('#settings li').click(function() {
+        $('#settings li').removeClass('active');
+        $(this).addClass('active');
 
-        //delete cookie
-        var c = document.cookie;
-        c = c.split(';');
-        for (var n in c) {
-            c[n] = c[n].replace(/^\s+/, '');
+        $('#settings table').hide();
+        $('#settings table.'+$(this).text()).show();
+    });
 
-            if (c[n].substr(0,7) == 'wTicket') {
-                deleteCookie('wTicket');
-            }
-        }
-
-        if (typeof yaCounter19067413 == 'object') {
-            yaCounter19067413.reachGoal('image_view');
-        }
-    }
-
-    if (window.addEventListener) {
-        window.addEventListener("load", f, false);
-    } else if (window.attachEvent) {
-        window.attachEvent("onload", f);
-    }
-})();
-
-function deleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01-Jan-70 00:00:01 GMT; path=/; ';
-}
+    $('#imgMessage').click(function(){
+        $('#settings').slideDown();
+        $(this).remove();
+    });
+});

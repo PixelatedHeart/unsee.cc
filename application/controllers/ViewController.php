@@ -5,6 +5,7 @@ class ViewController extends Zend_Controller_Action
 
     public function init()
     {
+        $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
         $this->view->headScript()->appendFile('js/view.js');
 
         $request = new Zend_Controller_Request_Http();
@@ -15,7 +16,6 @@ class ViewController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/view.css');
-        $this->view->headLink()->appendStylesheet('css/main.css');
         $this->view->headLink()->appendStylesheet('css/subpage.css');
     }
 
