@@ -1,0 +1,15 @@
+<table class="<?= ucfirst(str_replace('_', ' ', $this->section)) ?>">
+    <?php
+    foreach ($this->fields as $field) {
+
+        ?>
+        <tr>
+            <td class="key"><label for="<?= $field->getName(); ?>" title="<?= $field->getAttrib('title'); ?>"><?= $field->getLabel(); ?></label></td>
+            <td class="separator" rowspan="<?= count($this->fields) ?>"><div/></td>
+            <td class="value"><?=$field?></td>
+        </tr>
+        <?php
+    }
+
+    ?>
+</table>

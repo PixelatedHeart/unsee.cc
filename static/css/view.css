@@ -25,13 +25,32 @@ body
     position: relative;
 }
 
+#settings label {
+    cursor: help;
+    border-bottom: 1px dotted;
+    position: relative;
+}
+
+#settings label span {
+    display: none;
+    border: 1px solid red;
+}
+
+#settings label:hover span {
+    position: absolute;
+}
+
 #settings table {
     margin: 0 auto;
     width: 90%;
 
 }
-#settings table:not(.Info) {
+#settings table {
     display: none;
+}
+
+#settings table:first-of-type {
+    display: table;
 }
 
 #settings table td {
@@ -47,9 +66,16 @@ body
 }
 
 #settings table td.value input[type="text"],
+#settings table td.value input[type="password"],
 #settings table td.value textarea
 {
+    padding: 3px;
     width: 70%;
+}
+
+#settings textarea
+{
+    height: 90px;
 }
 
 #settings table td.key {
@@ -75,13 +101,22 @@ body
     display: inline-block;
 }
 
+#settings button {
+    margin-top: 20px;
+    font-size: 13px;
+    padding: 2px 10px;
+}
+#settings button[disabled="disabled"] {
+    opacity: .5;
+}
+
 #settings ul {
     margin: 0;
     margin-bottom: 20px;
     padding: 0px;
     background: url('/img/stripes.png');
     height: 30px;
-    cursor: default;
+    cursor: pointer;
     white-space: nowrap;
 }
 
@@ -105,6 +140,11 @@ body
     font-size: 13px;
     text-decoration: underline;
     cursor: pointer;
+}
+
+#settings ul li:hover {
+    background-color: #EEE;
+    color: #333;
 }
 
 #settings ul li.active {

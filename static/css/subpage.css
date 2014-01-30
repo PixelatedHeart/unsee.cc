@@ -4,3 +4,9 @@
     width: 100px;
     height: 72px;
 }
+
+#header
+{
+    width: 100%;
+    background: url('/img/backlight.png') no-repeat fixed center -120%;
+}

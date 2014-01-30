@@ -75,6 +75,9 @@ class ViewController extends Zend_Controller_Action
 
             $this->view->images[$imageId] = array('hash' => $md5, 'ticketTtd' => $ticketTtd);
         }
+
+        $form = new Application_Form_Settings;
+        $this->view->groups = $form->getDisplayGroups();
     }
 
     public function deletedAction()
