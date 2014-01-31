@@ -23,7 +23,6 @@ set_include_path(
         PATH_SEPARATOR,
         array(
             realpath(APPLICATION_PATH . '/../library'),
-            realpath(APPLICATION_PATH . '/models'),
             get_include_path(),
         )
     )
@@ -34,7 +33,6 @@ require_once 'Zend/Application.php';
 
 require_once 'Zend/Loader/Autoloader/Resource.php';
 $resourceLoader = new Zend_Loader_Autoloader_Resource(array('basePath' => APPLICATION_PATH, 'namespace' => ''));
-$resourceLoader->addResourceTypes(array('model' => array('namespace' => 'Unsee', 'path' => 'models/')));
 // Create application, bootstrap, and run
 $application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
 $application->bootstrap()->run();
