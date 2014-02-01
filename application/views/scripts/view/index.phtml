@@ -29,7 +29,7 @@ $this->headMeta()->appendName('robots', 'noindex');
         ?> 
             <tr>
                 <td class="key"><?=$field->renderLabel()?></td><? if(!$key){ ?><td class="separator" rowspan="<?=count($fields);?>"><div/></td><?}?> 
-                <td class="value"><?=$field->renderViewHelper()?></td> 
+                <td class="value"><?=$field->render()?></td> 
             </tr> 
         <?
             }

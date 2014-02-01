@@ -452,7 +452,16 @@
             <tuv xml:lang="en"><seg>Embed a text message into the image body</seg></tuv>
         </tu>
 
-        <tu tuid="settings_delete_now">
+        <tu tuid="settings_delete_when">
+            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="en"><seg>When do delete</seg></tuv>
+        </tu>
+        <tu tuid="settings_delete_when_caption">
+            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="en"><seg>Sets the time when to delete the images</seg></tuv>
+        </tu>
+
+        <tu tuid="settings_delete_when_now">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Right now</seg></tuv>
         </tu>
@@ -461,38 +470,38 @@
             <tuv xml:lang="en"><seg>Deletes images immediately</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_first">
+        <tu tuid="settings_delete_when_first">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>After first view</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_first_caption">
+        <tu tuid="settings_delete_when_first_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images after the other party views it</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_hour">
+        <tu tuid="settings_delete_when_hour">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>In one hour</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_hour_caption">
+        <tu tuid="settings_delete_when_hour_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in one hour after upload</seg></tuv>
         </tu>
 
-        <tu tuid="settings_delete_day">
+        <tu tuid="settings_delete_when_day">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>In one day</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_day_caption">
+        <tu tuid="settings_delete_when_day_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in 24 hours after the upload</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_three">
+        <tu tuid="settings_delete_when_three">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>In three days</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_three_caption">
+        <tu tuid="settings_delete_when_three_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>This page will live for 3 days total</seg></tuv>
         </tu>

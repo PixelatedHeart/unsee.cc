@@ -25,7 +25,7 @@ class Application_Form_Settings extends Zend_Form
                 $params = $params->toArray();
 
                 if (empty($params['type'])) {
-                    throw new Exception('Type parameter is required for ' . $name);
+                    throw new Exception('Type parameter is required for field "' . $name . '"');
                 }
 
                 $type = $params['type'];
@@ -46,11 +46,11 @@ class Application_Form_Settings extends Zend_Form
                     $element->setAttrib('checked', 'checked');
                 }
 
-                if ($type === 'select' && !empty($params['model'])) {
+                if (!empty($params['model'])) {
                     $modelClass = 'Unsee_Form_Element_Select_Model_' . $params['model'];
 
                     if (!class_exists($modelClass)) {
-                        throw new Exception('Select model class ' . $params['model'] . ' was not found');
+                        throw new Exception('Model class "' . $params['model'] . '" was not found');
                     }
 
                     $element->setMultiOptions($modelClass::getValues($lang));
@@ -64,8 +64,15 @@ class Application_Form_Settings extends Zend_Form
                 $element->setAttrib('id', $elName);
 
                 $element->clearDecorators();
-                $element->addDecorator('ViewHelper');
                 $element->addDecorator('Label', array('title' => $lang->translate($langStr . '_caption')));
+                $element->addPrefixPath('Unsee_Form_', 'Unsee/Form/');
+                $element->addDecorator('ViewHelper');
+
+                if ($type === 'radio') {
+                    $element->addDecorator('Radio');
+                } else {
+                    $element->addDecorator('Generic');
+                }
 
                 $this->addElement($element);
             }

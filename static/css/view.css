@@ -25,6 +25,10 @@ body
     position: relative;
 }
 
+#settings input[type="radio"] {
+    margin: 6px;
+}
+
 #settings label {
     cursor: help;
     border-bottom: 1px dotted;
