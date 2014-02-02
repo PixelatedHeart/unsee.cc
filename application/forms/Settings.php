@@ -6,6 +6,7 @@ class Application_Form_Settings extends Zend_Form
     public function init()
     {
         $this->setMethod('post');
+        $this->setAction('/settings/');
 
         $settings = Zend_Registry::get('config')->settings;
         $lang = Zend_Registry::get('Zend_Translate');
@@ -31,16 +32,10 @@ class Application_Form_Settings extends Zend_Form
                 $type = $params['type'];
 
                 $langStr = 'settings_' . $section . '_' . $name;
-                $groupFieldNames[] = $elName = $section . '_' . $name;
+                $groupFieldNames[] = $elName = $name;
 
-                $element = $this->createElement(
-                        $type, $elName,
-                        array(
-                    'label'    => $lang->translate($langStr),
-                    'required' => false,
-                    'filters'  => array('StringTrim')
-                        )
-                );
+                $element = $this->createElement($type, $elName);
+                $element->setLabel($lang->translate($langStr));
 
                 if ($type === 'checkbox' && !empty($params['checked']) && $params['checked'] === 'true') {
                     $element->setAttrib('checked', 'checked');
@@ -69,6 +64,7 @@ class Application_Form_Settings extends Zend_Form
                 $element->addDecorator('ViewHelper');
 
                 if ($type === 'radio') {
+                    $element->setRequired(true);
                     $element->addDecorator('Radio');
                 } else {
                     $element->addDecorator('Generic');

@@ -25,6 +25,12 @@ body
     position: relative;
 }
 
+div.description p {
+    font-size: 12px;
+    text-align: left;
+    padding: 0 10px;
+}
+
 #settings input[type="radio"] {
     margin: 6px;
 }
@@ -105,12 +111,12 @@ body
     display: inline-block;
 }
 
-#settings button {
+#settings input[type="submit"] {
     margin-top: 20px;
     font-size: 13px;
     padding: 2px 10px;
 }
-#settings button[disabled="disabled"] {
+#settings input[type="submit"][disabled="disabled"] {
     opacity: .5;
 }
 
@@ -133,7 +139,7 @@ body
 #settings ul li,
 #settings ul li.active {
     display: inline-block;
-    width: 80px;
+    width: 100px;
     height: 100%;
     line-height: 30px;
     vertical-align: middle;

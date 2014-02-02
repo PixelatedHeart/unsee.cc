@@ -8,13 +8,11 @@ class UploadController extends Zend_Controller_Action
         $response = new stdClass();
         $upload = new Zend_File_Transfer();
 
-        $ttlTypes = array(0, 60 * 60, 60 * 60 * 24);
-        $ttlIndex = (int) $this->getParam('time', 0);
+        $ttlTypes = Unsee_Mongo_Document_Hash::$_ttlTypes;
+        $ttl = $this->getParam('time', 1);
 
-        if (!isset($ttlTypes[$ttlIndex])) {
-            $ttlSeconds = 0;
-        } else {
-            $ttlSeconds = $ttlTypes[$ttlIndex];
+        if (!in_array($ttl, $ttlTypes)) {
+            $ttl = $ttlTypes[1];
         }
 
         $upload->addValidator('Count', false, array('min' => 1, 'max' => 100));
@@ -33,7 +31,7 @@ class UploadController extends Zend_Controller_Action
             $hashDoc = new Unsee_Mongo_Document_Hash();
             $hashDoc->hash = $newHash;
             $hashDoc->timestamp = new MongoDate();
-            $hashDoc->ttl = $ttlSeconds;
+            $hashDoc->ttl = $ttl;
             $hashDoc->views = 0;
             $hashDoc->save();
 

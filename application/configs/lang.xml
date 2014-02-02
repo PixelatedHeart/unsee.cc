@@ -44,6 +44,10 @@
             <tuv xml:lang="ru"><seg>через сутки</seg></tuv>
             <tuv xml:lang="en"><seg>in one day</seg></tuv>
         </tu>
+        <tu tuid="after_week">
+            <tuv xml:lang="ru"><seg>через неделю</seg></tuv>
+            <tuv xml:lang="en"><seg>in a week</seg></tuv>
+        </tu>
         <tu tuid="choose_images">
             <tuv xml:lang="ru"><seg>Выберите изображения</seg></tuv>
             <tuv xml:lang="en"><seg>Choose images</seg></tuv>
@@ -345,24 +349,24 @@
             <tuv xml:lang="en"><seg>Leave blank for none</seg></tuv>
         </tu>
 
-        <tu tuid="settings_info_token">
+        <tu tuid="settings_info_custom_hash">
             <tuv xml:lang="ru"><seg>Токен</seg></tuv>
             <tuv xml:lang="en"><seg>Custom token</seg></tuv>
         </tu>
-        <tu tuid="settings_info_token_caption">
+        <tu tuid="settings_info_custom_hash_caption">
             <tuv xml:lang="ru"><seg>Токен ссылки - unsee.cc/token</seg></tuv>
             <tuv xml:lang="en"><seg>Url token for the page - unsee.cc/token</seg></tuv>
         </tu>
-        <tu tuid="settings_info_token_hint">
+        <tu tuid="settings_info_custom_hash_hint">
             <tuv xml:lang="ru"><seg>Оставьте пустым для значения по умолчанию</seg></tuv>
             <tuv xml:lang="en"><seg>Leave blank for default</seg></tuv>
         </tu>
 
-        <tu tuid="settings_security_download">
+        <tu tuid="settings_security_no_download">
             <tuv xml:lang="ru"><seg>Запретить скачивание изображения</seg></tuv>
             <tuv xml:lang="en"><seg>Prevent image download</seg></tuv>
         </tu>
-        <tu tuid="settings_security_download_caption">
+        <tu tuid="settings_security_no_download_caption">
             <tuv xml:lang="ru"><seg>Не позволять пользователям совершать правый клик по картинке чтобы сохранить её</seg></tuv>
             <tuv xml:lang="en"><seg>Restrict right-clicking images to save them</seg></tuv>
         </tu>
@@ -380,65 +384,65 @@
             <tuv xml:lang="en"><seg>Leave blank to disable</seg></tuv>
         </tu>
         
-        <tu tuid="settings_access_domain">
+        <tu tuid="settings_access_allow_domain">
             <tuv xml:lang="ru"><seg>Разрешить для домена</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from domain</seg></tuv>
         </tu>
-        <tu tuid="settings_access_domain_caption">
+        <tu tuid="settings_access_allow_domain_caption">
             <tuv xml:lang="ru"><seg>Разрешать доступ только пришедшим с домена</seg></tuv>
             <tuv xml:lang="en"><seg>Allow only users coming from this domain</seg></tuv>
         </tu>
-        <tu tuid="settings_access_domain_hint">
+        <tu tuid="settings_access_allow_domain_hint">
             <tuv xml:lang="ru"><seg>Оставьте пустым чтобы не использовать</seg></tuv>
             <tuv xml:lang="en"><seg>Leave blank to disable</seg></tuv>
         </tu>
 
-        <tu tuid="settings_access_ip">
+        <tu tuid="settings_access_allow_ip">
             <tuv xml:lang="ru"><seg>Разрешить для IP</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from IP</seg></tuv>
         </tu>
-        <tu tuid="settings_access_ip_caption">
+        <tu tuid="settings_access_allow_ip_caption">
             <tuv xml:lang="ru"><seg>Разрешить доступ только для указанного IP</seg></tuv>
             <tuv xml:lang="en"><seg>Allow only users from this IP wildcard</seg></tuv>
         </tu>
-        <tu tuid="settings_access_ip_hint">
+        <tu tuid="settings_access_allow_ip_hint">
             <tuv xml:lang="ru"><seg>123.45.67.*</seg></tuv>
             <tuv xml:lang="en"><seg>123.45.67.*</seg></tuv>
         </tu>
         
-        <tu tuid="settings_access_country">
+        <tu tuid="settings_access_allow_country">
             <tuv xml:lang="ru"><seg>Разрешить для страны</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from country</seg></tuv>
         </tu>
-        <tu tuid="settings_access_country_caption">
+        <tu tuid="settings_access_allow_country_caption">
             <tuv xml:lang="ru"><seg>Разрешить доступ только для указанной страны</seg></tuv>
             <tuv xml:lang="en"><seg>Allow only users from this country</seg></tuv>
         </tu>
         
         
-        <tu tuid="settings_access_continent">
+        <tu tuid="settings_access_allow_territory">
             <tuv xml:lang="ru"><seg>Разрешить для континента</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from continent</seg></tuv>
         </tu>
-        <tu tuid="settings_access_continent_caption">
+        <tu tuid="settings_access_allow_territory">
             <tuv xml:lang="ru"><seg>Разрешить доступ только для указанной страны</seg></tuv>
-            <tuv xml:lang="en"><seg>Allow only users from this continent</seg></tuv>
+            <tuv xml:lang="en"><seg>Allow from territory</seg></tuv>
         </tu>
         
-        <tu tuid="settings_embedded_watermark">
+        <tu tuid="settings_embedded_watermark_ip">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Watermark viewer's IP</seg></tuv>
         </tu>
-        <tu tuid="settings_embedded_watermark_caption">
+        <tu tuid="settings_embedded_watermark_ip_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Tile viewer's IP address across image</seg></tuv>
         </tu>
         
-        <tu tuid="settings_embedded_exif">
+        <tu tuid="settings_embedded_strip_exif">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Strip EXIF data</seg></tuv>
         </tu>
-        <tu tuid="settings_embedded_exif_caption">
+        <tu tuid="settings_embedded_strip_exif_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Remove any image information that may has been added by camera (GPS coords, camera make, date, etc.)</seg></tuv>
         </tu>
@@ -452,58 +456,58 @@
             <tuv xml:lang="en"><seg>Embed a text message into the image body</seg></tuv>
         </tu>
 
-        <tu tuid="settings_delete_when">
+        <tu tuid="settings_delete_ttl">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>When do delete</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_when_caption">
+        <tu tuid="settings_delete_ttl_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Sets the time when to delete the images</seg></tuv>
         </tu>
 
-        <tu tuid="settings_delete_when_now">
+        <tu tuid="settings_delete_ttl_now">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Right now</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_now_caption">
+        <tu tuid="settings_delete_ttl_now_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images immediately</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_when_first">
+        <tu tuid="settings_delete_ttl_first">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>After first view</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_when_first_caption">
+        <tu tuid="settings_delete_ttl_first_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images after the other party views it</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_when_hour">
+        <tu tuid="settings_delete_ttl_hour">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>In one hour</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_when_hour_caption">
+        <tu tuid="settings_delete_ttl_hour_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in one hour after upload</seg></tuv>
         </tu>
 
-        <tu tuid="settings_delete_when_day">
+        <tu tuid="settings_delete_ttl_day">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>In one day</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_when_day_caption">
+        <tu tuid="settings_delete_ttl_day_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in 24 hours after the upload</seg></tuv>
         </tu>
         
-        <tu tuid="settings_delete_when_three">
+        <tu tuid="settings_delete_ttl_week">
             <tuv xml:lang="ru"><seg></seg></tuv>
-            <tuv xml:lang="en"><seg>In three days</seg></tuv>
+            <tuv xml:lang="en"><seg>In a week</seg></tuv>
         </tu>
-        <tu tuid="settings_delete_when_three_caption">
+        <tu tuid="settings_delete_ttl_week_caption">
             <tuv xml:lang="ru"><seg></seg></tuv>
-            <tuv xml:lang="en"><seg>This page will live for 3 days total</seg></tuv>
+            <tuv xml:lang="en"><seg>This page will live for 7 days total</seg></tuv>
         </tu>
 
     </body>

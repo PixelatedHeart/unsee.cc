@@ -10,6 +10,7 @@ class Unsee_Mongo_Document_Hash extends Shanty_Mongo_Document
         'sess'      => array('Required'),
         'timestamp' => array('Required', 'Validator:MongoDate')
     );
+    public static $_ttlTypes = array('now', 'first', 'hour', 'day', 'week');
 
     public function getImagesIds()
     {

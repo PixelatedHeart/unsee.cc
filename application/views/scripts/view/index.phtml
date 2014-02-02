@@ -6,41 +6,41 @@ $this->headMeta()->appendName('robots', 'noindex');
     <a href="/"><img src="<?= $this->assetsDomain; ?>/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
     <p><?= $this->translate('slogan') ?></p>
     <div id="settings">
-        <ul>
+        <form method="post" action="">
+            <ul>
+                <?php
+                $groups = array_values($this->groups);
+
+                foreach ($groups as $key => $group) {
+                ?>
+                <li data-page="<?=$group->getName()?>" class="<? if (!$key) { ?> active<? } ?>"><?=$group->getLegend()?><div /></li>
+                <?php
+                }
+                ?>
+            </ul>
+
             <?php
-            $groups = array_values($this->groups);
-
-            foreach ($groups as $key => $group) {
+            foreach ($groups as $gKey=>$group) {
             ?>
-            <li data-page="<?=$group->getName()?>" class="<? if (!$key) { ?> active<? } ?>"><?=$group->getLegend()?><div /></li>
-            <?php
+            <table class="<?=$group->getName()?>">
+            <?
+                $fields = array_values($group->getElements());
+
+                foreach ($fields as $key=>$field) {
+            ?> 
+                <tr>
+                    <td class="key"><?=$field->renderLabel()?></td><? if(!$key){ ?><td class="separator" rowspan="<?=count($fields);?>"><div/></td><?}?> 
+                    <td class="value"><?=$field->render()?></td> 
+                </tr> 
+            <?
+                }
+            ?> 
+            </table>
+            <?
             }
-            ?>
-        </ul>
-
-        <?php
-        foreach ($groups as $gKey=>$group) {
-        ?>
-        <table class="<?=$group->getName()?>">
-        <?
-            $fields = array_values($group->getElements());
-
-            foreach ($fields as $key=>$field) {
-        ?> 
-            <tr>
-                <td class="key"><?=$field->renderLabel()?></td><? if(!$key){ ?><td class="separator" rowspan="<?=count($fields);?>"><div/></td><?}?> 
-                <td class="value"><?=$field->render()?></td> 
-            </tr> 
-        <?
-            }
-        ?> 
-        </table>
-        <?
-        }
-        ?> 
-
-        <button disabled="disabled">Apply</button>
-
+            ?> 
+            <input type="submit" />
+        </form>
     </div>
 </div>
 
@@ -54,6 +54,21 @@ if (!$this->isOwner) {
 
 ?>
 <div id="imgMessage"> <b><?= $this->deleteTime ?></b> <span>(<?= $this->translate('click_settings'); ?>)</span> </div>
+<?
+if ($this->title) {
+?>
+<div class="title"><h3><?=$this->title;?></h3></div>
+<?
+}
+
+if ($this->description) {
+?>
+<div class="description"><p><?=$this->description;?></p></div>
+<?
+}
+?>
+
+
 <?php
 foreach ($this->images as $imageId => $imageData) {
 

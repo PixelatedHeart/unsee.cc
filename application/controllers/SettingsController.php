@@ -11,7 +11,6 @@ class SettingsController extends Zend_Controller_Action
     public function indexAction()
     {
         $form = new Application_Form_Settings();
-        $fields = array();
-        $groups = $form->getDisplayGroups();
+
     }
 }

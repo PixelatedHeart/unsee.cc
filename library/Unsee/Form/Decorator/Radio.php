@@ -15,7 +15,9 @@ class Unsee_Form_Decorator_Radio extends Zend_Form_Decorator_Abstract
         foreach ($options as $name => $title) {
 
             $lang = Zend_Registry::get('Zend_Translate');
-            $captionStr = 'settings_' . $elName . '_'. $name .'_caption';
+            // TODO: "delete" is hardcoded
+            // TODO: dynamically get group of the field here
+            $captionStr = 'settings_delete_' . $elName . '_'. $name .'_caption'; 
 
             $captionProp = '';
 
@@ -23,7 +25,7 @@ class Unsee_Form_Decorator_Radio extends Zend_Form_Decorator_Abstract
                 $captionProp = " title='".$lang->translate($captionStr)."' ";
             }
 
-            $res .= "<div><input type='radio' name='{$elName}[]' id='{$elName}_$name'/><label $captionProp for='{$elName}_$name'>$title</label></div>";
+            $res .= "<div><input type='radio' name='{$elName}' id='{$elName}_$name' value='$name' /><label $captionProp for='{$elName}_$name'>$title</label></div>";
         }
 
         return $res;
