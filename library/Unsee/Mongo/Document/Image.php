@@ -18,6 +18,11 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         parent::init();
     }
 
+    public function stripExif()
+    {
+        
+    }
+
     public function watermark()
     {
         // Create objects

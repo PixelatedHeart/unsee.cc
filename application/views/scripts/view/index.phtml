@@ -44,15 +44,6 @@ $this->headMeta()->appendName('robots', 'noindex');
     </div>
 </div>
 
-<?php
-if (!$this->isOwner) {
-
-    ?>
-    <div id="screen"></div>
-    <?php
-}
-
-?>
 <div id="imgMessage"> <b><?= $this->deleteTime ?></b> <span>(<?= $this->translate('click_settings'); ?>)</span> </div>
 <?
 if ($this->title) {
@@ -68,6 +59,14 @@ if ($this->description) {
 }
 ?>
 
+<?php
+if ($this->no_download) {
+
+    ?>
+    <div id="screen"></div>
+    <?php
+}
+?>
 
 <?php
 foreach ($this->images as $imageId => $imageData) {

@@ -455,6 +455,10 @@
             <tuv xml:lang="ru"><seg></seg></tuv>
             <tuv xml:lang="en"><seg>Embed a text message into the image body</seg></tuv>
         </tu>
+        <tu tuid="settings_embedded_comment_hint">
+            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="en"><seg>You may use %ip% and %user_agent% placeholders</seg></tuv>
+        </tu>
 
         <tu tuid="settings_delete_ttl">
             <tuv xml:lang="ru"><seg></seg></tuv>

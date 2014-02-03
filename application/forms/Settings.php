@@ -41,6 +41,15 @@ class Application_Form_Settings extends Zend_Form
                     $element->setAttrib('checked', 'checked');
                 }
 
+                if ($type === 'password') {
+                    // Otherwise ZF doesn't populate field value
+                    $element->setAttrib('renderPassword', true);
+                }
+
+                if (!empty($params['disabled']) && $params['disabled'] === 'true') {
+                    $element->setAttrib('disabled', 'disabled');
+                }
+                
                 if (!empty($params['model'])) {
                     $modelClass = 'Unsee_Form_Element_Select_Model_' . $params['model'];
 

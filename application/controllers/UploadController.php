@@ -43,7 +43,6 @@ class UploadController extends Zend_Controller_Action
                     $imageContent = file_get_contents($info['tmp_name']);
                     $image = new Imagick();
                     $image->readimageblob($imageContent);
-                    $image->stripimage();
 
                     $imageDoc = new Unsee_Mongo_Document_Image();
                     $imageDoc->hashId = $hashDoc->getId();

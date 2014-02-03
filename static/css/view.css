@@ -12,6 +12,11 @@ body
     text-align: center;
 }
 
+#settings *[disabled="disabled"]
+{
+    opacity: .5;
+}
+
 #settings
 {
     display: none;
