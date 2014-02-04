@@ -11,23 +11,49 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         'data'   => array('Required'),
         'hashId' => array('Required', 'Validator:MongoId')
     );
+    protected $iMagick;
 
-    protected function init()
+    // Lazy loading image data
+    public function __get($property)
     {
-        $this->data = base64_decode($this->data);
-        parent::init();
+        if ($property === 'data') {
+
+            if ($this->iMagick && $this->iMagick->getimageblob()) {
+                // Image was modified, return resulting content
+                return (string) $this->iMagick;
+            } else {
+                // No image transformation, return stored data
+                return base64_decode(parent::__get($property));
+            }
+        } else {
+            return parent::__get($property);
+        }
+    }
+
+    protected function getImaick()
+    {
+        if (!$this->iMagick) {
+            $iMagick = new Imagick();
+            $iMagick->readimageblob($this->data);
+            $this->iMagick = $iMagick;
+        }
+
+        return $this->iMagick;
     }
 
     public function stripExif()
     {
-        
+        $image = $this->getImaick();
+        $image->stripImage();
+        $this->data = (string) $image;
+
+        return true;
     }
 
     public function watermark()
     {
         // Create objects
-        $image = new Imagick();
-        $image->readimageblob($this->data);
+        $image = $this->getImaick();
 
         // Watermark text
         $watermark = new Imagick();
@@ -64,6 +90,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         // Set output image format
         $image->setImageFormat($format);
 
+        /*
         $comment = 'The image was not intended for sharing, ' .
                 'but was foully taken from https://www.unsee.cc/ ' .
                 'on ' . date('c') . '.' . PHP_EOL .
@@ -72,7 +99,9 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
                 'User agent: ' . $_SERVER['HTTP_USER_AGENT'] . PHP_EOL;
 
         $image->commentimage($comment);
+         */
         $this->data = (string) $image;
+        $this->size = $image->getimagesize();
 
         return true;
     }

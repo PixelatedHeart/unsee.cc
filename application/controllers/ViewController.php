@@ -129,8 +129,16 @@ class ViewController extends Zend_Controller_Action
         $imagesList = $hashDoc->getImagesIds();
 
         $this->view->images = array();
+
+        $secureLinkTtl = 2; // image links would live for 1 second
+        if (!$hashDoc->no_download) {
+            end(Unsee_Mongo_Document_Hash::$_ttlTypes);
+            $secureLinkTtl = key(Unsee_Mongo_Document_Hash::$_ttlTypes);
+            reset(Unsee_Mongo_Document_Hash::$_ttlTypes);
+        }
+
         foreach ($imagesList as $key => $imageId) {
-            $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + 1; // Each image would be loaded a second later
+            $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + $secureLinkTtl; // Each image would be loaded a second later
             // Preparing a hash for nginx's secure link
             $md5 = base64_encode(md5($imageId . $ticketTtd, true));
             $md5 = strtr($md5, '+/', '-_');
@@ -168,7 +176,7 @@ class ViewController extends Zend_Controller_Action
 
     private function processAllowDomain($hashDoc)
     {
-        if (!empty($hashDoc->allow_domain) /*&& !$hashDoc->isOwner()*/) {
+        if (!empty($hashDoc->allow_domain) /* && !$hashDoc->isOwner() */) {
             if (empty($_SERVER['HTTP_REFERER'])) {
                 return false;
             }
@@ -189,12 +197,6 @@ class ViewController extends Zend_Controller_Action
         }
 
         return true;
-    }
-    
-    private function processStripExif () {
-
-        
-
     }
 
     public function deletedAction()
@@ -223,7 +225,7 @@ class ViewController extends Zend_Controller_Action
         $hashDoc->strip_exif && $imgDoc->stripExif();
 
         header('Content-type: ' . $imgDoc->type);
-        header('Content-length: ' . strlen($imgDoc->data));
+        //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work
         print $imgDoc->data;
     }
 

@@ -9,10 +9,10 @@ class UploadController extends Zend_Controller_Action
         $upload = new Zend_File_Transfer();
 
         $ttlTypes = Unsee_Mongo_Document_Hash::$_ttlTypes;
-        $ttl = $this->getParam('time', 1);
+        $ttl = $this->getParam('time', 0); // 0 means now
 
         if (!in_array($ttl, $ttlTypes)) {
-            $ttl = $ttlTypes[1];
+            $ttl = $ttlTypes[0];
         }
 
         $upload->addValidator('Count', false, array('min' => 1, 'max' => 100));
