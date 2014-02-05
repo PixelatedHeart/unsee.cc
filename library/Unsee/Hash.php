@@ -40,7 +40,13 @@ class Unsee_Hash
             $hash .= array_pop($consonants) . array_pop($vovels);
         }
 
-        if ($this->hashExists($hash)) {
+        $exists = $this->hashExists($hash);
+
+        if (is_null($exists)) {
+            return false;
+        }
+
+        if ($exists) {
             return $this->generate();
         }
 
@@ -51,7 +57,12 @@ class Unsee_Hash
 
     protected function hashExists($hash)
     {
-        return (bool) Unsee_Mongo_Document_Hash::one(array('hash' => $hash));
+        try {
+            return (bool) Unsee_Mongo_Document_Hash::one(array('hash' => $hash));
+        } catch (Exception $e) {
+            // Mongo is having problems
+            return null;
+        }
     }
 
     public function validate($hash)

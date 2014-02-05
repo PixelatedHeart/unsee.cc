@@ -126,7 +126,7 @@ class ViewController extends Zend_Controller_Action
             $this->view->deleteTime = $this->view->translate($deleteMessage, array(date("c", $ttd)));
         }
 
-        $imagesList = $hashDoc->getImagesIds();
+        $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
 
         $this->view->images = array();
 
@@ -137,14 +137,18 @@ class ViewController extends Zend_Controller_Action
             reset(Unsee_Mongo_Document_Hash::$_ttlTypes);
         }
 
-        foreach ($imagesList as $key => $imageId) {
-            $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + $secureLinkTtl; // Each image would be loaded a second later
+        foreach ($imagesList as $key=>$imageDoc) {
+
+            $imageId = (string) $imageDoc->_id;
+
+            $imageDoc->ticketTtd = $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + $secureLinkTtl; // Each image would be loaded a second later
             // Preparing a hash for nginx's secure link
             $md5 = base64_encode(md5($imageId . $ticketTtd, true));
             $md5 = strtr($md5, '+/', '-_');
             $md5 = str_replace('=', '', $md5);
+            $imageDoc->md5 = $md5;
 
-            $this->view->images[$imageId] = array('hash' => $md5, 'ticketTtd' => $ticketTtd);
+            $this->view->images[$imageId] = $imageDoc;
         }
 
         $this->view->groups = $form->getDisplayGroups();
@@ -174,9 +178,19 @@ class ViewController extends Zend_Controller_Action
         return true;
     }
 
+    private function processAllowIp($hashDoc)
+    {
+        if (!empty($hashDoc->allow_ip) /* && !$hashDoc->isOwner() */) {
+            $ip = $this->getRequest()->getServer('REMOTE_ADDR');
+            return fnmatch($hashDoc->allow_ip, $ip);
+        }
+
+        return true;
+    }
+
     private function processAllowDomain($hashDoc)
     {
-        if (!empty($hashDoc->allow_domain) /* && !$hashDoc->isOwner() */) {
+        if (!empty($hashDoc->allow_domain) && !$hashDoc->isOwner()) {
             if (empty($_SERVER['HTTP_REFERER'])) {
                 return false;
             }
@@ -226,7 +240,7 @@ class ViewController extends Zend_Controller_Action
 
         header('Content-type: ' . $imgDoc->type);
         //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work
-        print $imgDoc->data;
+        die($imgDoc->data);
     }
 
     protected function getImageData($imgId)

@@ -17,16 +17,20 @@ class UploadController extends Zend_Controller_Action
 
         $upload->addValidator('Count', false, array('min' => 1, 'max' => 100));
         $upload->addValidator('IsImage', false);
-        //Limit individual file size to 4M, since BSON is MongoDB object is capped to that amount
+        //Limit individual file size to 4M, since BSON MongoDB object is capped to that amount
         $upload->addValidator('Size', false, array('max' => '4MB', 'bytestring' => false));
+        $translate = Zend_Registry::get('Zend_Translate');
 
         if (!$upload->receive()) {
-            $translate = Zend_Registry::get('Zend_Translate');
             $response->error = $translate->translate('error_uploading');
         } else {
             $files = $upload->getFileInfo();
 
             $newHash = (string) new Unsee_Hash();
+
+            if (!$newHash) {
+                $response->error = $translate->translate('error_uploading');
+            }
 
             $hashDoc = new Unsee_Mongo_Document_Hash();
             $hashDoc->hash = $newHash;
@@ -49,6 +53,12 @@ class UploadController extends Zend_Controller_Action
                     $imageDoc->data = base64_encode($image);
                     $imageDoc->size = $info['size'];
                     $imageDoc->type = $info['type'];
+
+                    $size = getimagesize($info['tmp_name']);
+                    
+                    $imageDoc->width = $size[0];
+                    $imageDoc->height = $size[1];
+
                     $imageDoc->save();
                 }
             }
