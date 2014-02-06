@@ -293,8 +293,8 @@
             <tuv xml:lang="en"><seg>This page will be deleted after the first view by the other party</seg></tuv>
         </tu>
         <tu tuid="delete_time">
-            <tuv xml:lang="ru"><seg>Эта страница будет удалена в %s</seg></tuv>
-            <tuv xml:lang="en"><seg>This page will be deleted at %s</seg></tuv>
+            <tuv xml:lang="ru"><seg>Эта страница будет удалена через %s</seg></tuv>
+            <tuv xml:lang="en"><seg>This page will be deleted in %s</seg></tuv>
         </tu>
         <tu tuid="click_settings">
             <tuv xml:lang="ru"><seg>Нажмите здесь, чтобы изменить настройки</seg></tuv>
@@ -514,5 +514,48 @@
             <tuv xml:lang="en"><seg>This page will live for 7 days total</seg></tuv>
         </tu>
 
+        <tu tuid="day_one">
+            <tuv xml:lang="ru"><seg>день</seg></tuv>
+            <tuv xml:lang="en"><seg>day</seg></tuv>
+        </tu>
+        <tu tuid="day_couple">
+            <tuv xml:lang="ru"><seg>дня</seg></tuv>
+            <tuv xml:lang="en"><seg>days</seg></tuv>
+        </tu>
+        <tu tuid="day_many">
+            <tuv xml:lang="ru"><seg>дней</seg></tuv>
+            <tuv xml:lang="en"><seg>days</seg></tuv>
+        </tu>
+        
+        <tu tuid="hour_one">
+            <tuv xml:lang="ru"><seg>час</seg></tuv>
+            <tuv xml:lang="en"><seg>hour</seg></tuv>
+        </tu>
+        <tu tuid="hour_couple">
+            <tuv xml:lang="ru"><seg>часа</seg></tuv>
+            <tuv xml:lang="en"><seg>hours</seg></tuv>
+        </tu>
+        <tu tuid="hour_many">
+            <tuv xml:lang="ru"><seg>часов</seg></tuv>
+            <tuv xml:lang="en"><seg>hours</seg></tuv>
+        </tu>
+        
+        <tu tuid="minute_one">
+            <tuv xml:lang="ru"><seg>минута</seg></tuv>
+            <tuv xml:lang="en"><seg>minute</seg></tuv>
+        </tu>
+        <tu tuid="minute_couple">
+            <tuv xml:lang="ru"><seg>минуты</seg></tuv>
+            <tuv xml:lang="en"><seg>minutes</seg></tuv>
+        </tu>
+        <tu tuid="minute_many">
+            <tuv xml:lang="ru"><seg>минут</seg></tuv>
+            <tuv xml:lang="en"><seg>minutes</seg></tuv>
+        </tu>
+        
+        <tu tuid="and">
+            <tuv xml:lang="ru"><seg>и</seg></tuv>
+            <tuv xml:lang="en"><seg>and</seg></tuv>
+        </tu>
     </body>
 </tmx>

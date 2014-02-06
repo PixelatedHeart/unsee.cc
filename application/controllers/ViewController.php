@@ -38,6 +38,8 @@ class ViewController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        // TODO: Refactor, too long
+
         $params = $this->getAllParams();
         $form = new Application_Form_Settings;
         // Hash (ababab)
@@ -120,10 +122,51 @@ class ViewController extends Zend_Controller_Action
         }
 
         $deleteMessage = $ttl ? 'delete_time' : 'delete_first';
+        $secondsLeft = $ttd - time();
+
+        $times = array();
+        $timeStrings = array();
+        $times['minute'] = 60;
+        $times['hour'] = $times['minute'] * 60;
+        $times['day'] = $times['hour'] * 24;
+
+        $times = array_reverse($times);
+
+        $lang = Zend_Registry::get('Zend_Translate');
+
+        foreach ($times as $key => &$time) {
+            $res = floor($secondsLeft / $time);
+            $secondsLeft -= $res * $time;
+
+            $langStr = $key;
+
+            $modRes = $res % 10;
+
+            if ($modRes === 1) {
+                $langStr .= '_one';
+            } elseif ($modRes > 1 && $modRes < 5) {
+                $langStr .= '_couple';
+            } else {
+                $langStr .= '_many';
+            }
+
+            if ($res) {
+                $timeStrings[] = $res . ' ' . $lang->translate($langStr);
+            }
+        }
+
+        $timeStrings = array_filter($timeStrings);
+        $last = array_pop($timeStrings);
+
+        $deleteTime = '';
+        if (count($timeStrings)) {
+            $deleteTime = implode(', ', $timeStrings) . ' ' . $lang->translate('and') . ' ';
+        }
+        $deleteTime .= $last;
 
         // Don't show 'other party' text to the 'other party'
         if ($hashDoc->isOwner() || $ttl) {
-            $this->view->deleteTime = $this->view->translate($deleteMessage, array(date("c", $ttd)));
+            $this->view->deleteTime = $this->view->translate($deleteMessage, array($deleteTime));
         }
 
         $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
@@ -137,7 +180,7 @@ class ViewController extends Zend_Controller_Action
             reset(Unsee_Mongo_Document_Hash::$_ttlTypes);
         }
 
-        foreach ($imagesList as $key=>$imageDoc) {
+        foreach ($imagesList as $key => $imageDoc) {
 
             $imageId = (string) $imageDoc->_id;
 
