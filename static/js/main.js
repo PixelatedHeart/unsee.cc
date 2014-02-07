@@ -122,7 +122,7 @@ $(function(){
         var inpEmail = $('#email');
         var inpMessage = $('#message');
 
-        //setError(inpName, false);
+        setError(inpName, false);
         setError(inpEmail, false);
         setError(inpMessage, false);
 
@@ -131,12 +131,12 @@ $(function(){
 
         var errors = false;
 
-        /*if (!inpName.val().length) {
+        if (!inpName.val().length) {
             setError(inpName);
             errors = true;
-        }*/
+        }
 
-        if (inpEmail.val().length > 0 && !validateEmail(inpEmail.val())) {
+        if (!validateEmail(inpEmail.val())) {
             setError(inpEmail);
             errors = true;
         }
@@ -147,7 +147,7 @@ $(function(){
         }
 
         if (!errors) {
-            jQuery.ajax('/send.php', {
+            jQuery.ajax('/contact/send/', {
                 type: 'post',
                 data: {
                     type: inpType.val(),
@@ -158,13 +158,21 @@ $(function(){
                 success: function(data){
                     try
                     {
-                        data = JSON.parse(data);
                         if (data.success) {
                             inpName.val('');
                             inpEmail.val('');
                             inpMessage.val('');
                             $('#success').css('display', 'inline');
                             $('#success *').css('display', 'inline');
+                        } else if(data.errors) {
+                            jQuery.each(data.errors, function(el, key) {
+                                var el = $('#' + key);
+                                setError(el, true);
+                            });
+
+                            $('#success').css('display', 'none');
+                            $('#error').css('display', 'inline');
+                            $('#error *').css('display', 'inline');
                         }
                     } catch (e)
                     {

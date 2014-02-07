@@ -73,6 +73,8 @@ class ViewController extends Zend_Controller_Action
             }
         }
 
+        $this->view->no_download = true;
+
         // Handle current request based on what settins are set
         $props = $hashDoc->getPropertyKeys();
 
@@ -194,6 +196,7 @@ class ViewController extends Zend_Controller_Action
             $this->view->images[$imageId] = $imageDoc;
         }
 
+        $this->view->form = $form;
         $this->view->groups = $form->getDisplayGroups();
     }
 

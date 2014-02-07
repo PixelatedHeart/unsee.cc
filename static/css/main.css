@@ -52,7 +52,7 @@ body
 
 h1
 {
-    margin-top: -100px;
+    
 }
 
 input[type=radio]
@@ -71,7 +71,7 @@ input[type=radio]
 #header
 {
     width: 100%;
-    background: url('/img/backlight.png') no-repeat 50% 80%;
+    background: url('/img/backlight.png') no-repeat 50% 90%;
 }
 
 #header p

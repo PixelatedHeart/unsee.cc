@@ -315,11 +315,11 @@
             <tuv xml:lang="en"><seg>Access</seg></tuv>
         </tu>
         <tu tuid="settings_embedded">
-            <tuv xml:lang="ru"><seg>Информация</seg></tuv>
+            <tuv xml:lang="ru"><seg>Данные</seg></tuv>
             <tuv xml:lang="en"><seg>Embedded</seg></tuv>
         </tu>
         <tu tuid="settings_delete">
-            <tuv xml:lang="ru"><seg>Информация</seg></tuv>
+            <tuv xml:lang="ru"><seg>Удаление</seg></tuv>
             <tuv xml:lang="en"><seg>Delete</seg></tuv>
         </tu>
 
@@ -421,96 +421,96 @@
         
         
         <tu tuid="settings_access_allow_territory">
-            <tuv xml:lang="ru"><seg>Разрешить для континента</seg></tuv>
+            <tuv xml:lang="ru"><seg>Разрешить для территории</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from continent</seg></tuv>
         </tu>
-        <tu tuid="settings_access_allow_territory">
-            <tuv xml:lang="ru"><seg>Разрешить доступ только для указанной страны</seg></tuv>
+        <tu tuid="settings_access_allow_territory_caption">
+            <tuv xml:lang="ru"><seg>Разрешить доступ только для указанной территории</seg></tuv>
             <tuv xml:lang="en"><seg>Allow from territory</seg></tuv>
         </tu>
         
         <tu tuid="settings_embedded_watermark_ip">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Применить IP-вотермарку</seg></tuv>
             <tuv xml:lang="en"><seg>Watermark viewer's IP</seg></tuv>
         </tu>
         <tu tuid="settings_embedded_watermark_ip_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Наносить IP просмотрщика на изображение</seg></tuv>
             <tuv xml:lang="en"><seg>Tile viewer's IP address across image</seg></tuv>
         </tu>
         
         <tu tuid="settings_embedded_strip_exif">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Удалить данные EXIF</seg></tuv>
             <tuv xml:lang="en"><seg>Strip EXIF data</seg></tuv>
         </tu>
         <tu tuid="settings_embedded_strip_exif_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Удалить данные, записанные в изображение камерой (GPS координаты, марку камеры, дату и т.д.)</seg></tuv>
             <tuv xml:lang="en"><seg>Remove any image information that may has been added by camera (GPS coords, camera make, date, etc.)</seg></tuv>
         </tu>
 
         <tu tuid="settings_embedded_comment">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Добавить коментарий</seg></tuv>
             <tuv xml:lang="en"><seg>Add image comment</seg></tuv>
         </tu>
         <tu tuid="settings_embedded_comment_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Внедрить текстовый коментарий в тело изображений</seg></tuv>
             <tuv xml:lang="en"><seg>Embed a text message into the image body</seg></tuv>
         </tu>
         <tu tuid="settings_embedded_comment_hint">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Доступны предопределённые переменные %ip% и %user_agent% </seg></tuv>
             <tuv xml:lang="en"><seg>You may use %ip% and %user_agent% placeholders</seg></tuv>
         </tu>
 
         <tu tuid="settings_delete_ttl">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Время удаления</seg></tuv>
             <tuv xml:lang="en"><seg>When do delete</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Устанавливает промежуток времени через которое изображения будут удалены</seg></tuv>
             <tuv xml:lang="en"><seg>Sets the time when to delete the images</seg></tuv>
         </tu>
 
         <tu tuid="settings_delete_ttl_now">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Немедленно</seg></tuv>
             <tuv xml:lang="en"><seg>Right now</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_now_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Изображения будут удалены прямо сейчас</seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images immediately</seg></tuv>
         </tu>
         
         <tu tuid="settings_delete_ttl_first">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>После первого просмотра</seg></tuv>
             <tuv xml:lang="en"><seg>After first view</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_first_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Изображения будут удалены после первого просмотра другим человеком</seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images after the other party views it</seg></tuv>
         </tu>
         
         <tu tuid="settings_delete_ttl_hour">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Через час</seg></tuv>
             <tuv xml:lang="en"><seg>In one hour</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_hour_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Изображения удалятся через час после загрузки</seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in one hour after upload</seg></tuv>
         </tu>
 
         <tu tuid="settings_delete_ttl_day">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Через сутки</seg></tuv>
             <tuv xml:lang="en"><seg>In one day</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_day_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Изображения удалятся через 24 часа после загрузки</seg></tuv>
             <tuv xml:lang="en"><seg>Deletes images in 24 hours after the upload</seg></tuv>
         </tu>
         
         <tu tuid="settings_delete_ttl_week">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Через неделю</seg></tuv>
             <tuv xml:lang="en"><seg>In a week</seg></tuv>
         </tu>
         <tu tuid="settings_delete_ttl_week_caption">
-            <tuv xml:lang="ru"><seg></seg></tuv>
+            <tuv xml:lang="ru"><seg>Страница будет доступна в течении 7 дней</seg></tuv>
             <tuv xml:lang="en"><seg>This page will live for 7 days total</seg></tuv>
         </tu>
 
@@ -556,6 +556,10 @@
         <tu tuid="and">
             <tuv xml:lang="ru"><seg>и</seg></tuv>
             <tuv xml:lang="en"><seg>and</seg></tuv>
+        </tu>
+        <tu tuid="apply">
+            <tuv xml:lang="ru"><seg>Применить</seg></tuv>
+            <tuv xml:lang="en"><seg>Apply</seg></tuv>
         </tu>
     </body>
 </tmx>
