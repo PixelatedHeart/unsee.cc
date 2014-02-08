@@ -18,6 +18,12 @@ body
     background: url('/img/backlight.png') no-repeat fixed center top;
 }
 
+#header.deleted
+{
+    width: 100%;
+    background: none;
+}
+
 #header p {
     padding: 10px;
     margin: 0;
