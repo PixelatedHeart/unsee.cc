@@ -61,10 +61,10 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
 
         // Create a new drawing palette
         $draw = new ImagickDraw();
-        $watermark->newImage(140, 80, new ImagickPixel('none'));
+        $watermark->newImage(240, 80, new ImagickPixel('none'));
 
         // Set font properties
-        $draw->setFont('Arial');
+        $draw->setFont('DejaVu-Sans-Mono-Book');
         $draw->setFillColor('White');
         $draw->setfontsize(30);
         $draw->setFillOpacity(.4);

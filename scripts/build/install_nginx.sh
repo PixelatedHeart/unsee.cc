@@ -36,7 +36,7 @@ _log_path="/var/log/${_pkgname}"
 ./configure \
     --prefix="/${_conf_path}" \
     --conf-path="/${_conf_path}/nginx.conf" \
-    --sbin-path="/usr/bin/${_pkgname}" \
+    --sbin-path="/usr/sbin/${_pkgname}" \
     --pid-path="${_pid_path}/${_pkgname}.pid" \
     --lock-path=${_pid_path}/${_pkgname}.lock \
     --http-client-body-temp-path=${_tmp_path}/client_body_temp \
