@@ -56,7 +56,7 @@ class ContactController extends Zend_Controller_Action
 
     private function sendMail($subject, $message, $fromName, $fromEmail)
     {
-        $mail = new Zend_Mail();
+        $mail = new Zend_Mail('UTF-8');
         $mail->addTo('goreanski@gmail.com');
         $mail->addBcc('iaroslav.svet@gmail.com');
         $mail->setSubject($subject);
