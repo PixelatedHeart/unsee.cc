@@ -12,12 +12,6 @@ body
     text-align: center;
 }
 
-#settings *[disabled="disabled"]
-{
-    opacity: .5;
-}
-
-
 #header
 {
     width: 100%;
@@ -29,171 +23,10 @@ body
     margin: 0;
 }
 
-#settings
-{
-    display: none;
-    margin-bottom: 10px;
-    padding-bottom: 20px;
-    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,.5);
-    background-color: #222;
-    text-align: center;
-    color: #BBB;
-    position: relative;
-}
-
 div.description p {
     font-size: 12px;
     text-align: left;
     padding: 0 10px;
-}
-
-#settings input[type="radio"] {
-    margin: 6px;
-}
-
-#settings label {
-    cursor: help;
-    border-bottom: 1px dotted;
-    position: relative;
-}
-
-#settings label span {
-    display: none;
-    border: 1px solid red;
-}
-
-#settings label:hover span {
-    position: absolute;
-}
-
-#settings table {
-    margin: 0 auto;
-    width: 90%;
-
-}
-#settings table {
-    display: none;
-}
-
-#settings table:first-of-type {
-    display: table;
-}
-
-#settings table td {
-    padding: 5px;
-    height: 20px;
-}
-
-#settings table td.key,
-#settings table td.value
-{
-    width:40%;
-    font-size: 12px;
-}
-
-#settings table td.value input[type="text"],
-#settings table td.value input[type="password"],
-#settings table td.value textarea
-{
-    padding: 3px;
-    width: 70%;
-}
-
-#settings textarea
-{
-    height: 90px;
-}
-
-#settings table td.key {
-    text-align: right;
-}
-
-#settings table td.value {
-    text-align: left;
-}
-
-#settings table td.separator {
-    height: 100%;
-    width: 5%;
-    text-align: center;
-}
-
-#settings table td.separator div {
-
-    margin: 0 auto;
-    width: 1px;
-    height: 80%;
-    border-left: 1px solid #666;
-    display: inline-block;
-}
-
-#settings input[type="submit"] {
-    margin-top: 20px;
-    font-size: 13px;
-    padding: 2px 10px;
-}
-#settings input[type="submit"][disabled="disabled"] {
-    opacity: .5;
-}
-
-#settings ul {
-    margin: 0;
-    margin-bottom: 20px;
-    padding: 0px;
-    background: url('/img/stripes.png');
-    height: 30px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-#settings input, 
-#settings textarea
-{
-    border: 1px solid;
-}
-
-#settings ul li,
-#settings ul li.active {
-    display: inline-block;
-    width: 100px;
-    height: 100%;
-    line-height: 30px;
-    vertical-align: middle;
-    color: White;
-    position: relative;
-    text-align: center;
-    font-family: Arial, Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-#settings ul li:hover {
-    background-color: #EEE;
-    color: #333;
-}
-
-#settings ul li.active {
-    background-color: #EEE;
-    color: #666;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: default;
-}
-
-#settings ul li.active div {
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-
-    margin-left: -10px;
-    
-    width: 0; 
-	height: 0; 
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-top: 10px solid #EEE;
-    
 }
 
 img{
@@ -209,6 +42,12 @@ img{
     position: fixed;
     background: #555;
     opacity: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    widows: 100%;
     filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
 
@@ -234,22 +73,6 @@ a
     line-height: 30px;
     color: White;
     opacity: .6;
+    position: relative;
+    z-index: 101;
 }
-
-#imgMessage:hover
-{
-    opacity: 1;
-    cursor: pointer;
-}
-
-/*
-*
-{
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-*/

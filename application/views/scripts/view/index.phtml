@@ -5,6 +5,9 @@ $this->headMeta()->appendName('robots', 'noindex');
 <div id="header">
     <a href="/"><img src="/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
     <p><?= $this->translate('slogan') ?></p>
+    <?php
+    if ($this->isOwner) {
+    ?> 
     <div id="settings">
         <form method="post" action="">
             <ul>
@@ -42,9 +45,28 @@ $this->headMeta()->appendName('robots', 'noindex');
             <input type="submit" value="<?=$this->translate('apply')?>"/>
         </form>
     </div>
+    <?php
+    }
+    ?> 
 </div>
 
-<div id="imgMessage"> <b><?= $this->deleteTime ?></b> <span>(<?= $this->translate('click_settings'); ?>)</span> </div>
+<?php
+if ($this->deleteTime) {
+?>
+<div id="imgMessage"> 
+    <b><?= $this->deleteTime ?></b> 
+    <?php
+    if ($this->isOwner) {
+    ?> 
+        <span>(<?= $this->translate('click_settings'); ?>)</span> 
+    <?php
+    }
+    ?> 
+</div> 
+<?php
+}
+?>
+
 <?
 if ($this->title) {
 ?>

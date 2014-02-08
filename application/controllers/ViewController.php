@@ -6,7 +6,6 @@ class ViewController extends Zend_Controller_Action
     public function init()
     {
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
-        $this->view->headScript()->appendFile('js/view.js');
 
         $request = new Zend_Controller_Request_Http();
         if (!$request->getHeader('DNT')) {
@@ -21,6 +20,10 @@ class ViewController extends Zend_Controller_Action
 
     private function handleSettingsFormSubmit($form, $hashDoc)
     {
+        if (!$hashDoc->isOwner()) {
+            return false;
+        }
+
         $form = new Application_Form_Settings();
 
         if ($form->isValid($_POST)) {
@@ -30,9 +33,6 @@ class ViewController extends Zend_Controller_Action
                 $hashDoc->$field = $value;
             }
             $hashDoc->save();
-        } else {
-            print_r($form->getMessages());
-            die();
         }
     }
 
@@ -121,6 +121,9 @@ class ViewController extends Zend_Controller_Action
         if (!$hashDoc->isOwner()) {
             $hashDoc->views++;
             $hashDoc->save();
+        } else {
+            $this->view->headScript()->appendFile('js/view.js');
+            $this->view->headLink()->appendStylesheet('css/settings.css');
         }
 
         $deleteMessage = $ttl ? 'delete_time' : 'delete_first';
@@ -175,7 +178,7 @@ class ViewController extends Zend_Controller_Action
 
         $this->view->images = array();
 
-        $secureLinkTtl = 2; // image links would live for 1 second
+        $secureLinkTtl = 2; // image links would live for this number of seconds
         if (!$hashDoc->no_download) {
             end(Unsee_Mongo_Document_Hash::$_ttlTypes);
             $secureLinkTtl = key(Unsee_Mongo_Document_Hash::$_ttlTypes);
