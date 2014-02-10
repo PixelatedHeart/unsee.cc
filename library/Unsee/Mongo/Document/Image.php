@@ -13,28 +13,11 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
     );
     protected $iMagick;
 
-    // Lazy loading image data
-    public function __get($property)
-    {
-        if ($property === 'data') {
-
-            if ($this->iMagick && $this->iMagick->getimageblob()) {
-                // Image was modified, return resulting content
-                return (string) $this->iMagick;
-            } else {
-                // No image transformation, return stored data
-                return base64_decode(parent::__get($property));
-            }
-        } else {
-            return parent::__get($property);
-        }
-    }
-
     protected function getImaick()
     {
         if (!$this->iMagick) {
             $iMagick = new Imagick();
-            $iMagick->readimageblob($this->data);
+            $iMagick->readimageblob($this->data->bin);
             $this->iMagick = $iMagick;
         }
 
@@ -45,7 +28,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
     {
         $image = $this->getImaick();
         $image->stripImage();
-        $this->data = (string) $image;
+        $this->data = new MongoBinData($image->getimageblob());
 
         return true;
     }
@@ -64,7 +47,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         $watermark->newImage(240, 80, new ImagickPixel('none'));
 
         // Set font properties
-        $draw->setFont('DejaVu-Sans-Mono-Book');
+        $draw->setFont('Courier');
         $draw->setFillColor('White');
         $draw->setfontsize(30);
         $draw->setFillOpacity(.4);
@@ -100,7 +83,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
 
         $image->commentimage($comment);
          */
-        $this->data = (string) $image;
+        $this->data = new MongoBinData($image->getimageblob());
         $this->size = $image->getimagesize();
 
         return true;

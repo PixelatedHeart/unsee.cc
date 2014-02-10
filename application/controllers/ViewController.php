@@ -289,7 +289,7 @@ class ViewController extends Zend_Controller_Action
 
         header('Content-type: ' . $imgDoc->type);
         //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work
-        die($imgDoc->data);
+        die($imgDoc->data->bin);
     }
 
     protected function getImageData($imgId)

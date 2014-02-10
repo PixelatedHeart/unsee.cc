@@ -50,7 +50,7 @@ class UploadController extends Zend_Controller_Action
 
                     $imageDoc = new Unsee_Mongo_Document_Image();
                     $imageDoc->hashId = $hashDoc->getId();
-                    $imageDoc->data = base64_encode($image);
+                    $imageDoc->data = new MongoBinData($image);
                     $imageDoc->size = $info['size'];
                     $imageDoc->type = $info['type'];
 

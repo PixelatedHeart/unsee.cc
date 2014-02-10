@@ -3,6 +3,13 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+    protected function _initRemoteAddr()
+    {
+        if (empty($_SERVER['REMOTE_ADDR'])) {
+            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        }
+    }
+
     protected function _initDocType()
     {
         // Strangely it works just like this
@@ -19,7 +26,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         return $config;
     }
-    
+
     public function _initViewVars()
     {
         $this->bootstrap('layout');
