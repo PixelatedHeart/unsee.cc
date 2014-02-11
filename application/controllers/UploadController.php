@@ -37,6 +37,7 @@ class UploadController extends Zend_Controller_Action
             $hashDoc->timestamp = new MongoDate();
             $hashDoc->ttl = $ttl;
             $hashDoc->views = 0;
+            $hashDoc->strip_exif = 1;
             $hashDoc->save();
 
             foreach ($files as $file => &$info) {
@@ -47,7 +48,7 @@ class UploadController extends Zend_Controller_Action
                     $imageContent = file_get_contents($info['tmp_name']);
                     $image = new Imagick();
                     $image->readimageblob($imageContent);
-
+                    $image->stripimage();
                     $imageDoc = new Unsee_Mongo_Document_Image();
                     $imageDoc->hashId = $hashDoc->getId();
                     $imageDoc->data = new MongoBinData($image);

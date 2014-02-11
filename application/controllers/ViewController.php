@@ -30,6 +30,10 @@ class ViewController extends Zend_Controller_Action
             $values = $form->getValues();
 
             foreach ($values as $field => $value) {
+                if ($field == 'strip_exif') {
+                    continue;
+                }
+
                 $hashDoc->$field = $value;
             }
             $hashDoc->save();
@@ -285,7 +289,6 @@ class ViewController extends Zend_Controller_Action
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
 
         $hashDoc->watermark_ip && $imgDoc->watermark();
-        $hashDoc->strip_exif && $imgDoc->stripExif();
 
         header('Content-type: ' . $imgDoc->type);
         //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work

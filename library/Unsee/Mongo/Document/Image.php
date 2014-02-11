@@ -37,7 +37,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
     {
         $text = $_SERVER['REMOTE_ADDR'];
         $image = imagecreatefromstring($this->data->bin);
-        $font = 'pixel.ttf';
+        $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
         $im = imagecreatetruecolor(800, 800);
 
         imagesavealpha($im, true);
