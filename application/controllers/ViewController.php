@@ -189,11 +189,12 @@ class ViewController extends Zend_Controller_Action
             reset(Unsee_Mongo_Document_Hash::$_ttlTypes);
         }
 
-        foreach ($imagesList as $key => $imageDoc) {
+        $key = 0;
+        foreach ($imagesList as $imageDoc) {
 
             $imageId = (string) $imageDoc->_id;
 
-            $imageDoc->ticketTtd = $ticketTtd = $_SERVER['REQUEST_TIME'] + $key + $secureLinkTtl; // Each image would be loaded a second later
+            $imageDoc->ticketTtd = $ticketTtd = $_SERVER['REQUEST_TIME'] + $key++ + $secureLinkTtl; // Each image would be loaded a second later
             // Preparing a hash for nginx's secure link
             $md5 = base64_encode(md5($imageId . $ticketTtd, true));
             $md5 = strtr($md5, '+/', '-_');
