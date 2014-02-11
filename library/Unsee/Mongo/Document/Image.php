@@ -42,7 +42,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
 
         imagesavealpha($im, true);
         imagefill($im, 0, 0, imagecolorallocatealpha($im, 0, 0, 0, 127));
-        imagettftext($im, 12, 0, 200, 200, -imagecolorallocatealpha($im, 255, 255, 255, 80), $font, $text);
+        imagettftext($im, 12, 0, 100, 100, -imagecolorallocatealpha($im, 255, 255, 255, 80), $font, $text);
         imagealphablending($im, true);
         imagesettile($image, $im);
         imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), IMG_COLOR_TILED);
@@ -53,6 +53,22 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         $this->data = new MongoBinData(ob_get_clean());
         $this->size = strlen($this->data);
 
+        return true;
+    }
+
+    public function comment($comment)
+    {
+        $dict = array(
+            '%ip%'         => $_SERVER['REMOTE_ADDR'],
+            '%user_agent%' => $_SERVER['HTTP_USER_AGENT']
+        );
+
+        $comment = str_replace(array_keys($dict), $dict, $comment);
+
+        $image = new Imagick();
+        $image->readimageblob($this->data->bin);
+        $image->commentimage($comment);
+        $this->data = new MongoBinData($image->getimageblob());
         return true;
     }
 }

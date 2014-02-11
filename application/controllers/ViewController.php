@@ -290,6 +290,7 @@ class ViewController extends Zend_Controller_Action
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
 
         $hashDoc->watermark_ip && $imgDoc->watermark();
+        $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
         header('Content-type: ' . $imgDoc->type);
         //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work
