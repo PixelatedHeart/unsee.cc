@@ -37,7 +37,7 @@ class UploadController extends Zend_Controller_Action
             $hashDoc->timestamp = new MongoDate();
             $hashDoc->ttl = $ttl;
             $hashDoc->views = 0;
-            $hashDoc->strip_exif = '0';
+            $hashDoc->strip_exif = '1';
             $hashDoc->comment = "Image was taken from https://unsee.cc/$newHash/ by %ip% (%user_agent%)";
             $hashDoc->save();
 
