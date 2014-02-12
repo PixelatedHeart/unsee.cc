@@ -54,7 +54,7 @@
         </tu>
         <tu tuid="choose_images">
             <tuv xml:lang="ru"><seg>Выберите изображения</seg></tuv>
-            <tuv xml:lang="en"><seg>Choose images</seg></tuv>
+            <tuv xml:lang="en"><seg>Click to upload</seg></tuv>
         </tu>
         <tu tuid="uploaded">
             <tuv xml:lang="ru"><seg>Изображения загружены</seg></tuv>
