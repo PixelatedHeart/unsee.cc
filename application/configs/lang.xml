@@ -13,7 +13,7 @@
     <body>
         <tu tuid="slogan">
             <tuv xml:lang="ru"><seg>Приватный фотохостинг</seg></tuv>
-            <tuv xml:lang="en"><seg>Secure and private temporary photo sharing</seg></tuv>
+            <tuv xml:lang="en"><seg>Free online private photo sharing</seg></tuv>
         </tu>
         <tu tuid="walther">
             <tuv xml:lang="ru"><seg>Unsee</seg></tuv>
