@@ -20,7 +20,7 @@ class ViewController extends Zend_Controller_Action
 
     private function handleSettingsFormSubmit($form, $hashDoc)
     {
-        if (!$hashDoc->isOwner()) {
+        if (!$hashDoc || !$hashDoc->isOwner()) {
             return false;
         }
 
@@ -124,7 +124,15 @@ class ViewController extends Zend_Controller_Action
         // If viewer is the creator - don't count their view
         if (!$hashDoc->isOwner()) {
             $hashDoc->views++;
-            $hashDoc->save();
+
+            // Delete hash and images docs
+            if ($hashDoc->views > 0 && !$ttl) {
+                $hashDoc->delete();
+                // TODO: Delete images as well!!
+
+            } else {
+                $hashDoc->save();
+            }
         } else {
             $this->view->headScript()->appendFile('js/view.js');
             $this->view->headLink()->appendStylesheet('css/settings.css');
