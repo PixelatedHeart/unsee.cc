@@ -41,11 +41,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $locale = new Zend_Locale();
 
+        $localeName = $locale->getLanguage();
+
+        if (!in_array($localeName, array('en', 'ru'))) {
+            $localeName = 'en';
+        }
+
         $translate = new Zend_Translate(
             array(
                 'adapter' => 'tmx',
                 'content' => APPLICATION_PATH . '/configs/lang.xml',
-                'locale'  => $locale->getLanguage()
+                'locale'  => $localeName
             )
         );
 
