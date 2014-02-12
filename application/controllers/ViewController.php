@@ -298,11 +298,6 @@ class ViewController extends Zend_Controller_Action
         $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
 
-        if (!$hashDoc || !$imgDoc) {
-            header('HTTP/1.1 204 No Content');
-            die();
-        }
-
         $hashDoc->watermark_ip && $imgDoc->watermark();
         $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
