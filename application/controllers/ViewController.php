@@ -127,7 +127,7 @@ class ViewController extends Zend_Controller_Action
 
             // Delete hash and images docs
             if ($hashDoc->views > 0 && !$ttl) {
-                // $hashDoc->delete();
+                $hashDoc->delete();
                 // TODO: Delete images as well!!
                 // NO! Images are never returnen this way
 
