@@ -258,18 +258,8 @@
         </tu>
 
         <tu tuid="intro">
-            <tuv xml:lang="ru"><seg><![CDATA[<p>Очень часто хочется поделиться фотографиями лишь с ограниченным кругом людей &mdash; друзей, родственников, коллег.</p>
-                <p>К тому же хочется быть уверенным, что Ваши файлы будут просмотрены исключительно теми, кому они дествительно предназначены,
-                даже если это малознакомый Вам человек.</p>
-                <p>Всё это возможно благодаря сервису <a href="/about/">Unsee</a>.</p>
-                <p>Только Вы решаете кто увидит Ваши фотографии.</p>]]></seg></tuv>
-            <tuv xml:lang="en"><seg><![CDATA[
-            <p>Quite often we find ourselves in need to share certain photos within a narrow circle of people &mdash; friends, relatives, collegues.</p>
-            <p>And we would really love to keep it private and make sure the images don't go all over the internet. Even if we don't trust the other person.</p>
-            <p>All this is possible thanks to <b>Unsee</b>.</p>
-            <p>You are in control of what others can see.</p>
-            ]]>
-            </seg></tuv>
+            <tuv xml:lang="ru"><seg><![CDATA[<p>Вы сможете настроить кто увидит ваши изображения перед тем, как они будут безвозвратно удалены</p>]]></seg></tuv>
+            <tuv xml:lang="en"><seg><![CDATA[<p>You can choose who will see your images right before they disappear forever.</p>]]></seg></tuv>
         </tu>
 
         <tu tuid="keywords">
