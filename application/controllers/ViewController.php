@@ -8,7 +8,7 @@ class ViewController extends Zend_Controller_Action
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
 
         $request = new Zend_Controller_Request_Http();
-        if (!$request->getHeader('DNT')) {
+        if (APPLICATION_ENV != 'development' && !$request->getHeader('DNT')) {
             $this->view->headScript()->appendFile('js/track.js');
         }
 
