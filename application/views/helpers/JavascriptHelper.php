@@ -11,12 +11,12 @@ class Zend_View_Helper_JavascriptHelper extends Zend_View_Helper_Abstract
 
         foreach ($links as $item) {
             if ($combining) {
-                $urls[] = $item->attributes['src'];
+                $urls[] = str_replace('js/', '', $item->attributes['src']);
             }
         }
 
         if ($combining) {
-            $item->attributes['src'] = '/??' . implode(',', $urls);
+            $item->attributes['src'] = '/js/??' . implode(',', $urls);
             return $this->view->headScript()->itemToString($item, str_repeat(' ', 0), '', '');
         } else {
             return $this->view->headScript();

@@ -11,12 +11,12 @@ class Zend_View_Helper_CssHelper extends Zend_View_Helper_Abstract
 
         foreach ($links as $item) {
             if ($combining) {
-                $urls[] = $item->href;
+                $urls[] = str_replace('css/', '', $item->href);
             }
         }
 
         if ($combining) {
-            $item->href = '/??' . implode(',', $urls);
+            $item->href = '/css/??' . implode(',', $urls);
             return $this->view->headLink()->itemToString($item);
         } else {
             return $this->view->headLink();
