@@ -124,16 +124,7 @@ class ViewController extends Zend_Controller_Action
         // If viewer is the creator - don't count their view
         if (!$hashDoc->isOwner()) {
             $hashDoc->views++;
-
-            // Delete hash and images docs
-            if ($hashDoc->views > 0 && !$ttl) {
-                $hashDoc->delete();
-                // TODO: Delete images as well!!
-                // NO! Images are never returnen this way
-
-            } else {
-                $hashDoc->save();
-            }
+            $hashDoc->save();
         } else {
             $this->view->headScript()->appendFile('js/view.js');
             $this->view->headLink()->appendStylesheet('css/settings.css');
