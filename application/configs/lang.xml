@@ -32,8 +32,8 @@
             <tuv xml:lang="en"><seg>Click the button to select and upload your images.</seg></tuv>
         </tu>
         <tu tuid="delete">
-            <tuv xml:lang="ru"><seg>Они будут удалены</seg></tuv>
-            <tuv xml:lang="en"><seg>They will be deleted</seg></tuv>
+            <tuv xml:lang="ru"><seg>Ваши изображения будут удалены</seg></tuv>
+            <tuv xml:lang="en"><seg>Your images will be deleted</seg></tuv>
         </tu>
 
         <tu tuid="after_view">
@@ -258,7 +258,7 @@
         </tu>
 
         <tu tuid="intro">
-            <tuv xml:lang="ru"><seg><![CDATA[<p>Вы сможете настроить кто увидит ваши изображения перед тем, как они будут безвозвратно удалены</p>]]></seg></tuv>
+            <tuv xml:lang="ru"><seg><![CDATA[<p>Вы сможете настроить кто увидит ваши изображения перед тем, как они исчезнут</p>]]></seg></tuv>
             <tuv xml:lang="en"><seg><![CDATA[<p>You can choose who will see your images right before they disappear forever.</p>]]></seg></tuv>
         </tu>
 
