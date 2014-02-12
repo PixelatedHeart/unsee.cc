@@ -38,7 +38,7 @@ class UploadController extends Zend_Controller_Action
             $hashDoc->ttl = $ttl;
             $hashDoc->views = 0;
             $hashDoc->strip_exif = '1';
-            $hashDoc->comment = "Image was taken from https://unsee.cc/$newHash/ by %ip% (%user_agent%)";
+            $hashDoc->comment = Zend_Registry::get('config')->image_comment;
             $hashDoc->save();
 
             foreach ($files as $file => &$info) {
