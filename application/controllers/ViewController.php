@@ -5,6 +5,7 @@ class ViewController extends Zend_Controller_Action
 
     public function init()
     {
+        $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
 
         $request = new Zend_Controller_Request_Http();
@@ -42,41 +43,41 @@ class ViewController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        // TODO: Refactor, too long
-
-        $params = $this->getAllParams();
-        $form = new Application_Form_Settings;
         // Hash (ababab)
-        $hashString = $params['hash'];
+        $hashString = $this->getParam('hash', false);
+        $form = new Application_Form_Settings;
+
+        if (!$hashString) {
+            return $this->deletedAction();
+        }
 
         // Get hash document
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('hash' => $hashString));
 
-        if ($this->getRequest()->isPost()) {
-            $this->handleSettingsFormSubmit($form, $hashDoc);
-        }
-
-        if (empty($params['hash'])) {
-            return $this->deletedAction();
-        }
-
-        $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
-
-        // Or custon hash = 
         // It was already deleted or did not exist
         if (!$hashDoc) {
             return $this->deletedAction();
         }
 
-        // Populate form values
-        foreach ($hashDoc as $key => $value) {
-            $el = $form->getElement($key);
-
-            if ($el && strlen($value)) {
-                $el->setValue($value);
-            }
+        if ($this->getRequest()->isPost()) {
+            $this->handleSettingsFormSubmit($form, $hashDoc);
         }
 
+        // No use to do anything, page is not viewable
+        if (!$hashDoc->isViewable($hashDoc)) {
+            // Delete images?
+            $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
+
+            foreach ($imagesList as $item) {
+                $item->delete();
+            }
+
+            return $this->deletedAction();
+        }
+
+        // Populate form values
+        $form->populate($hashDoc->export());
+        // Disable image download by default
         $this->view->no_download = true;
 
         // Handle current request based on what settins are set
@@ -98,27 +99,6 @@ class ViewController extends Zend_Controller_Action
             }
         }
 
-        $ttl = $hashDoc->ttl;
-
-        // Converting ttl into strtotime acceptable string
-        // Delete now, expire
-        if ($ttl === 'now') {
-            $ttl = '-1 day';
-        } elseif ($ttl === 'first') { // Delete on first view, use zero
-            $ttl = 0;
-        } else { // almost strtotime-ready otherwise (time value)
-            $ttl = '+1 ' . $ttl;
-        }
-
-        // Get time to die
-        $ttd = strtotime($ttl, $hashDoc->timestamp->sec);
-
-        // Single-view image was viewed or ttl image was outdated
-        if (!$ttl && $hashDoc->views || $ttl && time() >= $ttd) {
-            $hashDoc->delete();
-            return $this->deletedAction();
-        }
-
         $this->view->isOwner = $hashDoc->isOwner();
 
         // If viewer is the creator - don't count their view
@@ -126,56 +106,22 @@ class ViewController extends Zend_Controller_Action
             $hashDoc->views++;
             $hashDoc->save();
         } else {
+            // Owner - include config assets
             $this->view->headScript()->appendFile('js/view.js');
             $this->view->headLink()->appendStylesheet('css/settings.css');
         }
 
-        $deleteMessage = $ttl ? 'delete_time' : 'delete_first';
-        $secondsLeft = $ttd - time();
-
-        $times = array();
-        $timeStrings = array();
-        $times['minute'] = 60;
-        $times['hour'] = $times['minute'] * 60;
-        $times['day'] = $times['hour'] * 24;
-
-        $times = array_reverse($times);
-
-        $lang = Zend_Registry::get('Zend_Translate');
-
-        foreach ($times as $key => &$time) {
-            $res = floor($secondsLeft / $time);
-            $secondsLeft -= $res * $time;
-
-            $langStr = $key;
-
-            $modRes = $res % 10;
-
-            if ($modRes === 1) {
-                $langStr .= '_one';
-            } elseif ($modRes > 1 && $modRes < 5) {
-                $langStr .= '_couple';
-            } else {
-                $langStr .= '_many';
-            }
-
-            if ($res) {
-                $timeStrings[] = $res . ' ' . $lang->translate($langStr);
-            }
-        }
-
-        $timeStrings = array_filter($timeStrings);
-        $last = array_pop($timeStrings);
-
-        $deleteTime = '';
-        if (count($timeStrings)) {
-            $deleteTime = implode(', ', $timeStrings) . ' ' . $lang->translate('and') . ' ';
-        }
-        $deleteTime .= $last;
-
         // Don't show 'other party' text to the 'other party'
-        if ($hashDoc->isOwner() || $ttl) {
-            $this->view->deleteTime = $this->view->translate($deleteMessage, array($deleteTime));
+        if ($hashDoc->isOwner() || $hashDoc->ttl !== 'first') {
+            if ($hashDoc->ttl === 'first') {
+                $deleteTimeStr = '';
+                $deleteMessageTemplate = 'delete_first';
+            } else {
+                $deleteTimeStr = $hashDoc->getTtlWords();
+                $deleteMessageTemplate = 'delete_time';
+            }
+
+            $this->view->deleteTime = $this->view->translate($deleteMessageTemplate, array($deleteTimeStr));
         }
 
         $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
@@ -289,12 +235,21 @@ class ViewController extends Zend_Controller_Action
         $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
 
+        if (!$hashDoc) {
+            $imgDoc && $imgDoc->delete();
+            header('Status: 204 No content');
+            die();
+        }
+
         $hashDoc->watermark_ip && $imgDoc->watermark();
         $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
         header('Content-type: ' . $imgDoc->type);
-        //header('Content-length: ' . $imgDoc->size); // TODO: fix it, it doesn't work
-        die($imgDoc->data->bin);
+        print $imgDoc->data->bin;
+
+        if (!$hashDoc->isViewable()) {
+            $imgDoc->delete();
+        }
     }
 
     protected function getImageData($imgId)

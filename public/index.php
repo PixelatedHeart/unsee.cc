@@ -1,11 +1,5 @@
 <?php
 
-if (isset($_GET['die'])) {
-    print '<pre>';
-    print_r($_SERVER);
-    die();
-}
-
 // Define path to application directory
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 

@@ -82,7 +82,7 @@
         </tu>
         <tu tuid="contact">
             <tuv xml:lang="ru"><seg>Обратная связь</seg></tuv>
-            <tuv xml:lang="en"><seg>Contact</seg></tuv>
+            <tuv xml:lang="en"><seg>Feedback</seg></tuv>
         </tu>
         <tu tuid="about_text">
             <tuv xml:lang="ru"><seg>
@@ -258,7 +258,7 @@
         </tu>
 
         <tu tuid="intro">
-            <tuv xml:lang="ru"><seg><![CDATA[<p>Вы сможете настроить кто увидит ваши изображения перед тем, как они исчезнут</p>]]></seg></tuv>
+            <tuv xml:lang="ru"><seg><![CDATA[<p>Вы сможете настроить кто увидит ваши изображения и когда они будут удалены</p>]]></seg></tuv>
             <tuv xml:lang="en"><seg><![CDATA[<p>You can choose who will see your images right before they disappear forever.</p>]]></seg></tuv>
         </tu>
 
@@ -545,6 +545,10 @@
         <tu tuid="minute_many">
             <tuv xml:lang="ru"><seg>минут</seg></tuv>
             <tuv xml:lang="en"><seg>minutes</seg></tuv>
+        </tu>
+        <tu tuid="moment">
+            <tuv xml:lang="ru"><seg>несколько секунд</seg></tuv>
+            <tuv xml:lang="en"><seg>a few moments</seg></tuv>
         </tu>
         
         <tu tuid="and">

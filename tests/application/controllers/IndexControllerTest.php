@@ -9,6 +9,9 @@ class IndexControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         parent::setUp();
     }
 
+    public function testTest() {
+        return true;
+    }
 
 }
 
