@@ -18,5 +18,9 @@ wget -q $smGit -O $tmpDir"sm.zip"
 
 unzip -q $tmpDir"sm.zip" -d $tmpDir
 
-cp -R "$tmpDir"Shanty-Mongo-master/library/Shanty/ ../../library/
+cp -R "$tmpDir"Shanty-Mongo-master/library/Shanty ../../library/
 rm -rf $tmpDir;
+
+echo 'Library contents now'
+
+ls -lsa ../../library

@@ -18,10 +18,9 @@ wget -q $zfGit -O $tmpDir"zf.zip"
 
 unzip -q $tmpDir"zf.zip" -d $tmpDir
 
-cp -R "$tmpDir"zf1-master/library/Zend/ ../../library/
+cp -R "$tmpDir"zf1-master/library/Zend ../../library/
 rm -rf $tmpDir
 
-echo 'Installed ZF'
+echo 'Library contents now'
 
 ls -lsa ../../library
-chmod -R 0755 ../../library
