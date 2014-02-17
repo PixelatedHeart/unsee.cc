@@ -4,4 +4,5 @@ php:
 install: 
     - ./scripts/build/install_zf.sh
     - ./scripts/build/install_shantymongo.sh
+before_script: phpenv config-add myconfig.ini
 script: phpunit -c tests/phpunit.xml
