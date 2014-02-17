@@ -22,7 +22,6 @@ Zend_Loader_Autoloader::getInstance();
 function error_handler()
 {
     print_r(func_get_args());
-    die();
 }
 
 set_error_handler('error_handler');
