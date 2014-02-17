@@ -28,7 +28,15 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
     public function testViewOwner($numImages = 1)
     {
         $hash = $this->addHash($numImages);
-        $this->dispatch('/view/index/hash/' . $hash->hash . '/');
+        try {
+            $this->dispatch('/view/index/hash/' . $hash->hash . '/');
+        } catch (Exception $e) {
+            print_r($e);
+            die();
+        }
+
+        print $this->getResponse()->getBody();
+
         $this->assertResponseCode(200);
         $this->assertController('view');
         $this->assertXpathCount('//img[contains(@src,"/image/")]', $numImages);
