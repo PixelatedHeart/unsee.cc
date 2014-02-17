@@ -35,8 +35,6 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
             die();
         }
 
-        print $this->getResponse()->getBody();
-
         $this->assertResponseCode(200);
         $this->assertController('view');
         $this->assertXpathCount('//img[contains(@src,"/image/")]', $numImages);
