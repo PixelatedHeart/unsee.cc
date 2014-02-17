@@ -14,7 +14,7 @@ tmpDir=/tmp/sm_install/
 mkdir -p $tmpDir
 
 smGit=https://github.com/coen-hyde/Shanty-Mongo/archive/master.zip
-wget $smGit -O $tmpDir"sm.zip"
+wget -q $smGit -O $tmpDir"sm.zip"
 
 unzip $tmpDir"sm.zip" -d $tmpDir
 
