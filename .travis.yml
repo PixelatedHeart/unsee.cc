@@ -1,4 +1,7 @@
 language: php
 php:
   - 5.5
+install: 
+    - ./scripts/build/install_zf.sh
+    - ./scripts/build/install_shantymongo.sh
 script: phpunit -c tests/phpunit.xml
