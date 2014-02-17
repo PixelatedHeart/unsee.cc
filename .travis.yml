@@ -1,6 +1,7 @@
 language: php
 php:
   - 5.5
+services: mongodb
 install: 
     - ./scripts/build/install_zf.sh
     - ./scripts/build/install_shantymongo.sh
