@@ -21,7 +21,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
 
         $info = getimagesize($filePath);
 
-        $this->data = new MongoBinData($image);
+        $this->data = new MongoBinData($image, MongoBinData::BYTE_ARRAY);
         $this->size = filesize($filePath);
         $this->type = $info['mime'];
         $this->width = $info[0];
@@ -43,7 +43,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
     {
         $image = $this->getImaick();
         $image->stripImage();
-        $this->data = new MongoBinData($image->getimageblob());
+        $this->data = new MongoBinData($image->getimageblob(), MongoBinData::BYTE_ARRAY);
 
         return true;
     }
@@ -65,7 +65,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         ob_start();
         imagejpeg($image);
 
-        $this->data = new MongoBinData(ob_get_clean());
+        $this->data = new MongoBinData(ob_get_clean(), MongoBinData::BYTE_ARRAY);
         $this->size = strlen($this->data);
 
         return true;
@@ -83,7 +83,7 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
         $image = new Imagick();
         $image->readimageblob($this->data->bin);
         $image->commentimage($comment);
-        $this->data = new MongoBinData($image->getimageblob());
+        $this->data = new MongoBinData($image->getimageblob(), MongoBinData::BYTE_ARRAY);
         return true;
     }
 }
