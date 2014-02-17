@@ -1,6 +1,6 @@
 <?php
 
-class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
+class ViewControllerTest2 extends Zend_Test_PHPUnit_ControllerTestCase
 {
 
     public function setUp()
