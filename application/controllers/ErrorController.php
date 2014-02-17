@@ -32,6 +32,7 @@ class ErrorController extends Zend_Controller_Action
                 break;
             default:
                 print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+                die();
 
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
