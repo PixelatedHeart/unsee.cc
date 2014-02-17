@@ -31,6 +31,7 @@ class ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHeader('Location', '/');
                 break;
             default:
+                print_r($errors->exception);
                 print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
                 die();
 
