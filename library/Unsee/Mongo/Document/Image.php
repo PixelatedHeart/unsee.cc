@@ -13,6 +13,21 @@ class Unsee_Mongo_Document_Image extends Shanty_Mongo_Document
     );
     protected $iMagick;
 
+    public function readFile($filePath)
+    {
+        $image = new Imagick();
+        $image->readimage($filePath);
+        $image->stripimage();
+
+        $info = getimagesize($filePath);
+
+        $this->data = new MongoBinData($image);
+        $this->size = filesize($filePath);
+        $this->type = $info['mime'];
+        $this->width = $info[0];
+        $this->height = $info[1];
+    }
+
     protected function getImaick()
     {
         if (!$this->iMagick) {

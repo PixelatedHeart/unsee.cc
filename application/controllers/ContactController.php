@@ -13,11 +13,6 @@ class ContactController extends Zend_Controller_Action
         $this->view->headScript()->appendFile('js/plugins.js');
         $this->view->headScript()->appendFile('js/main.js');
 
-        $request = new Zend_Controller_Request_Http();
-        if (APPLICATION_ENV != 'development' && !$request->getHeader('DNT')) {
-            $this->view->headScript()->appendFile('js/track.js');
-        }
-
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/main.css');

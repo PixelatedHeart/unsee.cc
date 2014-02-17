@@ -7,10 +7,6 @@ class ErrorController extends Zend_Controller_Action
     {
         $this->view->headScript()->appendFile('js/vendor/modernizr-2.6.2.min.js');
 
-        if (APPLICATION_ENV != 'development') {
-            $this->view->headScript()->appendFile('js/track.js');
-        }
-
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/main.css');
@@ -30,15 +26,9 @@ class ErrorController extends Zend_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
-
-                // TODO: create a normal 404 page
-                header('Location: /');
-                die();
-
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
-                $priority = Zend_Log::NOTICE;
-                $this->view->message = 'Page not found';
+                $this->getResponse()->setHeader('Location', '/');
                 break;
             default:
                 // application error

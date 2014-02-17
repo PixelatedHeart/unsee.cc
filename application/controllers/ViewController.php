@@ -8,11 +8,6 @@ class ViewController extends Zend_Controller_Action
         $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
 
-        $request = new Zend_Controller_Request_Http();
-        if (APPLICATION_ENV != 'development' && !$request->getHeader('DNT')) {
-            $this->view->headScript()->appendFile('js/track.js');
-        }
-
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/view.css');
@@ -237,14 +232,14 @@ class ViewController extends Zend_Controller_Action
 
         if (!$hashDoc) {
             $imgDoc && $imgDoc->delete();
-            header('Status: 204 No content');
+            $this->getResponse()->setHeader('Status', '204 No content');
             die();
         }
 
         $hashDoc->watermark_ip && $imgDoc->watermark();
         $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
-        header('Content-type: ' . $imgDoc->type);
+        $this->getResponse()->setHeader('Content-type', $imgDoc->type);
         print $imgDoc->data->bin;
 
         if (!$hashDoc->isViewable()) {

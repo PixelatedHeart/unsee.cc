@@ -12,6 +12,29 @@ class Unsee_Mongo_Document_Hash extends Shanty_Mongo_Document
     );
     public static $_ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
+    public function __construct($data = array(), $config = array())
+    {
+        if (empty($data)) {
+            $data['hash'] = (string) new Unsee_Hash();
+            $data['timestamp'] = new MongoDate();
+            $data['ttl'] = self::$_ttlTypes[0];
+            $data['views'] = 0;
+            $data['strip_exif'] = 1;
+            $data['comment'] = Zend_Registry::get('config')->image_comment;
+            $data['sess'] = $this->getCurrentSession();
+        }
+
+        parent::__construct($data, $config);
+    }
+
+    public function addImage(Unsee_Mongo_Document_Image $imageDoc)
+    {
+        $imageDoc->hashId = $this->getId();
+        $imageDoc->save();
+
+        return true;
+    }
+
     public function getImagesIds()
     {
         $images = Unsee_Mongo_Document_Image::all(array('hashId' => $this->getId()), array('_id'));
@@ -122,15 +145,5 @@ class Unsee_Mongo_Document_Hash extends Shanty_Mongo_Document
         }
 
         return $deleteTime;
-    }
-
-    protected function preInsert()
-    {
-        $this->_data['sess'] = $this->getCurrentSession();
-    }
-
-    protected function postDelete()
-    {
-        
     }
 }

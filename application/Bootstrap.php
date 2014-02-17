@@ -3,10 +3,14 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
-    protected function _initRemoteAddr()
+    protected function _initEnv()
     {
         if (empty($_SERVER['REMOTE_ADDR'])) {
             $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        }
+
+        if (empty($_SERVER['HTTP_USER_AGENT'])) {
+            $_SERVER['HTTP_USER_AGENT'] = 'cli';
         }
     }
 
@@ -32,6 +36,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('layout');
     }
 
+    public function _initFront()
+    {
+        $this->bootstrap('frontController');
+        $front = Zend_Controller_Front::getInstance();
+        $front->registerPlugin(new Unsee_Controller_Plugin_Headers());
+        $front->registerPlugin(new Unsee_Controller_Plugin_Dnt());
+    }
+
     public function _initTimezone()
     {
         date_default_timezone_set(Zend_Registry::get('config')->timezone);
@@ -39,7 +51,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     public function _initTranslate()
     {
-        $locale = new Zend_Locale();
+        $locale = new Zend_Locale(Zend_Locale::findLocale());
 
         $localeName = $locale->getLanguage();
 
@@ -64,7 +76,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initDb()
     {
         $dbConf = Zend_Registry::get('config')->mongo->toArray();
-        $dbUrl = "mongodb://$dbConf[user]:$dbConf[password]@$dbConf[host]:$dbConf[port]/$dbConf[database]";
+        $dbUrl = "mongodb://$dbConf[host]:$dbConf[port]/$dbConf[database]";
         Shanty_Mongo::addMaster(new Shanty_Mongo_Connection($dbUrl));
     }
 }
