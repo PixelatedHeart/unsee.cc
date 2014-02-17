@@ -4,5 +4,6 @@ php:
 install: 
     - ./scripts/build/install_zf.sh
     - ./scripts/build/install_shantymongo.sh
+    - pecl install imagick
 before_script: phpenv config-add scripts/build/phpconf.ini
 script: phpunit -c tests/phpunit.xml
