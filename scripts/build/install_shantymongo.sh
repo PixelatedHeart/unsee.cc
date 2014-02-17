@@ -16,7 +16,7 @@ mkdir -p $tmpDir
 smGit=https://github.com/coen-hyde/Shanty-Mongo/archive/master.zip
 wget -q $smGit -O $tmpDir"sm.zip"
 
-unzip $tmpDir"sm.zip" -d $tmpDir
+unzip -q $tmpDir"sm.zip" -d $tmpDir
 
 cp -R "$tmpDir"Shanty-Mongo-master/library/Shanty/ ../../library/
 rm -rf $tmpDir;

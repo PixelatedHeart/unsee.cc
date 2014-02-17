@@ -16,7 +16,7 @@ mkdir -p $tmpDir
 zfGit=https://github.com/zendframework/zf1/archive/master.zip
 wget -q $zfGit -O $tmpDir"zf.zip"
 
-unzip $tmpDir"zf.zip" -d $tmpDir
+unzip -q $tmpDir"zf.zip" -d $tmpDir
 
 cp -R "$tmpDir"zf1-master/library/Zend/ ../../library/
 rm -rf $tmpDir
