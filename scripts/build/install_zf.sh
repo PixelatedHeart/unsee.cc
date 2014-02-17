@@ -2,6 +2,8 @@
 
 # Installs ZF to library/
 
+cd $(dirname $0);
+
 if [ -d "../../library/Zend" ]; then
     echo Zend Framework is already installed
     exit;
@@ -13,14 +15,17 @@ tmpDir=/tmp/zf_install/
 
 mkdir -p $tmpDir
 
+echo Downloading...
 zfGit=https://github.com/zendframework/zf1/archive/master.zip
 wget -q $zfGit -O $tmpDir"zf.zip"
 
+echo Unzipping...
 unzip -q $tmpDir"zf.zip" -d $tmpDir
 
-cp -R "$tmpDir"zf1-master/library/Zend ../../library/
+echo Installing...
+cp -R "$tmpDir"zf1-master/library/Zend ../../library/Zend
 rm -rf $tmpDir
 
-echo 'Library contents now'
+echo 'Library contents now is'
 
-ls -lsa ../../library
+ls -ls ../../library
