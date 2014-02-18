@@ -21,8 +21,8 @@ Zend_Loader_Autoloader::getInstance();
 
 function error_handler($no, $str, $file, $line)
 {
-    //print "$str @ $file:$line" . PHP_EOL;
+    print "$str @ $file:$line" . PHP_EOL;
 }
 
-set_error_handler('error_handler');
-set_exception_handler('error_handler');
+//set_error_handler('error_handler');
+//set_exception_handler('error_handler');

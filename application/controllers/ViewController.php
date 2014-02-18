@@ -228,6 +228,12 @@ class ViewController extends Zend_Controller_Action
         }
 
         $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
+
+        if (!$imgDoc) {
+            $this->getResponse()->setHeader('Status', '204 No content');
+            die();
+        }
+
         $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
 
         if (!$hashDoc) {
