@@ -5,7 +5,7 @@ class Unsee_Form_Element_Select_Model_Delete extends Unsee_Form_Element_Select_M
 
     static public function getValues(Zend_Translate $lang)
     {
-        $vars = Unsee_Mongo_Document_Hash::$_ttlTypes;
+        $vars = Unsee_Hash::$_ttlTypes;
         $values = array();
 
         foreach ($vars as $item) {

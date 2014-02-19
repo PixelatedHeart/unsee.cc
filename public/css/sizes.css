@@ -1,4 +1,18 @@
-@media screen and (max-height: 690px)
+@media screen and (max-width: 600px)
+{
+    #forkme {
+        display: none;
+    }
+}
+
+@media screen and (max-height: 500px)
+{
+    #forkme {
+        display: none;
+    }
+}
+
+@media screen and (max-height: 650px)
 {
     #logo
     {

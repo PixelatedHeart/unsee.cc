@@ -91,9 +91,9 @@ if ($this->no_download) {
 ?>
 
 <?php
+$key = 0;
 foreach ($this->images as $imgDoc) {
-
     ?>
-    <img style="max-width: <?=$imgDoc->width;?>px;" src="/image/<?= (string)$imgDoc->_id; ?>/<?= $imgDoc->md5; ?>/<?= $imgDoc->ticketTtd; ?>" alt="" />
+    <img style="max-width: <?=$imgDoc->width;?>px;" src="/image/<?= $imgDoc->key; ?>/<?= $imgDoc->getSecureLink(++$key + $this->ttlSeconds); ?>" alt="" />
     <?php
 }

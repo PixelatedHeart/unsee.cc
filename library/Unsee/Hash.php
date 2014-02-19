@@ -1,73 +1,132 @@
 <?php
 
-class Unsee_Hash
+class Unsee_Hash extends Unsee_Redis
 {
 
-    private $hash = '';
-    protected $vovels = '';
-    protected $consonants = '';
-    protected $syllableNum = 3;
+    public static $_ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
-    public function __construct()
+    public function __construct($key = null)
     {
-        $hashConf = Zend_Registry::get('config')->hash->toArray();
 
-        $this->vovels = $hashConf['vovels'];
-        $this->consonants = $hashConf['consonants'];
-        $this->syllableNum = $hashConf['syllables'];
-    }
-
-    public function __toString()
-    {
-        if (empty($this->hash)) {
-            $this->generate();
+        if (empty($key)) {
+            $key = (string) (new Unsee_Hash_String());
         }
 
-        return $this->hash;
+        parent::__construct($key);
+
+        $this->timestamp = time();
+        $this->ttl = self::$_ttlTypes[0];
+        $this->views = 0;
+        $this->strip_exif = 1;
+        $this->comment = Zend_Registry::get('config')->image_comment;
+        $this->sess = $this->getCurrentSession();
     }
 
-    public function generate()
+    public function getImages()
     {
-        $vovels = str_split($this->vovels);
-        $consonants = str_split($this->consonants);
-
-        shuffle($vovels);
-        shuffle($consonants);
-
-        $hash = '';
-
-        for ($x = 1; $x <= $this->syllableNum; $x++) {
-            $hash .= array_pop($consonants) . array_pop($vovels);
+        // read files in directory
+        $storage = Zend_Registry::get('config')->storagePath;
+        $files = glob($storage . $this->key . '/*');
+        $imageDocs = array();
+        foreach ($files as $file) {
+            $imageDocs[] = new Unsee_Image(basename($file));
         }
 
-        $exists = $this->hashExists($hash);
+        return $imageDocs;
+    }
 
-        if (is_null($exists)) {
+    private function getCurrentSession()
+    {
+        return md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
+    }
+
+    public function isOwner()
+    {
+        return $this->getCurrentSession() === $this->sess;
+    }
+
+    public function isViewable()
+    {
+        if ($this->ttl === 'first' && !$this->views) {
+            // Single-view image hasn't been viewed yet
+            return true;
+        } elseif ($this->getTtlSeconds() > 0) {
+            // Long-living image, still not outdated
+            return true;
+        } else {
+            // Dead
             return false;
         }
-
-        if ($exists) {
-            return $this->generate();
-        }
-
-        $this->hash = $hash;
-
-        return $hash;
     }
 
-    protected function hashExists($hash)
+    public function getTtlSeconds()
     {
-        try {
-            return (bool) Unsee_Mongo_Document_Hash::one(array('hash' => $hash));
-        } catch (Exception $e) {
-            // Mongo is having problems
-            return null;
+        // Converting ttl into strtotime acceptable string
+        switch ($this->ttl) {
+            // Date in past for right now
+            case 'now':
+                $ttl = '-1 day';
+                break;
+            // Delete on first view, use zero
+            case 'first':
+                return false;
+            // almost strtotime-ready otherwise (time value)
+            default:
+                $ttl = '+1 ' . $this->ttl;
+                break;
         }
+
+        // Get time to die
+        return strtotime($ttl, $this->timestamp) - time();
     }
 
-    public function validate($hash)
+    public function getTtlWords()
     {
-        return preg_match('~^((?:[' . $this->consonants . '][' . $this->vovels . ']){' . $this->syllableNum . '})$~i',
-                          $hash);
+        $secondsLeft = $this->getTtlSeconds();
+        $lang = Zend_Registry::get('Zend_Translate');
+
+        if ($secondsLeft < 60) {
+            return $lang->translate('moment');
+        }
+
+        $times = array();
+        $timeStrings = array();
+        $foundNonEmpty = false;
+
+        $times['day'] = strtotime('+1 day', 0);
+        $times['hour'] = $times['day'] / 24;
+        $times['minute'] = $times['hour'] / 60;
+
+        foreach ($times as $timeFrame => &$seconds) {
+            // Days/hours/minutes left
+            $itemsLeft = floor($secondsLeft / $seconds);
+
+            // Recalculate number of seconds left - minus seconds in current day/hour/minute
+            $secondsLeft -= $itemsLeft * $seconds;
+            // Trying to translate the number correctly
+            $modRes = $itemsLeft % 10;
+            if ($modRes === 1) {
+                $timeFrame .= '_one';
+            } elseif ($modRes > 1 && $modRes < 5) {
+                $timeFrame .= '_couple';
+            } else {
+                $timeFrame .= '_many';
+            }
+
+            if ($itemsLeft || $foundNonEmpty) {
+                $foundNonEmpty = true;
+                $timeStrings[] = $itemsLeft . ' ' . $lang->translate($timeFrame);
+            }
+        }
+
+        // Use last element anyway
+        $deleteTime = array_pop($timeStrings);
+
+        // If it's not the only one - prepend others
+        if ($timeStrings) {
+            $deleteTime = implode(', ', $timeStrings) . ' ' . $lang->translate('and') . ' ' . $deleteTime;
+        }
+
+        return $deleteTime;
     }
 }

@@ -75,8 +75,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initDb()
     {
-        $dbConf = Zend_Registry::get('config')->mongo->toArray();
-        $dbUrl = "mongodb://$dbConf[host]:$dbConf[port]/$dbConf[database]";
-        Shanty_Mongo::addMaster(new Shanty_Mongo_Connection($dbUrl));
+        $dbConf = Zend_Registry::get('config')->redis->toArray();
+
+        $redis = new Redis();
+        $redis->connect($dbConf['host'], $dbConf['port']);
+        Zend_Registry::set('Redis', $redis);
     }
 }

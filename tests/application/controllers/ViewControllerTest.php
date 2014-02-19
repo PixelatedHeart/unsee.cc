@@ -11,11 +11,11 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
     private function addHash($imagesNum = 1)
     {
-        $hash = new Unsee_Mongo_Document_Hash();
+        $hash = new Unsee_Hash();
 
         for ($x = 1; $x <= $imagesNum; $x++) {
-            $image = new Unsee_Mongo_Document_Image();
-            $image->readFile(TEST_DATA_PATH . '/images/good/1mb.jpg');
+            $image = new Unsee_Image();
+            $image->setFile(TEST_DATA_PATH . '/images/good/1mb.jpg');
             $hash->addImage($image);
             unset($image);
         }
@@ -66,5 +66,19 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->dispatch('/view/index/hash/' . $hash->hash . '/');
         $this->assertResponseCode(310);
         $this->assertController('view');
+    }
+
+    public function testImageOutput()
+    {
+        $hash = $this->testViewAnon();
+        $this->dispatch('/view/index/hash/' . $hash->hash . '/');
+        $this->assertResponseCode(310);
+        $this->assertController('view');
+    }
+
+    public function testNoExif()
+    {
+        // TOOD: Implement
+        // die(1);
     }
 }

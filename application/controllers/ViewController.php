@@ -30,9 +30,9 @@ class ViewController extends Zend_Controller_Action
                     continue;
                 }
 
+                // TODO: Fix this, it doesn't work
                 $hashDoc->$field = $value;
             }
-            $hashDoc->save();
         }
     }
 
@@ -47,10 +47,10 @@ class ViewController extends Zend_Controller_Action
         }
 
         // Get hash document
-        $hashDoc = Unsee_Mongo_Document_Hash::one(array('hash' => $hashString));
+        $hashDoc = new Unsee_Hash($hashString);
 
         // It was already deleted or did not exist
-        if (!$hashDoc) {
+        if (!$hashDoc->exists()) {
             return $this->deletedAction();
         }
 
@@ -60,25 +60,19 @@ class ViewController extends Zend_Controller_Action
 
         // No use to do anything, page is not viewable
         if (!$hashDoc->isViewable($hashDoc)) {
-            // Delete images?
-            $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
-
-            foreach ($imagesList as $item) {
-                $item->delete();
-            }
+            $hashDoc->delete();
 
             return $this->deletedAction();
         }
 
+        $values = $hashDoc->export();
         // Populate form values
-        $form->populate($hashDoc->export());
+        $form->populate($values);
         // Disable image download by default
         $this->view->no_download = true;
 
         // Handle current request based on what settins are set
-        $props = $hashDoc->getPropertyKeys();
-
-        foreach ($props as $item) {
+        foreach ($values as $item) {
             $item = explode('_', $item);
 
             foreach ($item as &$itemItem) {
@@ -98,8 +92,7 @@ class ViewController extends Zend_Controller_Action
 
         // If viewer is the creator - don't count their view
         if (!$hashDoc->isOwner()) {
-            $hashDoc->views++;
-            $hashDoc->save();
+            $hashDoc->increment('views');
         } else {
             // Owner - include config assets
             $this->view->headScript()->appendFile('js/view.js');
@@ -119,32 +112,8 @@ class ViewController extends Zend_Controller_Action
             $this->view->deleteTime = $this->view->translate($deleteMessageTemplate, array($deleteTimeStr));
         }
 
-        $imagesList = Unsee_Mongo_Document_Image::all(array('hashId' => new MongoId($hashDoc->_id)));
-
-        $this->view->images = array();
-
-        $secureLinkTtl = 2; // image links would live for this number of seconds
-        if (!$hashDoc->no_download) {
-            end(Unsee_Mongo_Document_Hash::$_ttlTypes);
-            $secureLinkTtl = key(Unsee_Mongo_Document_Hash::$_ttlTypes);
-            reset(Unsee_Mongo_Document_Hash::$_ttlTypes);
-        }
-
-        $key = 0;
-        foreach ($imagesList as $imageDoc) {
-
-            $imageId = (string) $imageDoc->_id;
-
-            $imageDoc->ticketTtd = $ticketTtd = $_SERVER['REQUEST_TIME'] + $key++ + $secureLinkTtl; // Each image would be loaded a second later
-            // Preparing a hash for nginx's secure link
-            $md5 = base64_encode(md5($imageId . $ticketTtd, true));
-            $md5 = strtr($md5, '+/', '-_');
-            $md5 = str_replace('=', '', $md5);
-            $imageDoc->md5 = $md5;
-
-            $this->view->images[$imageId] = $imageDoc;
-        }
-
+        $this->view->ttlSeconds = $hashDoc->getTtlSeconds();
+        $this->view->images = $hashDoc->getImages();
         $this->view->form = $form;
         $this->view->groups = $form->getDisplayGroups();
     }
@@ -227,14 +196,14 @@ class ViewController extends Zend_Controller_Action
             die();
         }
 
-        $imgDoc = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imageId)));
+        $imgDoc = new Unsee_Image($imageId);
 
         if (!$imgDoc) {
             $this->getResponse()->setHeader('Status', '204 No content');
             die();
         }
 
-        $hashDoc = Unsee_Mongo_Document_Hash::one(array('_id' => new MongoId($imgDoc->hashId)));
+        $hashDoc = new Unsee_Hash();
 
         if (!$hashDoc) {
             $imgDoc && $imgDoc->delete();
@@ -246,15 +215,11 @@ class ViewController extends Zend_Controller_Action
         $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
         $this->getResponse()->setHeader('Content-type', $imgDoc->type);
-        print $imgDoc->data->bin;
+
+        print $imgDoc->getImageData();
 
         if (!$hashDoc->isViewable()) {
             $imgDoc->delete();
         }
-    }
-
-    protected function getImageData($imgId)
-    {
-        $img = Unsee_Mongo_Document_Image::one(array('_id' => new MongoId($imgId)), array('_id'));
     }
 }
