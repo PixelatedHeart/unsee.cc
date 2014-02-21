@@ -19,25 +19,28 @@ class UploadController extends Zend_Controller_Action
         $upload->addValidator('Size', false, array('max' => '8MB', 'bytestring' => false));
         $translate = Zend_Registry::get('Zend_Translate');
 
-        if (!$upload->receive()) {
-            $response->error = $translate->translate('error_uploading');
-        } else {
-            $files = $upload->getFileInfo();
+        try {
+            if (!$upload->receive()) {
+                throw new Exception();
+            } else {
+                $files = $upload->getFileInfo();
 
-            $hashDoc = new Unsee_Hash();
-            $response->hash = $hashDoc->key;
+                $hashDoc = new Unsee_Hash();
+                $response->hash = $hashDoc->key;
 
-            foreach ($files as $file => &$info) {
-                if (!$upload->isUploaded($file)) {
-                    $info = null;
-                } else {
-                    $imgDoc = new Unsee_Image();
-                    $imgDoc->hash = $hashDoc->key;
-                    $imgDoc->setFile($info['tmp_name']);
+                foreach ($files as $file => &$info) {
+                    if (!$upload->isUploaded($file)) {
+                        $info = null;
+                    } else {
+                        $imgDoc = new Unsee_Image();
+                        $imgDoc->hash = $hashDoc->key;
+                        $imgDoc->setFile($info['tmp_name']);
+                    }
                 }
             }
+        } catch (Exception $e) {
+            $response->error = $translate->translate('error_uploading');
         }
-
         $this->_helper->json->sendJson($response);
     }
 }

@@ -3,6 +3,9 @@
 class ViewController extends Zend_Controller_Action
 {
 
+    protected $form;
+    protected $hashDoc;
+
     public function init()
     {
         $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
@@ -12,6 +15,8 @@ class ViewController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/view.css');
         $this->view->headLink()->appendStylesheet('css/subpage.css');
+
+        $this->form = new Application_Form_Settings;
     }
 
     private function handleSettingsFormSubmit($form, $hashDoc)
@@ -20,17 +25,21 @@ class ViewController extends Zend_Controller_Action
             return false;
         }
 
-        $form = new Application_Form_Settings();
-
         if ($form->isValid($_POST)) {
             $values = $form->getValues();
+
+            // Changed value of TTL
+            if (isset($values['ttl']) && $values['ttl'] != $hashDoc->ttl) {
+                // Revert no_download to the value from DB, since there's no way
+                // it could change
+                unset($values['no_download']);
+            }
 
             foreach ($values as $field => $value) {
                 if ($field == 'strip_exif') {
                     continue;
                 }
 
-                // TODO: Fix this, it doesn't work
                 $hashDoc->$field = $value;
             }
         }
@@ -40,14 +49,16 @@ class ViewController extends Zend_Controller_Action
     {
         // Hash (ababab)
         $hashString = $this->getParam('hash', false);
-        $form = new Application_Form_Settings;
 
         if (!$hashString) {
             return $this->deletedAction();
         }
 
         // Get hash document
-        $hashDoc = new Unsee_Hash($hashString);
+        $this->hashDoc = new Unsee_Hash($hashString);
+
+        $hashDoc = $this->hashDoc;
+        $form = $this->form;
 
         // It was already deleted or did not exist
         if (!$hashDoc->exists()) {
@@ -72,19 +83,17 @@ class ViewController extends Zend_Controller_Action
         $this->view->no_download = true;
 
         // Handle current request based on what settins are set
-        foreach ($values as $item) {
-            $item = explode('_', $item);
+        foreach ($values as $key => $value) {
+            $key = explode('_', $key);
 
-            foreach ($item as &$itemItem) {
+            foreach ($key as &$itemItem) {
                 $itemItem = ucfirst($itemItem);
             }
 
-            $method = 'process' . implode('', $item);
+            $method = 'process' . implode('', $key);
 
-            if (method_exists($this, $method)) {
-                if (!$this->$method($hashDoc)) {
-                    return $this->deletedAction();
-                }
+            if (method_exists($this, $method) && !$this->$method()) {
+                return $this->deletedAction();
             }
         }
 
@@ -118,48 +127,52 @@ class ViewController extends Zend_Controller_Action
         $this->view->groups = $form->getDisplayGroups();
     }
 
-    private function processTitle($hashDoc)
+    private function processTitle()
     {
-        if (!empty($hashDoc->title)) {
-            $this->view->title = $hashDoc->title;
+        if (!empty($this->hashDoc->title)) {
+            $this->view->title = $this->hashDoc->title;
         }
 
         return true;
     }
 
-    private function processDescription($hashDoc)
+    private function processDescription()
     {
-        if (!empty($hashDoc->description)) {
-            $this->view->description = $hashDoc->description;
+        if (!empty($this->hashDoc->description)) {
+            $this->view->description = $this->hashDoc->description;
         }
 
         return true;
     }
 
-    private function processNoDownload($hashDoc)
+    private function processNoDownload()
     {
-        $this->view->no_download = !empty($hashDoc->no_download);
+        if ($this->hashDoc->ttl === 'first') {
+            $this->form->getElement('no_download')->setAttrib('disabled', 'disabled')->setAttrib('checked', 'checked');
+        }
+
+        $this->view->no_download = $this->hashDoc->no_download || $this->hashDoc->ttl === 'first';
         return true;
     }
 
-    private function processAllowIp($hashDoc)
+    private function processAllowIp()
     {
-        if (!empty($hashDoc->allow_ip) /* && !$hashDoc->isOwner() */) {
+        if (!empty($this->hashDoc->allow_ip) /* && !$hashDoc->isOwner() */) {
             $ip = $this->getRequest()->getServer('REMOTE_ADDR');
-            return fnmatch($hashDoc->allow_ip, $ip);
+            return fnmatch($this->hashDoc->allow_ip, $ip);
         }
 
         return true;
     }
 
-    private function processAllowDomain($hashDoc)
+    private function processAllowDomain()
     {
-        if (!empty($hashDoc->allow_domain) && !$hashDoc->isOwner()) {
+        if (!empty($this->hashDoc->allow_domain) && !$this->hashDoc->isOwner()) {
             if (empty($_SERVER['HTTP_REFERER'])) {
                 return false;
             }
 
-            $expectedDomain = $hashDoc->allow_domain;
+            $expectedDomain = $this->hashDoc->allow_domain;
 
             $ref = parse_url($_SERVER['HTTP_REFERER']);
 
@@ -203,7 +216,7 @@ class ViewController extends Zend_Controller_Action
             die();
         }
 
-        $hashDoc = new Unsee_Hash();
+        $hashDoc = new Unsee_Hash($imgDoc->hash);
 
         if (!$hashDoc) {
             $imgDoc && $imgDoc->delete();

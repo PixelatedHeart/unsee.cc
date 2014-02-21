@@ -103,13 +103,13 @@ class Unsee_Image extends Unsee_Redis
     public function watermark()
     {
         $text = $_SERVER['REMOTE_ADDR'];
-        $image = imagecreatefromstring($this->data->bin);
+        $image = imagecreatefromstring($this->getImageData());
         $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
         $im = imagecreatetruecolor(800, 800);
 
         imagesavealpha($im, true);
         imagefill($im, 0, 0, imagecolorallocatealpha($im, 0, 0, 0, 127));
-        imagettftext($im, 12, 0, 100, 100, -imagecolorallocatealpha($im, 255, 255, 255, 80), $font, $text);
+        imagettftext($im, 12, 0, 100, 100, -imagecolorallocatealpha($im, 150, 150, 150, 70), $font, $text);
         imagealphablending($im, true);
         imagesettile($image, $im);
         imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), IMG_COLOR_TILED);
@@ -121,9 +121,9 @@ class Unsee_Image extends Unsee_Redis
 
         ob_start();
         // TODO: imagick should support all formats
-        /* $func */imagejpeg($image, null, 90);
+        /* $func */imagejpeg($image, null, 85);
 
-        $this->data = $this->getImageData();
+        $this->data = ob_get_clean();
         $this->size = strlen($this->data);
 
         return true;

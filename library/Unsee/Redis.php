@@ -3,6 +3,7 @@
 class Unsee_Redis
 {
 
+    static $prevDb = 0;
     private $redis;
     public $key;
     protected $db = 0;
@@ -13,39 +14,59 @@ class Unsee_Redis
         $this->key = $key;
     }
 
+    public function __isset($key)
+    {
+        $this->selectDb();
+        return $this->redis->hExists($this->key, $key);
+    }
+
     public function __get($hKey)
     {
-        $this->redis->select($this->db);
+        $this->selectDb();
         return $this->redis->hGet($this->key, $hKey);
     }
 
     public function __set($hKey, $value)
     {
-        $this->redis->select($this->db);
+        $this->selectDb();
         return $this->redis->hSet($this->key, $hKey, $value);
     }
 
-    public function exists()
+    private function selectDb()
     {
-        $this->redis->select($this->db);
+        if (self::$prevDb !== $this->db) {
+            $this->redis->select($this->db);
+            self::$prevDb = $this->db;
+        }
+
+        return true;
+    }
+
+    public function exists($key = null)
+    {
+        if (!$key) {
+            $key = $this->key;
+        }
+
+        $this->selectDb();
         return $this->redis->hLen($this->key) > 0;
     }
 
     public function delete()
     {
-        $this->redis->select($this->db);
+        $this->selectDb();
         return $this->redis->delete($this->key);
     }
 
     public function export()
     {
-        $this->redis->select($this->db);
+        $this->selectDb();
         return $this->redis->hGetAll($this->key);
     }
 
     public function increment($key, $num = 1)
     {
-        $this->redis->select($this->db);
+        $this->selectDb();
         return $this->redis->hGetAll($this->key, $key, $num);
     }
 }

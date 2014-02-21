@@ -8,18 +8,40 @@ class Unsee_Hash extends Unsee_Redis
     public function __construct($key = null)
     {
 
-        if (empty($key)) {
-            $key = (string) (new Unsee_Hash_String());
-        }
-
         parent::__construct($key);
 
-        $this->timestamp = time();
-        $this->ttl = self::$_ttlTypes[0];
-        $this->views = 0;
-        $this->strip_exif = 1;
-        $this->comment = Zend_Registry::get('config')->image_comment;
-        $this->sess = $this->getCurrentSession();
+        if (empty($key)) {
+            $this->setNewHash();
+            $this->timestamp = time();
+            $this->ttl = self::$_ttlTypes[0];
+            $this->views = 0;
+            $this->no_download = true;
+            $this->strip_exif = true;
+            $this->comment = Zend_Registry::get('config')->image_comment;
+            $this->sess = $this->getCurrentSession();
+        }
+    }
+
+    protected function setNewHash()
+    {
+        $hashConf = Zend_Registry::get('config')->hash->toArray();
+
+        $vovels = str_split($hashConf['vovels']);
+        $consonants = str_split($hashConf['consonants']);
+        $syllableNum = (int) $hashConf['syllables'];
+
+        shuffle($vovels);
+        shuffle($consonants);
+
+        $hash = '';
+
+        for ($x = 1; $x <= $syllableNum; $x++) {
+            $hash .= array_pop($consonants) . array_pop($vovels);
+        }
+
+        $this->key = $hash;
+
+        return $this->exists() && $this->setNewHash();
     }
 
     public function getImages()
@@ -51,7 +73,7 @@ class Unsee_Hash extends Unsee_Redis
             // Single-view image hasn't been viewed yet
             return true;
         } elseif ($this->getTtlSeconds() > 0) {
-            // Long-living image, still not outdated
+            // Image not yet outdated
             return true;
         } else {
             // Dead
@@ -67,9 +89,9 @@ class Unsee_Hash extends Unsee_Redis
             case 'now':
                 $ttl = '-1 day';
                 break;
-            // Delete on first view, use zero
+            // Delete on first view, use one second
             case 'first':
-                return false;
+                return 1;
             // almost strtotime-ready otherwise (time value)
             default:
                 $ttl = '+1 ' . $this->ttl;

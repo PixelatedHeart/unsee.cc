@@ -34,7 +34,7 @@ class Application_Form_Settings extends Zend_Form
                 $langStr = 'settings_' . $section . '_' . $name;
                 $groupFieldNames[] = $elName = $name;
 
-                $element = $this->createElement($type, $elName);
+                $element = $this->createElement($type, $elName, array('disableHidden' => true));
                 $element->setLabel($lang->translate($langStr));
 
                 if ($type === 'checkbox' && !empty($params['checked']) && $params['checked'] === 'true') {
