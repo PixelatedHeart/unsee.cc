@@ -67,6 +67,6 @@ class Unsee_Redis
     public function increment($key, $num = 1)
     {
         $this->selectDb();
-        return $this->redis->hGetAll($this->key, $key, $num);
+        return $this->redis->hIncrBy($this->key, $key, $num);
     }
 }

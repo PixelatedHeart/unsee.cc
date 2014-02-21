@@ -101,7 +101,7 @@ class ViewController extends Zend_Controller_Action
 
         // If viewer is the creator - don't count their view
         if (!$hashDoc->isOwner()) {
-            $hashDoc->increment('views');
+            $hashDoc->views++;
         } else {
             // Owner - include config assets
             $this->view->headScript()->appendFile('js/view.js');

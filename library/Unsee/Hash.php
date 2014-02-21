@@ -72,7 +72,7 @@ class Unsee_Hash extends Unsee_Redis
         if ($this->ttl === 'first' && !$this->views) {
             // Single-view image hasn't been viewed yet
             return true;
-        } elseif ($this->getTtlSeconds() > 0) {
+        } elseif ($this->ttl !== 'first' && $this->getTtlSeconds() > 0) {
             // Image not yet outdated
             return true;
         } else {
