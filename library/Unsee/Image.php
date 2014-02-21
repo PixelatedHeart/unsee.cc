@@ -35,7 +35,7 @@ class Unsee_Image extends Unsee_Redis
         }
 
         // Preparing a hash for nginx's secure link
-        $md5 = base64_encode(md5($this->_id . $ticketTtd, true));
+        $md5 = base64_encode(md5($this->key . $ticketTtd, true));
         $md5 = strtr($md5, '+/', '-_');
         $md5 = str_replace('=', '', $md5);
 
