@@ -6,5 +6,7 @@ services:
 install: 
     - ./scripts/build/install_zf.sh
     - printf "\n" | pecl install imagick
-before_script: phpenv config-add scripts/build/phpconf.ini
+before_script:
+    - phpenv config-add scripts/build/phpconf.ini
+    - ./scripts/build/prepare.sh
 script: phpunit -c tests/phpunit.xml

@@ -48,7 +48,7 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
         $this->dispatch('/view/index/hash/' . $hash->key . '/');
         $this->assertController('view');
-        $this->assertResponseCode(200); 
+        $this->assertResponseCode(200);
         return $hash;
     }
 
