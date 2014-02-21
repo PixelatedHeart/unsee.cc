@@ -1,7 +1,8 @@
 language: php
 php:
   - 5.5
-services: mongodb
+services:
+    - redis-server
 install: 
     - ./scripts/build/install_zf.sh
     - printf "\n" | pecl install imagick
