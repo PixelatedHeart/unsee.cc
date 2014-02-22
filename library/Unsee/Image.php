@@ -10,6 +10,8 @@ class Unsee_Image extends Unsee_Redis
     public function delete()
     {
         unlink($this->getFilePath());
+        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->hash;
+        !glob($dir . '/*') && rmdir($dir);
         parent::delete();
     }
 

@@ -57,6 +57,24 @@ class Unsee_Hash extends Unsee_Redis
         return $imageDocs;
     }
 
+    public function delete()
+    {
+        // Delete images
+        $images = $this->getImages();
+
+        foreach ($images as $item) {
+            $item->delete();
+        }
+
+        // Remove hash storage sub-dir
+        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->key;
+        if (is_dir($dir)) {
+            rmdir($dir);
+        }
+
+        parent::delete();
+    }
+
     private function getCurrentSession()
     {
         return md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);

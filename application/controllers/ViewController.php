@@ -55,13 +55,11 @@ class ViewController extends Zend_Controller_Action
         }
 
         // Get hash document
-        $this->hashDoc = new Unsee_Hash($hashString);
-
-        $hashDoc = $this->hashDoc;
+        $hashDoc = $this->hashDoc = new Unsee_Hash($hashString);
         $form = $this->form;
 
-        // It was already deleted or did not exist
-        if (!$hashDoc->exists()) {
+        // It was already deleted/did not exist/expired
+        if (!$hashDoc->exists() || !$hashDoc->isViewable($hashDoc)) {
             return $this->deletedAction();
         }
 
