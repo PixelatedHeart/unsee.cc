@@ -39,9 +39,16 @@ class Unsee_Hash extends Unsee_Redis
             $hash .= array_pop($consonants) . array_pop($vovels);
         }
 
+        // This is all it takes to set a hash
         $this->key = $hash;
 
-        return $this->exists() && $this->setNewHash();
+        // Check if the found hash exists and outdated, while we're at it
+        if ($this->exists() && $this->isViewable()) {
+            $this->delete();
+            $this->setNewHash();
+        }
+
+        return true;
     }
 
     public function getImages()

@@ -5,8 +5,8 @@
         creationtoolversion="1.0.0"
         datatype="winres"
         segtype="sentence"
-        adminlang="en-us"
-        srclang="en-us"
+        adminlang="en"
+        srclang="en"
         o-tmf="abc"
         creationtool="Netbeans" 
     ></header>
