@@ -29,9 +29,9 @@ class ViewController extends Zend_Controller_Action
             $values = $form->getValues();
 
             // Changed value of TTL
-            if (isset($values['ttl']) && $values['ttl'] != $hashDoc->ttl) {
+            if (isset($values['ttl']) && $hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
                 // Revert no_download to the value from DB, since there's no way
-                // it could change
+                // it could have changed. It's disabled when ttl == 'first'.
                 unset($values['no_download']);
             }
 
