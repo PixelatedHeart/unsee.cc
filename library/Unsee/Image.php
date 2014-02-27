@@ -27,7 +27,7 @@ class Unsee_Image extends Unsee_Redis
 
     public function getSecureLink($ttlSeconds)
     {
-        $ticketTtd = time() + 1;
+        $ticketTtd = time() + 3;
 
         // Preparing a hash for nginx's secure link
         $md5 = base64_encode(md5($this->key . $ticketTtd, true));
