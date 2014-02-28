@@ -97,6 +97,11 @@ class Unsee_Image extends Unsee_Redis
 
     public function watermark()
     {
+        $hash = new Unsee_Hash($this->hash);
+        if ($hash->isOwner()) {
+            return true;
+        }
+
         $text = $_SERVER['REMOTE_ADDR'];
         $image = imagecreatefromstring($this->getImageData());
         $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
