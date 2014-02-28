@@ -19,6 +19,7 @@ class Unsee_Hash extends Unsee_Redis
             $this->strip_exif = true;
             $this->comment = Zend_Registry::get('config')->image_comment;
             $this->sess = $this->getCurrentSession();
+            $this->watermark_ip = true;
         }
     }
 
