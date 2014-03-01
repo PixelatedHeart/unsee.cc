@@ -20,6 +20,12 @@ class Unsee_Redis
         return $this->redis->hExists($this->key, $key);
     }
 
+    public function __unset($key)
+    {
+        $this->selectDb();
+        return $this->redis->hDel($this->key, $key);
+    }
+    
     public function __get($hKey)
     {
         $this->selectDb();

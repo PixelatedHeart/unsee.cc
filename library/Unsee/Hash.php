@@ -18,7 +18,7 @@ class Unsee_Hash extends Unsee_Redis
             $this->no_download = true;
             $this->strip_exif = true;
             $this->comment = Zend_Registry::get('config')->image_comment;
-            $this->sess = $this->getCurrentSession();
+            $this->sess = Unsee_Session::getCurrent();
             $this->watermark_ip = true;
         }
     }
@@ -81,16 +81,6 @@ class Unsee_Hash extends Unsee_Redis
         }
 
         parent::delete();
-    }
-
-    private function getCurrentSession()
-    {
-        return md5($_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']);
-    }
-
-    public function isOwner()
-    {
-        return $this->getCurrentSession() === $this->sess;
     }
 
     public function isViewable()

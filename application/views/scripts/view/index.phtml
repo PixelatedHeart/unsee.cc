@@ -89,11 +89,12 @@ if ($this->no_download) {
     <?php
 }
 ?>
-
-<?php
+<script>
+    var a=[<?php
 $key = 0;
 foreach ($this->images as $imgDoc) {
-    ?>
-    <img style="max-width: <?=$imgDoc->width;?>px;" src="/image/<?= $imgDoc->key; ?>/<?= $imgDoc->getSecureLink(++$key + $this->ttlSeconds); ?>" alt="" />
-    <?php
+    ?>['<?=$imgDoc->key?>', '<?=$imgDoc->secureMd5?>', <?=$imgDoc->secureTtd?>, <?=$imgDoc->width;?>],<?php
 }
+?>],b = '<?=$this->cookieCheck;?>';
+</script>
+<div id="images"></div>

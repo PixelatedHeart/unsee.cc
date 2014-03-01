@@ -6,6 +6,8 @@ class Unsee_Image extends Unsee_Redis
     public $data;
     protected $db = 1;
     protected $iMagick;
+    public $secureMd5 = '';
+    public $secureTtd = 0;
 
     public function delete()
     {
@@ -23,18 +25,20 @@ class Unsee_Image extends Unsee_Redis
         }
 
         parent::__construct($key, 1);
+        $this->setSecureParams();
     }
 
-    public function getSecureLink($ttlSeconds)
+    public function setSecureParams()
     {
-        $ticketTtd = time() + 2;
+        $this->secureTtd = time() + Unsee_Ticket::$ttl;
 
         // Preparing a hash for nginx's secure link
-        $md5 = base64_encode(md5($this->key . $ticketTtd, true));
+        $md5 = base64_encode(md5($this->key . $this->secureTtd, true));
         $md5 = strtr($md5, '+/', '-_');
         $md5 = str_replace('=', '', $md5);
 
-        return $md5 . '/' . $ticketTtd . '/';
+        $this->secureMd5 = $md5;
+        return true;
     }
 
     public function setFile($filePath)
@@ -97,8 +101,7 @@ class Unsee_Image extends Unsee_Redis
 
     public function watermark()
     {
-        $hash = new Unsee_Hash($this->hash);
-        if ($hash->isOwner()) {
+        if (Unsee_Session::isOwner(new Unsee_Hash($this->hash))) {
             return true;
         }
 

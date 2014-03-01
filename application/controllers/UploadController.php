@@ -26,6 +26,11 @@ class UploadController extends Zend_Controller_Action
                 $files = $upload->getFileInfo();
 
                 $hashDoc = new Unsee_Hash();
+
+                if (isset($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
+                    $hashDoc->ttl = $_POST['time'];
+                }
+
                 $response->hash = $hashDoc->key;
 
                 foreach ($files as $file => &$info) {
