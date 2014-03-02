@@ -15,14 +15,14 @@ $(function() {
         });
 
         $(document).keydown(function(e) {
-            var pr = [67, 65], re = [123, 73, 42];
+            var pr = [67, 65], re = [123, 42], re2 = [73];
 
-            if (~jQuery.inArray(e.keyCode, pr)) {
+            if (~jQuery.inArray(e.keyCode, pr) && e.ctrlKey) {
                 e.preventDefault();
                 return false;
             }
 
-            if (~jQuery.inArray(e.keyCode, re)) {
+            if (~jQuery.inArray(e.keyCode, re) || ~jQuery.inArray(e.keyCode, re2) && e.ctrlKey && e.shiftKey) {
                 e.preventDefault();
                 document.cookie = "block=1;path=" + location.pathname;
                 location.reload();

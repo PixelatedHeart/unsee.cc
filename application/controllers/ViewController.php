@@ -188,7 +188,7 @@ class ViewController extends Zend_Controller_Action
 
     private function processAllowDomain()
     {
-        if (!empty($this->hashDoc->allow_domain) && !Unsee_Hash::isOwner($this->hashDoc)) {
+        if (!empty($this->hashDoc->allow_domain) && !Unsee_Session::isOwner($this->hashDoc)) {
             if (empty($_SERVER['HTTP_REFERER'])) {
                 return false;
             }
