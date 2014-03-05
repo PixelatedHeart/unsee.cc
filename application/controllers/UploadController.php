@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * Upload controller
+ * @todo Use Zend_Form instead of a plain html in view
+ */
 class UploadController extends Zend_Controller_Action
 {
 
+    /**
+     * Controller to handle file upload form
+     * @throws Exception
+     */
     public function indexAction()
     {
         $response = new stdClass();
@@ -25,20 +33,15 @@ class UploadController extends Zend_Controller_Action
             } else {
                 $files = $upload->getFileInfo();
 
-                $hashDoc = new Unsee_Hash();
-
-                if (isset($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
-                    $hashDoc->ttl = $_POST['time'];
-                }
-
-                $response->hash = $hashDoc->key;
+                // Tell the page the name of the new hash
+                $response->hash = $this->getNewHashName();
 
                 foreach ($files as $file => &$info) {
                     if (!$upload->isUploaded($file)) {
                         $info = null;
                     } else {
                         $imgDoc = new Unsee_Image();
-                        $imgDoc->hash = $hashDoc->key;
+                        $imgDoc->hash = $response->hash;
                         $imgDoc->setFile($info['tmp_name']);
                     }
                 }
@@ -47,5 +50,21 @@ class UploadController extends Zend_Controller_Action
             $response->error = $translate->translate('error_uploading');
         }
         $this->_helper->json->sendJson($response);
+    }
+
+    /**
+     * Creates a new hash document and returns it's name
+     * @return type
+     */
+    private function getNewHashName()
+    {
+        // Creating a new hash item (/bababa/)
+        $hashDoc = new Unsee_Hash();
+
+        if (isset($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
+            $hashDoc->ttl = $_POST['time'];
+        }
+
+        return $hashDoc->key;
     }
 }

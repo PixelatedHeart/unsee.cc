@@ -1,14 +1,43 @@
 <?php
 
+/**
+ * Hash image model
+ */
 class Unsee_Image extends Unsee_Redis
 {
 
+    /**
+     * Image content
+     * @var string
+     */
     public $data;
+
+    /**
+     * Database id
+     * @var int
+     */
     protected $db = 1;
+
+    /**
+     * Image Magick instance
+     * @var \imagick
+     */
     protected $iMagick;
+
+    /**
+     * Secure link md5
+     */
     public $secureMd5 = '';
+
+    /**
+     * Secure link unix time
+     * @var type 
+     */
     public $secureTtd = 0;
 
+    /**
+     * Deletes the image model and the file associated with it
+     */
     public function delete()
     {
         unlink($this->getFilePath());
@@ -28,6 +57,11 @@ class Unsee_Image extends Unsee_Redis
         $this->setSecureParams();
     }
 
+    /**
+     * Sets the params needed for the secure link nginx module to work
+     * @see http://wiki.nginx.org/HttpSecureLinkModule
+     * @return boolean
+     */
     public function setSecureParams()
     {
         $this->secureTtd = time() + Unsee_Ticket::$ttl;
@@ -41,6 +75,11 @@ class Unsee_Image extends Unsee_Redis
         return true;
     }
 
+    /**
+     * Associates the model with the file
+     * @param string $filePath
+     * @return boolean
+     */
     public function setFile($filePath)
     {
         $image = new Imagick();
@@ -66,6 +105,10 @@ class Unsee_Image extends Unsee_Redis
         return true;
     }
 
+    /**
+     * Returns the file path of for the model's image
+     * @return string
+     */
     protected function getFilePath()
     {
         $storage = Zend_Registry::get('config')->storagePath;
@@ -73,6 +116,10 @@ class Unsee_Image extends Unsee_Redis
         return $file;
     }
 
+    /**
+     * Sets and returns the content of the image file
+     * @return string
+     */
     public function getImageData()
     {
         if (empty($this->data)) {
@@ -82,6 +129,10 @@ class Unsee_Image extends Unsee_Redis
         return $this->data;
     }
 
+    /**
+     * Instantiates and returns Image Magick object
+     * @return \imagick
+     */
     protected function getImagick()
     {
         if (!$this->iMagick) {
@@ -93,12 +144,20 @@ class Unsee_Image extends Unsee_Redis
         return $this->iMagick;
     }
 
+    /**
+     * Strips exif data from image body
+     * @return boolean
+     */
     public function stripExif()
     {
         $this->getImagick()->stripImage();
         return true;
     }
 
+    /**
+     * Watermars the image with the viewer's IP
+     * @return boolean
+     */
     public function watermark()
     {
         if (Unsee_Session::isOwner(new Unsee_Hash($this->hash))) {
@@ -132,6 +191,11 @@ class Unsee_Image extends Unsee_Redis
         return true;
     }
 
+    /**
+     * Embeds a comment into the image body
+     * @param string $comment
+     * @return boolean
+     */
     public function comment($comment)
     {
         $dict = array(

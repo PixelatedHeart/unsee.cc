@@ -9,17 +9,17 @@
         <meta name='yandex-verification' content='74b69306dc3139b8' />
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>Unsee &mdash; <?=$this->translate('slogan_meta')?></title>
-        <meta name="description" content="<?=$this->translate('slogan_meta')?>" />
-        <meta name="keywords" content="<?=$this->translate('keywords')?>" />
+        <title>Unsee &mdash; <?= $this->translate('slogan_meta') ?></title>
+        <meta name="description" content="<?= $this->translate('slogan_meta') ?>" />
+        <meta name="keywords" content="<?= $this->translate('keywords') ?>" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=2.0, user-scalable=1, target-densitydpi=device-dpi" />
-        <?=$this->headMeta()?>
+        <?= $this->headMeta() ?>
 
         <!-- Link css resources -->
-        <?=$this->cssHelper()?>
+        <?= $this->cssHelper() ?>
 
         <!-- Link js scripts -->
-        <?=$this->javascriptHelper()?>
+        <?= $this->javascriptHelper() ?>
 
     </head>
     <body>
@@ -27,11 +27,11 @@
         <p class="chromeframe">outdated</p>
         <![endif]-->
 
-        <?=$this->layout()->content?>
+        <?= $this->layout()->content ?>
 
         <div id="footer">
             <ul>
-                <li><a href="/contact/"><?=$this->translate('contact')?></a></li>
+                <li><a href="/contact/"><?= $this->translate('contact') ?></a></li>
             </ul>
         </div>
     </body>

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Controller plugin to pass extra helper headers to client
+ */
 class Unsee_Controller_Plugin_Headers extends Zend_Controller_Plugin_Abstract
 {
 

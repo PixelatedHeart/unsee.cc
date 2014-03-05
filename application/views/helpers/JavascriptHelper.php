@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Helper to optionally combine js files into one
+ */
 class Zend_View_Helper_JavascriptHelper extends Zend_View_Helper_Abstract
 {
 

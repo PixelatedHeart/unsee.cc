@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * Hash Redis model. Stores Unsee hashes
+ */
 class Unsee_Hash extends Unsee_Redis
 {
 
+    /**
+     * Associative array of periods of life for hashes
+     * @var array
+     */
     public static $_ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
     public function __construct($key = null)
@@ -23,6 +30,10 @@ class Unsee_Hash extends Unsee_Redis
         }
     }
 
+    /**
+     * Generates a new unique hash
+     * @return boolean
+     */
     protected function setNewHash()
     {
         $hashConf = Zend_Registry::get('config')->hash->toArray();
@@ -52,6 +63,10 @@ class Unsee_Hash extends Unsee_Redis
         return true;
     }
 
+    /**
+     * Returns an array of image models assigned to the hash
+     * @return \Unsee_Image[]
+     */
     public function getImages()
     {
         // read files in directory
@@ -65,6 +80,9 @@ class Unsee_Hash extends Unsee_Redis
         return $imageDocs;
     }
 
+    /**
+     * Deletes the hash
+     */
     public function delete()
     {
         // Delete images
@@ -83,6 +101,10 @@ class Unsee_Hash extends Unsee_Redis
         parent::delete();
     }
 
+    /**
+     * Returns true if hash is not yet outdated
+     * @return boolean
+     */
     public function isViewable()
     {
         if ($this->ttl === 'first' && !$this->views) {
@@ -97,6 +119,10 @@ class Unsee_Hash extends Unsee_Redis
         }
     }
 
+    /**
+     * Returns number of seconds left for the hash to live
+     * @return int
+     */
     public function getTtlSeconds()
     {
         // Converting ttl into strtotime acceptable string
@@ -118,6 +144,10 @@ class Unsee_Hash extends Unsee_Redis
         return strtotime($ttl, $this->timestamp) - time();
     }
 
+    /**
+     * Returns human readable representation of number of seconds the hash is left to live
+     * @return string
+     */
     public function getTtlWords()
     {
         $secondsLeft = $this->getTtlSeconds();

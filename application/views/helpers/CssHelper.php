@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Helper to optionally combine css files into one
+ */
 class Zend_View_Helper_CssHelper extends Zend_View_Helper_Abstract
 {
 

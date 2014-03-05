@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Contact form
+ */
 class Application_Form_Contact extends Zend_Form
 {
 
@@ -20,8 +23,8 @@ class Application_Form_Contact extends Zend_Form
 
         $options = array(
             'general_questions' => 'general_questions',
-            'report_bug'     => 'report_bug',
-            'suggest_feature' => 'suggest_feature',
+            'report_bug'        => 'report_bug',
+            'suggest_feature'   => 'suggest_feature',
         );
 
         $select->setMultiOptions($options);
@@ -73,8 +76,9 @@ class Application_Form_Contact extends Zend_Form
         $submit->addDecorator('Generic');
         $submit->setRequired(false);
         $submit->setAttrib('id', 'sendMessage');
-        
+
         $this->addElement($submit);
-        
+
+        return true;
     }
 }

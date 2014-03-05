@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Form decorator to correctly render radio button list
+ */
 class Unsee_Form_Decorator_Radio extends Zend_Form_Decorator_Abstract
 {
 
@@ -16,12 +19,12 @@ class Unsee_Form_Decorator_Radio extends Zend_Form_Decorator_Abstract
 
             $lang = Zend_Registry::get('Zend_Translate');
             // TODO: "delete" is hardcoded, dynamically get group of the field here
-            $captionStr = 'settings_delete_' . $elName . '_'. $name .'_caption'; 
+            $captionStr = 'settings_delete_' . $elName . '_' . $name . '_caption';
 
             $captionProp = $selectedProp = '';
 
             if ($lang->isTranslated($captionStr)) {
-                $captionProp = " title='".$lang->translate($captionStr)."' ";
+                $captionProp = " title='" . $lang->translate($captionStr) . "' ";
             }
 
             if ($name === $el->getValue()) {

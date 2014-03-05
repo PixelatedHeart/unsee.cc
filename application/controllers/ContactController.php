@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Controller for the Feedback page
+ */
 class ContactController extends Zend_Controller_Action
 {
 
@@ -19,12 +22,18 @@ class ContactController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('css/subpage.css');
     }
 
+    /**
+     * Default contact controller
+     */
     public function indexAction()
     {
         $form = new Application_Form_Contact();
         $this->view->form = $form;
     }
 
+    /**
+     * Send form action handler
+     */
     public function sendAction()
     {
         $res = new stdClass();
@@ -50,6 +59,9 @@ class ContactController extends Zend_Controller_Action
         $this->_helper->json->sendJson($res);
     }
 
+    /**
+     * Sends contact email
+     */
     private function sendMail($subject, $message, $fromName, $fromEmail)
     {
         $mail = new Zend_Mail('UTF-8');

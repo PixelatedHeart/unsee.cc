@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Main page controller
+ */
 class IndexController extends Zend_Controller_Action
 {
     public function init()
@@ -17,9 +20,5 @@ class IndexController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/main.css');
         $this->view->headLink()->appendStylesheet('css/sizes.css');
-    }
-
-    public function indexAction()
-    {
     }
 }

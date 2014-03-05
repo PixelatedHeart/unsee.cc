@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Form to configure image viewing settings
+ */
 class Application_Form_Settings extends Zend_Form
 {
 
@@ -11,9 +14,9 @@ class Application_Form_Settings extends Zend_Form
         $settings = Zend_Registry::get('config')->settings;
         $lang = Zend_Registry::get('Zend_Translate');
 
+        // TODO: This requires implementation
         $continents = Zend_Locale::getTranslationList('Territory', $lang->getLocale(), 1);
         $countries = Zend_Locale::getTranslationList('Territory', $lang->getLocale(), 2);
-
         array_unshift($countries, current($continents));
 
         foreach ($settings as $section => $fields) {
@@ -49,7 +52,7 @@ class Application_Form_Settings extends Zend_Form
                 if (!empty($params['disabled']) && $params['disabled'] === 'true') {
                     $element->setAttrib('disabled', 'disabled');
                 }
-                
+
                 if (!empty($params['model'])) {
                     $modelClass = 'Unsee_Form_Element_Select_Model_' . $params['model'];
 
