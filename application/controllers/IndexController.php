@@ -5,9 +5,10 @@
  */
 class IndexController extends Zend_Controller_Action
 {
+
     public function init()
     {
-        
+
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
         $this->view->headScript()->appendFile('js/vendor/modernizr-2.6.2.min.js');
         $this->view->headScript()->appendFile('js/vendor/jquery.iframe-transport.js');
@@ -20,5 +21,10 @@ class IndexController extends Zend_Controller_Action
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/main.css');
         $this->view->headLink()->appendStylesheet('css/sizes.css');
+    }
+
+    public function indexAction()
+    {
+        
     }
 }

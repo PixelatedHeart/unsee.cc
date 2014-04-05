@@ -54,10 +54,22 @@ class Unsee_Hash extends Unsee_Redis
         // This is all it takes to set a hash
         $this->key = $hash;
 
-        // Check if the found hash exists and outdated, while we're at it
-        if ($this->exists() && $this->isViewable()) {
+        // Check if the found hash exists and outdated, while we're at it (shouldn't happen)
+        if ($this->exists() && !$this->isViewable()) {
             $this->delete();
-            $this->setNewHash();
+            return $this->setNewHash();
+        }
+
+        // In case the new hash doesn't exist but the files are actually present (shouldn't happen)
+        // Delete those files
+        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->key;
+        if (!$this->exists() && file_exists($dir)) {
+            // Remove old hash storage sub-dir
+            $dirIterator = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
+            foreach(new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST) as $path) {
+                $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
+            }
+            rmdir($dir);
         }
 
         return true;
