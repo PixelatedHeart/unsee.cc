@@ -54,9 +54,14 @@ class Unsee_Hash extends Unsee_Redis
         // This is all it takes to set a hash
         $this->key = $hash;
 
-        // Check if the found hash exists and outdated, while we're at it (shouldn't happen)
-        if ($this->exists() && !$this->isViewable()) {
-            $this->delete();
+        // Check if the found hash exists
+        if ($this->exists()) {
+            // Delete it if it's outdated.
+            if (!$this->isViewable()) {
+                $this->delete();
+            }
+
+            // Anyway try generating a new one
             return $this->setNewHash();
         }
 
