@@ -353,7 +353,7 @@ class ViewController extends Zend_Controller_Action
         $this->getResponse()->setHeader('Content-type', $imgDoc->type);
 
         // Dump image data
-        print $imgDoc->getImageData();
+        print $imgDoc->content;
 
         // The hash itself was already outdated for one of the reasons.
         if (!$hashDoc->isViewable()) {

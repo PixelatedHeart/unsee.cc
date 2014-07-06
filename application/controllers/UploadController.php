@@ -40,8 +40,7 @@ class UploadController extends Zend_Controller_Action
                     if (!$upload->isUploaded($file)) {
                         $info = null;
                     } else {
-                        $imgDoc = new Unsee_Image();
-                        $imgDoc->hash = $response->hash;
+                        $imgDoc = new Unsee_Image($response->hash . '_'.  uniqid());
                         $imgDoc->setFile($info['tmp_name']);
                     }
                 }

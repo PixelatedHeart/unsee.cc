@@ -65,18 +65,6 @@ class Unsee_Hash extends Unsee_Redis
             return $this->setNewHash();
         }
 
-        // In case the new hash doesn't exist but the files are actually present (shouldn't happen)
-        // Delete those files
-        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->key;
-        if (!$this->exists() && file_exists($dir)) {
-            // Remove old hash storage sub-dir
-            $dirIterator = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
-            foreach(new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::CHILD_FIRST) as $path) {
-                $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
-            }
-            rmdir($dir);
-        }
-
         return true;
     }
 
@@ -87,11 +75,11 @@ class Unsee_Hash extends Unsee_Redis
     public function getImages()
     {
         // read files in directory
-        $storage = Zend_Registry::get('config')->storagePath;
-        $files = glob($storage . $this->key . '/*');
+        $imagesKeys = Unsee_Redis::keys($this->key . '*', 1);
         $imageDocs = array();
-        foreach ($files as $file) {
-            $imageDocs[] = new Unsee_Image(basename($file));
+
+        foreach ($imagesKeys as $key) {
+            $imageDocs[] = new Unsee_Image($key);
         }
 
         return $imageDocs;

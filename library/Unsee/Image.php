@@ -35,25 +35,9 @@ class Unsee_Image extends Unsee_Redis
      */
     public $secureTtd = 0;
 
-    /**
-     * Deletes the image model and the file associated with it
-     */
-    public function delete()
+    public function __construct($hash)
     {
-        unlink($this->getFilePath());
-        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->hash;
-        !glob($dir . '/*') && rmdir($dir);
-        parent::delete();
-    }
-
-    public function __construct($key = null)
-    {
-
-        if (empty($key)) {
-            $key = uniqid();
-        }
-
-        parent::__construct($key, 1);
+        parent::__construct($hash, 1);
         $this->setSecureParams();
     }
 
@@ -82,51 +66,19 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setFile($filePath)
     {
+        $info = getimagesize($filePath);
+
         $image = new Imagick();
         $image->readimage($filePath);
         $image->stripimage();
-
-        $filePath = $this->getFilePath();
-        $filePathDir = dirname($filePath);
-
-        if (!is_dir($filePathDir)) {
-            mkdir($filePathDir, 0755);
-        }
-
-        file_put_contents($filePath, $image->getimageblob());
-
-        $info = getimagesize($filePath);
 
         $this->size = filesize($filePath);
         $this->type = $info['mime'];
         $this->width = $info[0];
         $this->height = $info[1];
+        $this->content = $image->getImageBlob();
 
         return true;
-    }
-
-    /**
-     * Returns the file path of for the model's image
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        $storage = Zend_Registry::get('config')->storagePath;
-        $file = $storage . $this->hash . '/' . $this->key;
-        return $file;
-    }
-
-    /**
-     * Sets and returns the content of the image file
-     * @return string
-     */
-    public function getImageData()
-    {
-        if (empty($this->data)) {
-            $this->data = file_get_contents($this->getFilePath());
-        }
-
-        return $this->data;
     }
 
     /**
@@ -137,7 +89,7 @@ class Unsee_Image extends Unsee_Redis
     {
         if (!$this->iMagick) {
             $iMagick = new Imagick();
-            $iMagick->readimageblob($this->getImageData());
+            $iMagick->readimageblob($this->content);
             $this->iMagick = $iMagick;
         }
 
@@ -165,7 +117,7 @@ class Unsee_Image extends Unsee_Redis
         }
 
         $text = $_SERVER['REMOTE_ADDR'];
-        $image = imagecreatefromstring($this->getImageData());
+        $image = imagecreatefromstring($this->content);
         $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
         $im = imagecreatetruecolor(800, 800);
 
@@ -185,8 +137,8 @@ class Unsee_Image extends Unsee_Redis
         // TODO: imagick should support all formats
         /* $func */imagejpeg($image, null, 85);
 
-        $this->data = ob_get_clean();
-        $this->size = strlen($this->data);
+        $this->content = ob_get_clean();
+        $this->size = strlen($this->content);
 
         return true;
     }
@@ -205,7 +157,7 @@ class Unsee_Image extends Unsee_Redis
 
         $comment = str_replace(array_keys($dict), $dict, $comment);
         $this->getImagick()->commentimage($comment);
-        $this->data = $this->getImagick()->getImageBlob();
+        $this->content = $this->getImagick()->getImageBlob();
         return true;
     }
 }

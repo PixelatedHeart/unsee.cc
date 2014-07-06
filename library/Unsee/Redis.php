@@ -141,4 +141,12 @@ class Unsee_Redis
         $this->selectDb();
         return $this->redis->hIncrBy($this->key, $key, $num);
     }
+
+    public static function keys($keys, $dbId = 0)
+    {
+        $redis = Zend_Registry::get('Redis');
+        $redis->select($dbId);
+
+        return $redis->keys($keys);
+    }
 }

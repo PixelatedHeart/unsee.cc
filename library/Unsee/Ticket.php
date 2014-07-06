@@ -41,7 +41,8 @@ class Unsee_Ticket extends Unsee_Redis
      */
     public function isAllowed($imageDoc)
     {
-        return isset($this->{$imageDoc->key}) && isset($_COOKIE[md5(Unsee_Session::getCurrent() . $imageDoc->hash)]);
+        list($hash) = explode('_', $imageDoc->key);
+        return isset($this->{$imageDoc->key}) && isset($_COOKIE[md5(Unsee_Session::getCurrent() . $hash)]);
     }
 
     /**
