@@ -182,13 +182,19 @@ class ViewController extends Zend_Controller_Action
         // If viewer is the creator - don't count their view
         if (!Unsee_Session::isOwner($hashDoc)) {
             $hashDoc->views++;
+
+            // Reached max views for this hash
+            if ($hashDoc->max_views && $hashDoc->views >= $hashDoc->max_views) {
+                // Remove the hash in a while for the images to be displayed
+                $hashDoc->expireAt(time() + 30);
+            }
         } else {
             // Owner - include extra webpage assets
             $this->view->headScript()->appendFile('js/settings.js');
             $this->view->headLink()->appendStylesheet('css/settings.css');
         }
 
-        // Don't show 'other party' text to the 'other party'
+        // Don't show the 'other party' text for the 'other party'
         if (Unsee_Session::isOwner($hashDoc) || $hashDoc->ttl !== Unsee_Hash::$_ttlTypes[0]) {
             if ($hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
                 $deleteTimeStr = '';
@@ -208,6 +214,12 @@ class ViewController extends Zend_Controller_Action
         $this->view->groups = $form->getDisplayGroups();
 
         return true;
+    }
+
+    public function noContentAction()
+    {
+        $this->getResponse()->setHeader('Status', '204 No content');
+        die();
     }
 
     /**
@@ -323,8 +335,7 @@ class ViewController extends Zend_Controller_Action
 
         // Dropping request if params are not right or the image is too old
         if (!$imageId || !$ticket || !$time || $time < time()) {
-            $this->getResponse()->setHeader('Status', '204 No content');
-            die();
+            $this->noContentAction();
         }
 
         // Fetching the image Redis hash
@@ -332,11 +343,14 @@ class ViewController extends Zend_Controller_Action
 
         // It wasn't there
         if (!$imgDoc) {
-            $this->getResponse()->setHeader('Status', '204 No content');
-            die();
+            $this->noContentAction();
         }
 
         list($hashStr) = explode('_', $imgDoc->key);
+
+        if (!$hashStr) {
+            $this->noContentAction();
+        }
 
         // Fetching the parent hash
         $hashDoc = new Unsee_Hash($hashStr);
@@ -345,8 +359,7 @@ class ViewController extends Zend_Controller_Action
         if (!$hashDoc) {
             // But the image did, delete it
             $imgDoc && $imgDoc->delete();
-            $this->getResponse()->setHeader('Status', '204 No content');
-            die();
+            $this->noContentAction();
         }
 
         /**
@@ -354,8 +367,7 @@ class ViewController extends Zend_Controller_Action
          * direct access. Direct access means no referrer.
          */
         if ($hashDoc->no_download && empty($_SERVER['HTTP_REFERER'])) {
-            $this->getResponse()->setHeader('Status', '204 No content');
-            die();
+            $this->noContentAction();
         }
 
         // Fetching ticket list for the hash, it should have a ticket for the requested image
@@ -365,8 +377,7 @@ class ViewController extends Zend_Controller_Action
         if (!$ticketDoc->isAllowed($imgDoc) && ($hashDoc->no_download || $hashDoc->ttl === 'first')) {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
-            $this->getResponse()->setHeader('Status', '204 No content');
-            die();
+            $this->noContentAction();
         } else {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
