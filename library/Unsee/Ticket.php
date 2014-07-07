@@ -6,11 +6,7 @@
 class Unsee_Ticket extends Unsee_Redis
 {
 
-    /**
-     * Database id
-     * @var int
-     */
-    protected $db = 2;
+    const DB = 2;
 
     /**
      * Titme to live

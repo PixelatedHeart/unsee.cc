@@ -55,6 +55,8 @@ class ViewController extends Zend_Controller_Action
                 unset($values['no_download']);
             }
 
+            $expireAt = false;
+
             // Apply values from form to hash in Redis
             foreach ($values as $field => $value) {
                 if ($field == 'strip_exif') {
@@ -62,7 +64,24 @@ class ViewController extends Zend_Controller_Action
                     continue;
                 }
 
+                if ($field === 'ttl') {
+                    // Delete after view?
+                    if ($value == Unsee_Hash::$_ttlTypes[0]) {
+                        $hashDoc->max_views = 1;
+                        $expireAt = $hashDoc->timestamp + Unsee_Redis::EXP_DAY;
+                        // Set to expire within a day after upload
+                    } else {
+                        $amount = array_search($value, Unsee_Hash::$_ttlTypes);
+                        $hashDoc->max_views = 0;
+                        $expireAt = $hashDoc->timestamp + $amount;
+                    }
+                }
+
                 $hashDoc->$field = $value;
+            }
+
+            if ($expireAt) {
+                $hashDoc->expireAt($expireAt);
             }
         }
     }
@@ -115,6 +134,12 @@ class ViewController extends Zend_Controller_Action
             $this->handleSettingsFormSubmit($form, $hashDoc);
         }
 
+        // Check again
+        // It was already deleted/did not exist/expired
+        if (!$hashDoc->exists() || !$hashDoc->isViewable($hashDoc)) {
+            return $this->deletedAction();
+        }
+
         // No use to do anything, page is not viewable for one of the reasons
         if (!$hashDoc->isViewable($hashDoc)) {
             $hashDoc->delete();
@@ -164,8 +189,8 @@ class ViewController extends Zend_Controller_Action
         }
 
         // Don't show 'other party' text to the 'other party'
-        if (Unsee_Session::isOwner($hashDoc) || $hashDoc->ttl !== 'first') {
-            if ($hashDoc->ttl === 'first') {
+        if (Unsee_Session::isOwner($hashDoc) || $hashDoc->ttl !== Unsee_Hash::$_ttlTypes[0]) {
+            if ($hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
                 $deleteTimeStr = '';
                 $deleteMessageTemplate = 'delete_first';
             } else {
@@ -218,14 +243,14 @@ class ViewController extends Zend_Controller_Action
     private function processNoDownload()
     {
         // If it's a one-time view image
-        if ($this->hashDoc->ttl === 'first') {
+        if ($this->hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
             // Disable the "no download" checkbox
             // And set it to "checked"
             $this->form->getElement('no_download')->setAttrib('disabled', 'disabled')->setAttrib('checked', 'checked');
         }
 
         // Don't allow download if the setting is set accordingly or the image is a one-timer
-        $this->view->no_download = $this->hashDoc->no_download || $this->hashDoc->ttl === 'first';
+        $this->view->no_download = $this->hashDoc->no_download || $this->hashDoc->ttl === Unsee_Hash::$_ttlTypes[0];
         return true;
     }
 
@@ -311,8 +336,10 @@ class ViewController extends Zend_Controller_Action
             die();
         }
 
+        list($hashStr) = explode('_', $imgDoc->key);
+
         // Fetching the parent hash
-        $hashDoc = new Unsee_Hash($imgDoc->hash);
+        $hashDoc = new Unsee_Hash($hashStr);
 
         // It didn't exist
         if (!$hashDoc) {
@@ -339,6 +366,7 @@ class ViewController extends Zend_Controller_Action
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
             $this->getResponse()->setHeader('Status', '204 No content');
+            die();
         } else {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);

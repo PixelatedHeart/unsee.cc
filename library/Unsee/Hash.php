@@ -6,6 +6,8 @@
 class Unsee_Hash extends Unsee_Redis
 {
 
+    const DB = 0;
+
     /**
      * Associative array of periods of life for hashes
      * @var array
@@ -21,6 +23,8 @@ class Unsee_Hash extends Unsee_Redis
             $this->setNewHash();
             $this->timestamp = time();
             $this->ttl = self::$_ttlTypes[0];
+            $this->expireAt(time() + static::EXP_DAY);
+            $this->max_views = 1;
             $this->views = 0;
             $this->no_download = true;
             $this->strip_exif = true;
@@ -28,6 +32,17 @@ class Unsee_Hash extends Unsee_Redis
             $this->sess = Unsee_Session::getCurrent();
             $this->watermark_ip = true;
         }
+    }
+
+    public function expireAt($time)
+    {
+        $images = $this->getImages();
+
+        foreach ($images as $imgDoc) {
+            $imgDoc->expireAt($time);
+        }
+
+        return parent::expireAt($time);
     }
 
     /**
@@ -97,12 +112,6 @@ class Unsee_Hash extends Unsee_Redis
             $item->delete();
         }
 
-        // Remove hash storage sub-dir
-        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->key;
-        if (is_dir($dir)) {
-            rmdir($dir);
-        }
-
         parent::delete();
     }
 
@@ -112,41 +121,7 @@ class Unsee_Hash extends Unsee_Redis
      */
     public function isViewable()
     {
-        if ($this->ttl === 'first' && !$this->views) {
-            // Single-view image hasn't been viewed yet
-            return true;
-        } elseif ($this->ttl !== 'first' && $this->getTtlSeconds() > 0) {
-            // Image not yet outdated
-            return true;
-        } else {
-            // Dead
-            return false;
-        }
-    }
-
-    /**
-     * Returns number of seconds left for the hash to live
-     * @return int
-     */
-    public function getTtlSeconds()
-    {
-        // Converting ttl into strtotime acceptable string
-        switch ($this->ttl) {
-            // Date in past for right now
-            case 'now':
-                $ttl = '-1 day';
-                break;
-            // Delete on first view, use one second
-            case 'first':
-                return 1;
-            // almost strtotime-ready otherwise (time value)
-            default:
-                $ttl = '+1 ' . $this->ttl;
-                break;
-        }
-
-        // Get time to die
-        return strtotime($ttl, $this->timestamp) - time();
+        return !$this->max_views || $this->max_views > $this->views;
     }
 
     /**
@@ -155,7 +130,7 @@ class Unsee_Hash extends Unsee_Redis
      */
     public function getTtlWords()
     {
-        $secondsLeft = $this->getTtlSeconds();
+        $secondsLeft = $this->ttl();
         $lang = Zend_Registry::get('Zend_Translate');
 
         if ($secondsLeft < 60) {

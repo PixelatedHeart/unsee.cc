@@ -12,11 +12,7 @@ class Unsee_Image extends Unsee_Redis
      */
     public $data;
 
-    /**
-     * Database id
-     * @var int
-     */
-    protected $db = 1;
+    const DB = 1;
 
     /**
      * Image Magick instance
@@ -37,7 +33,7 @@ class Unsee_Image extends Unsee_Redis
 
     public function __construct($hash)
     {
-        parent::__construct($hash, 1);
+        parent::__construct($hash);
         $this->setSecureParams();
     }
 
@@ -48,7 +44,14 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setSecureParams()
     {
-        $this->secureTtd = time() + Unsee_Ticket::$ttl;
+        
+        $linkTtl = Unsee_Ticket::$ttl;
+        
+        if (!$this->no_download) {
+            $linkTtl = $this->ttl();
+        }
+
+        $this->secureTtd = time() + $linkTtl;
 
         // Preparing a hash for nginx's secure link
         $md5 = base64_encode(md5($this->key . $this->secureTtd, true));
@@ -77,6 +80,7 @@ class Unsee_Image extends Unsee_Redis
         $this->width = $info[0];
         $this->height = $info[1];
         $this->content = $image->getImageBlob();
+        $this->expireAt(time() + static::EXP_DAY);
 
         return true;
     }
@@ -112,7 +116,11 @@ class Unsee_Image extends Unsee_Redis
      */
     public function watermark()
     {
-        if (Unsee_Session::isOwner(new Unsee_Hash($this->hash))) {
+        list($realHash) = explode('_', $this->key);
+
+        $hashDoc = new Unsee_Hash($realHash);
+
+        if (Unsee_Session::isOwner($hashDoc)) {
             return true;
         }
 

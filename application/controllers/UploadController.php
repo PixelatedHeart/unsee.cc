@@ -33,17 +33,19 @@ class UploadController extends Zend_Controller_Action
             } else {
                 $files = $upload->getFileInfo();
 
-                // Tell the page the name of the new hash
-                $response->hash = $this->getNewHashName();
+                $hashDoc = new Unsee_Hash();
 
-                foreach ($files as $file => &$info) {
-                    if (!$upload->isUploaded($file)) {
-                        $info = null;
-                    } else {
-                        $imgDoc = new Unsee_Image($response->hash . '_'.  uniqid());
+                // Tell the page the name of the new hash
+                $response->hash = $hashDoc->key;
+
+                foreach ($files as $file => $info) {
+                    if ($upload->isUploaded($file)) {
+                        $imgDoc = new Unsee_Image($response->hash . '_' . uniqid());
                         $imgDoc->setFile($info['tmp_name']);
                     }
                 }
+
+                $this->setExpiration($hashDoc);
             }
         } catch (Exception $e) {
             $response->error = $translate->translate('error_uploading');
@@ -51,19 +53,18 @@ class UploadController extends Zend_Controller_Action
         $this->_helper->json->sendJson($response);
     }
 
-    /**
-     * Creates a new hash document and returns it's name
-     * @return type
-     */
-    private function getNewHashName()
+    private function setExpiration($hashDoc)
     {
-        // Creating a new hash item (/bababa/)
-        $hashDoc = new Unsee_Hash();
-
-        if (isset($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
-            $hashDoc->ttl = $_POST['time'];
+        // Custom ttl was set
+        if (!empty($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
+            if ($_POST['time'] > 0) {
+                // Disable single view, which is ON by default
+                $hashDoc->max_views = 0;
+                // Expire in specified interval, instead of a day
+                $hashDoc->expireAt(time() + $_POST['time']);
+            }
         }
 
-        return $hashDoc->key;
+        return true;
     }
 }

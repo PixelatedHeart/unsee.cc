@@ -6,6 +6,6 @@
 class Unsee_Block extends Unsee_Redis
 {
 
-    protected $db = 3;
+    const DB = 3;
 
 }
