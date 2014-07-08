@@ -316,7 +316,7 @@ class ViewController extends Zend_Controller_Action
     public function deletedAction()
     {
         $this->render('deleted');
-        return $this->getResponse()->setHttpResponseCode(310);
+        return $this->getResponse()->setHttpResponseCode(410);
     }
 
     /**
