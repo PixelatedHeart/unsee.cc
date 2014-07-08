@@ -12,7 +12,7 @@ class Unsee_Hash extends Unsee_Redis
      * Associative array of periods of life for hashes
      * @var array
      */
-    public static $_ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
+    public static $ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
     public function __construct($key = null)
     {
@@ -22,7 +22,7 @@ class Unsee_Hash extends Unsee_Redis
         if (empty($key)) {
             $this->setNewHash();
             $this->timestamp = time();
-            $this->ttl = self::$_ttlTypes[0];
+            $this->ttl = self::$ttlTypes[0];
             $this->expireAt(time() + static::EXP_DAY);
             $this->max_views = 1;
             $this->views = 0;
@@ -34,6 +34,11 @@ class Unsee_Hash extends Unsee_Redis
         }
     }
 
+    /**
+     * Set expiration time for the hash and also for the related images
+     * @param int $time
+     * @return bool
+     */
     public function expireAt($time)
     {
         $images = $this->getImages();

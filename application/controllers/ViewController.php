@@ -49,7 +49,7 @@ class ViewController extends Zend_Controller_Action
             $values = $form->getValues();
 
             // Changed value of TTL
-            if (isset($values['ttl']) && $hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
+            if (isset($values['ttl']) && $hashDoc->ttl === Unsee_Hash::$ttlTypes[0]) {
                 // Revert no_download to the value from DB, since there's no way
                 // it could have changed. It's disabled when ttl == 'first'.
                 unset($values['no_download']);
@@ -66,12 +66,12 @@ class ViewController extends Zend_Controller_Action
 
                 if ($field === 'ttl') {
                     // Delete after view?
-                    if ($value == Unsee_Hash::$_ttlTypes[0]) {
+                    if ($value == Unsee_Hash::$ttlTypes[0]) {
                         $hashDoc->max_views = 1;
                         $expireAt = $hashDoc->timestamp + Unsee_Redis::EXP_DAY;
                         // Set to expire within a day after upload
                     } else {
-                        $amount = array_search($value, Unsee_Hash::$_ttlTypes);
+                        $amount = array_search($value, Unsee_Hash::$ttlTypes);
                         $hashDoc->max_views = 0;
                         $expireAt = $hashDoc->timestamp + $amount;
                     }
@@ -195,8 +195,8 @@ class ViewController extends Zend_Controller_Action
         }
 
         // Don't show the 'other party' text for the 'other party'
-        if (Unsee_Session::isOwner($hashDoc) || $hashDoc->ttl !== Unsee_Hash::$_ttlTypes[0]) {
-            if ($hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
+        if (Unsee_Session::isOwner($hashDoc) || $hashDoc->ttl !== Unsee_Hash::$ttlTypes[0]) {
+            if ($hashDoc->ttl === Unsee_Hash::$ttlTypes[0]) {
                 $deleteTimeStr = '';
                 $deleteMessageTemplate = 'delete_first';
             } else {
@@ -255,14 +255,14 @@ class ViewController extends Zend_Controller_Action
     private function processNoDownload()
     {
         // If it's a one-time view image
-        if ($this->hashDoc->ttl === Unsee_Hash::$_ttlTypes[0]) {
+        if ($this->hashDoc->ttl === Unsee_Hash::$ttlTypes[0]) {
             // Disable the "no download" checkbox
             // And set it to "checked"
             $this->form->getElement('no_download')->setAttrib('disabled', 'disabled')->setAttrib('checked', 'checked');
         }
 
         // Don't allow download if the setting is set accordingly or the image is a one-timer
-        $this->view->no_download = $this->hashDoc->no_download || $this->hashDoc->ttl === Unsee_Hash::$_ttlTypes[0];
+        $this->view->no_download = $this->hashDoc->no_download || $this->hashDoc->ttl === Unsee_Hash::$ttlTypes[0];
         return true;
     }
 

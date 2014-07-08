@@ -31,7 +31,8 @@ class Unsee_Form_Decorator_Radio extends Zend_Form_Decorator_Abstract
                 $selectedProp = "checked='checked'";
             }
 
-            $res .= "<div><input type='radio' name='{$elName}' id='{$elName}_$name' value='$name' $selectedProp/><label $captionProp for='{$elName}_$name'>$title</label></div>";
+            $res .= "<div><input type='radio' name='{$elName}' id='{$elName}_$name' value='$name' $selectedProp/>".
+                    "<label $captionProp for='{$elName}_$name'>$title</label></div>";
         }
 
         return $res;

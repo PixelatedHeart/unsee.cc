@@ -53,11 +53,16 @@ class UploadController extends Zend_Controller_Action
         $this->_helper->json->sendJson($response);
     }
 
+    /**
+     * Sets the TTL for the provided hash
+     * @param Unsee_Hash $hashDoc
+     * @return boolean
+     */
     private function setExpiration($hashDoc)
     {
         // Custom ttl was set
-        if (!empty($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
-            $amount = array_search($_POST['time'], Unsee_Hash::$_ttlTypes);
+        if (!empty($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$ttlTypes)) {
+            $amount = array_search($_POST['time'], Unsee_Hash::$ttlTypes);
             if ($amount > 0) {
                 // Disable single view, which is ON by default
                 $hashDoc->max_views = 0;
