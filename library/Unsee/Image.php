@@ -44,9 +44,9 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setSecureParams()
     {
-        
+
         $linkTtl = Unsee_Ticket::$ttl;
-        
+
         if (!$this->no_download) {
             $linkTtl = $this->ttl();
         }

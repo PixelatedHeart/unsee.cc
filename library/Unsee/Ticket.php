@@ -17,6 +17,7 @@ class Unsee_Ticket extends Unsee_Redis
     public function __construct()
     {
         parent::__construct(Unsee_Session::getCurrent());
+        $this->expireAt(time() + static::$ttl);
     }
 
     /**
