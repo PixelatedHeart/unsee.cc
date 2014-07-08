@@ -57,11 +57,13 @@ class UploadController extends Zend_Controller_Action
     {
         // Custom ttl was set
         if (!empty($_POST['time']) && in_array($_POST['time'], Unsee_Hash::$_ttlTypes)) {
-            if ($_POST['time'] > 0) {
+            $amount = array_search($_POST['time'], Unsee_Hash::$_ttlTypes);
+            if ($amount > 0) {
                 // Disable single view, which is ON by default
                 $hashDoc->max_views = 0;
+                $hashDoc->ttl = $_POST['time'];
                 // Expire in specified interval, instead of a day
-                $hashDoc->expireAt(time() + $_POST['time']);
+                $hashDoc->expireAt(time() + $amount);
             }
         }
 
