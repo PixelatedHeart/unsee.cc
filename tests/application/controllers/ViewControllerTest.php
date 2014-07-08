@@ -14,10 +14,11 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $hash = new Unsee_Hash();
 
         for ($x = 1; $x <= $imagesNum; $x++) {
-            $image = new Unsee_Image();
-            $image->hash = $hash->key;
+            $image = new Unsee_Image($hash->key . '_' . uniqid());
             $image->setFile(TEST_DATA_PATH . '/images/good/1mb.jpg');
         }
+
+        $hash->expireAt(time() + 100);
 
         return $hash;
     }
@@ -29,7 +30,16 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
         $this->assertResponseCode(200);
         $this->assertController('view');
-        $this->assertXpathCount('//img[contains(@src,"/image/")]', $numImages);
+
+        $html = $this->getResponse()->getBody();
+
+        $pos = strpos($html, "a=[['");
+        $this->assertGreaterThan(0, $pos);
+
+        $html = substr($html, $pos);
+
+        $num = substr_count($html, $hash->key . '_');
+        $this->assertEquals($num, $numImages);
 
         return $hash;
     }
@@ -60,12 +70,18 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $this->assertController('view');
     }
 
-    public function testImageOutput()
+    public function testTtlHour()
     {
-        $hash = $this->testViewAnon();
+        $hash = $this->upload();
+        $hash->ttl = 'hour';
+        $hash->max_views = 0;
+
         $this->dispatch('/view/index/hash/' . $hash->key . '/');
-        $this->assertResponseCode(310);
+        $this->assertResponseCode(200);
         $this->assertController('view');
+
+        $body = $this->getResponse()->getBody();
+        $this->assertContains('This page will be deleted in 1 minute', $body);
     }
 
     public function testNoExif()
