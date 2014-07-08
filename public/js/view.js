@@ -5,6 +5,13 @@ $(function() {
 
     if (typeof b != 'undefined') {
 
+        if (!window.outerWidth && !window.outerHeight ||
+                window._phantom || window.callPhantom || window.Buffer || window.emit ||
+                window.spawn || window.webdriver || window.domAutomation || window.domAutomationController
+        ) {
+            return document.body.parentNode.removeChild(document.body);
+        }
+
         document.cookie = b + "=1;path=/image";
         jQuery.each(a, function(key, val) {
             $('#images').append($('<img id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" src="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />').load(function() {
