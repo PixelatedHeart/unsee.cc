@@ -42,6 +42,11 @@ class UploadController extends Zend_Controller_Action
                     if ($upload->isUploaded($file)) {
                         $imgDoc = new Unsee_Image($response->hash . '_' . uniqid());
                         $imgDoc->setFile($info['tmp_name']);
+
+                        // Remove uploaded file from temporary dir if it wasn't removed
+                        if (file_exists($info['tmp_name'])) {
+                            @unlink($info['tmp_name']);
+                        }
                     }
                 }
 
