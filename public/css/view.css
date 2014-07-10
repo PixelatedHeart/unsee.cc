@@ -35,10 +35,11 @@ div.description p {
     padding: 0 10px;
 }
 
-img{
-    margin-bottom: 5px;
+#images img{
+    margin-bottom: 30px;
     border: none;
     width: 99%;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
 }
 
 #screen
