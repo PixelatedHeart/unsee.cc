@@ -71,7 +71,8 @@ a
 
 #imgMessage
 {
-    margin-bottom: 10px;
+    position: fixed;
+    top: 0;
     font-size: 12px;
     width: 100%;
     background: url('/img/stripes.png');
@@ -79,6 +80,10 @@ a
     line-height: 30px;
     color: White;
     opacity: .6;
-    position: relative;
     z-index: 101;
+    
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(0,0,0,.5);
+    -moz-box-shadow: 0px 1px 5px 0px rgba(0,0,0,.5);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,.5);
+    
 }

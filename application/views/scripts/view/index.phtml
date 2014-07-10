@@ -1,12 +1,26 @@
 <?php
 $this->headMeta()->appendName('robots', 'noindex');
-?>
 
-<div id="header">
-    <a href="/"><img src="/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
-    <p><?= $this->translate('slogan') ?></p>
+if ($this->deleteTime) {
+
+    ?>
+    <div id="imgMessage"> 
+        <b><?= $this->deleteTime ?></b> 
+        <?php
+        if ($this->isOwner) {
+
+            ?> 
+            <span>(<?= $this->translate('click_settings'); ?>)</span> 
+            <?php
+        }
+
+        ?> 
+    </div> 
     <?php
-    if ($this->isOwner) {
+}
+
+if ($this->isOwner) {
+
     ?> 
     <div id="settings">
         <form method="post" action="">
@@ -15,70 +29,69 @@ $this->headMeta()->appendName('robots', 'noindex');
                 $groups = array_values($this->groups);
 
                 foreach ($groups as $key => $group) {
-                ?>
-                <li data-page="<?=$group->getName()?>" class="<? if (!$key) { ?> active<? } ?>"><?=$group->getLegend()?><div /></li>
-                <?php
+
+                    ?>
+                    <li data-page="<?= $group->getName() ?>" class="<? if (!$key) { ?> active<? } ?>"><?= $group->getLegend() ?><div /></li>
+                    <?php
                 }
+
                 ?>
             </ul>
 
             <?php
-            foreach ($groups as $gKey=>$group) {
-            ?>
-            <table class="<?=$group->getName()?>">
-            <?
-                $fields = array_values($group->getElements());
+            foreach ($groups as $gKey => $group) {
 
-                foreach ($fields as $key=>$field) {
-            ?> 
-                <tr>
-                    <td class="key"><?=$field->renderLabel()?></td><? if(!$key){ ?><td class="separator" rowspan="<?=count($fields);?>"><div/></td><?}?> 
-                    <td class="value"><?=$field->render()?></td> 
-                </tr> 
-            <?
-                }
-            ?> 
-            </table>
-            <?
+                ?>
+                <table class="<?= $group->getName() ?>">
+                    <?
+                    $fields = array_values($group->getElements());
+
+                    foreach ($fields as $key => $field) {
+
+                        ?> 
+                        <tr>
+                            <td class="key"><?= $field->renderLabel() ?></td><? if (!$key) { ?><td class="separator" rowspan="<?= count($fields); ?>"><div/></td><? } ?> 
+                            <td class="value"><?= $field->render() ?></td> 
+                        </tr> 
+                        <?
+                    }
+
+                    ?> 
+                </table>
+                <?
             }
+
             ?> 
-            <input type="submit" value="<?=$this->translate('apply')?>"/>
+            <input type="submit" value="<?= $this->translate('apply') ?>"/>
         </form>
     </div>
     <?php
-    }
-    ?> 
+}
+
+?> 
+
+<div id="header">
+    <a href="/"><img src="/img/logo.png" id="logo" alt="Unsee" width="200" height="144" /></a>
+    <p><?= $this->translate('slogan') ?></p>
+
 </div>
 
-<?php
-if ($this->deleteTime) {
-?>
-<div id="imgMessage"> 
-    <b><?= $this->deleteTime ?></b> 
-    <?php
-    if ($this->isOwner) {
-    ?> 
-        <span>(<?= $this->translate('click_settings'); ?>)</span> 
-    <?php
-    }
-    ?> 
-</div> 
-<?php
-}
-?>
 
 <?
 if ($this->title) {
-?>
-<div class="title"><h3><?=$this->title;?></h3></div>
-<?
+
+    ?>
+    <div class="title"><h3><?= $this->title; ?></h3></div>
+    <?
 }
 
 if ($this->description) {
-?>
-<div class="description"><p><?=$this->description;?></p></div>
-<?
+
+    ?>
+    <div class="description"><p><?= $this->description; ?></p></div>
+    <?
 }
+
 ?>
 
 <?php
@@ -88,13 +101,16 @@ if ($this->no_download) {
     <div id="screen"></div>
     <?php
 }
+
 ?>
 <script>
-    var a=[<?php
+    var a = [<?php
 $key = 0;
 foreach ($this->images as $imgDoc) {
-    ?>['<?=$imgDoc->key?>', '<?=$imgDoc->secureMd5?>', <?=$imgDoc->secureTtd?>, <?=$imgDoc->width;?>],<?php
+
+    ?>['<?= $imgDoc->key ?>', '<?= $imgDoc->secureMd5 ?>', <?= $imgDoc->secureTtd ?>, <?= $imgDoc->width; ?>],<?php
 }
-?>],b = '<?=$this->cookieCheck;?>';
+
+?>], b = '<?= $this->cookieCheck; ?>';
 </script>
 <div id="images"></div>

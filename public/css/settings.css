@@ -10,10 +10,15 @@
     margin-bottom: 10px;
     padding-bottom: 20px;
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,.5);
-    background-color: #222;
+    background-color: rgba(0, 0, 0, .9);
     text-align: center;
     color: #BBB;
-    position: relative;
+    width: 100%;
+    position: fixed !important;
+
+    -webkit-box-shadow: 0px 1px 10px 0px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 1px 10px 0px rgba(0,0,0,1);
+    box-shadow: 0px 1px 10px 0px rgba(0,0,0,1);
 }
 
 #settings input[type="radio"] {
@@ -156,12 +161,12 @@
     left: 50%;
 
     margin-left: -10px;
-    
+
     width: 0; 
-	height: 0; 
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-top: 10px solid #EEE;
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #EEE;
 }
 
 
