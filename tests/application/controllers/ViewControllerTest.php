@@ -33,7 +33,7 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
 
         $html = $this->getResponse()->getBody();
 
-        $pos = strpos($html, "a=[['");
+        $pos = strpos($html, "a = [['");
         $this->assertGreaterThan(0, $pos);
 
         $html = substr($html, $pos);
