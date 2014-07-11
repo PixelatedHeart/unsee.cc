@@ -1,6 +1,6 @@
 $(function() {
-    $.getScript('http://127.0.0.1:3000/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
-        var socket = io.connect('http://127.0.0.1:3000');
+    $.getScript('//'+domain+':3000/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
+        var socket = io.connect(window.location.protocol  + '//'+domain+':3000');
         var room = 'nedori';
 
         socket.on('connect', function(client) {
