@@ -22,11 +22,13 @@ class ViewController extends Zend_Controller_Action
         $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
         $this->view->headScript()->appendFile('js/view.js');
+        $this->view->headScript()->appendFile('js/chat.js');
 
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
         $this->view->headLink()->appendStylesheet('css/view.css');
         $this->view->headLink()->appendStylesheet('css/subpage.css');
+        $this->view->headLink()->appendStylesheet('css/chat.css');
 
         // Preheating the form
         $this->form = new Application_Form_Settings;

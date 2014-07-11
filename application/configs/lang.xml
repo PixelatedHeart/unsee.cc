@@ -362,7 +362,7 @@
         </tu>
         <tu tuid="settings_security_no_download_caption">
             <tuv xml:lang="ru"><seg>Не позволять пользователям совершать правый клик по картинке чтобы сохранить её</seg></tuv>
-            <tuv xml:lang="en"><seg>Restrict right-clicking images to save them</seg></tuv>
+            <tuv xml:lang="en"><seg>Restrict right-clicking images to save them, can't be disabled for single-view images</seg></tuv>
         </tu>
 
         <tu tuid="settings_security_password">
@@ -535,7 +535,7 @@
         </tu>
         
         <tu tuid="minute_one">
-            <tuv xml:lang="ru"><seg>минута</seg></tuv>
+            <tuv xml:lang="ru"><seg>минуту</seg></tuv>
             <tuv xml:lang="en"><seg>minute</seg></tuv>
         </tu>
         <tu tuid="minute_couple">

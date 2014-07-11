@@ -20,4 +20,10 @@ $(function() {
             $('#imgMessage').slideDown();
         });
     });
+
+    $(document).keyup(function(e) {
+        if (e.keyCode === 27) {
+            $('#settings ul').click();
+        }
+    });
 });
