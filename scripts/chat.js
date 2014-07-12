@@ -11,7 +11,9 @@ io.on('connection', function(socket) {
         socket.emit('joined');
         socket.room = hash;
 
-        io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+        if (io.sockets.adapter.rooms[socket.room]) {
+            io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+        }
 
         redisCli.select(0, function() {
             redisCli.hgetall(hash, function(some, obj) {
