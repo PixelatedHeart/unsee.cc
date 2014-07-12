@@ -71,12 +71,13 @@ $(function() {
                     var placeHolder = 'Live chat';
 
                     if (num) {
-                        placeHolder += ' (' + num + ' guest';
+                        placeHolder += ' (' + num + ' other guest';
 
                         if (num % 10 !== 1) {
                             placeHolder += 's';
                         }
-                        placeHolder += ')';
+                        
+                        placeHolder += ' here)';
                     } else {
                         placeHolder += ' (nobody\'s here)';
                     }
