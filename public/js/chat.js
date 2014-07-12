@@ -1,7 +1,28 @@
+var pageVisible = true;
+var interval;
+var texts = [document.title, 'New chat message'];
+
 $(function() {
+    function signalMessage() {
+        if (pageVisible) {
+            document.title = texts[0];
+            return clearInterval(interval);
+        }
+
+        document.title = texts[+!jQuery.inArray(document.title, texts)];
+    }
+
     if (typeof domain === 'undefined') {
         return false;
     }
+
+    $(document).on('show', function() {
+        pageVisible = true;
+    });
+
+    $(document).on('hide', function() {
+        pageVisible = false;
+    });
 
     $.getScript('https://' + domain + '/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
         var socket = io.connect('https://' + domain);
@@ -24,6 +45,11 @@ $(function() {
 
                 socket.removeAllListeners('message');
                 socket.on('message', function(res) {
+
+                    if (!pageVisible) {
+                        interval = setInterval(signalMessage, 1000);
+                    }
+
                     var mess = $('<li></li>');
                     mess.text(res.text);
                     if (res.author) {

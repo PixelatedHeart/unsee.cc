@@ -23,6 +23,7 @@ class ViewController extends Zend_Controller_Action
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
         $this->view->headScript()->appendFile('js/view.js');
         $this->view->headScript()->appendFile('js/chat.js');
+        $this->view->headScript()->appendFile('js/jquery-visibility.js');
 
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
