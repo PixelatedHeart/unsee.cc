@@ -11,6 +11,8 @@ io.on('connection', function(socket) {
         socket.emit('joined');
         socket.room = hash;
 
+        io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+
         redisCli.select(0, function() {
             redisCli.hgetall(hash, function(some, obj) {
                 if (!obj) {
@@ -27,6 +29,10 @@ io.on('connection', function(socket) {
         var ua = socket.client.request.headers['user-agent'];
         clientSess = crypto.createHash('md5').update(ua + ip).digest('hex');
         io.to(socket.room).emit('message', {text: msg, author: clientSess === socket.authorSess});
+    });
+
+    socket.on('disconnect', function() {
+        io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
     });
 });
 server.listen(3001);

@@ -33,6 +33,26 @@ $(function() {
                         $('#chat li').last().remove();
                     }
                 });
+
+                socket.on('number', function(num) {
+
+                    num--;
+
+                    var placeHolder = 'Live chat';
+
+                    if (num) {
+                        placeHolder += ' (' + num + ' guest';
+
+                        if (num % 10 !== 1) {
+                            placeHolder += 's';
+                        }
+                        placeHolder += ')';
+                    } else {
+                        placeHolder += ' (nobody\'s here)';
+                    }
+
+                    $('#send_message').attr('placeholder', placeHolder);
+                });
             });
         });
     });
