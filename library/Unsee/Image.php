@@ -5,13 +5,6 @@
  */
 class Unsee_Image extends Unsee_Redis
 {
-
-    /**
-     * Image content
-     * @var string
-     */
-    public $data;
-
     const DB = 1;
 
     /**
@@ -116,37 +109,24 @@ class Unsee_Image extends Unsee_Redis
      */
     public function watermark()
     {
-        list($realHash) = explode('_', $this->key);
-
-        $hashDoc = new Unsee_Hash($realHash);
-
-        if (Unsee_Session::isOwner($hashDoc)) {
-            return true;
-        }
-
         $text = $_SERVER['REMOTE_ADDR'];
-        $image = imagecreatefromstring($this->content);
         $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
-        $im = imagecreatetruecolor(800, 800);
+        $image = $this->getImagick();
 
-        imagesavealpha($im, true);
-        imagefill($im, 0, 0, imagecolorallocatealpha($im, 0, 0, 0, 127));
-        imagettftext($im, 12, 0, 100, 100, -imagecolorallocatealpha($im, 150, 150, 150, 70), $font, $text);
-        imagealphablending($im, true);
-        imagesettile($image, $im);
-        imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), IMG_COLOR_TILED);
+        $width = $image->getimagewidth();
 
-        $func = str_replace('/', '', $this->type);
-        if (strpos($func, 'image') !== 0 || !function_exists($func)) {
-            $func = 'imagejpeg';
-        }
+        $watermark = new Imagick();
+        $watermark->newImage(1000, 1000, new ImagickPixel('none'));
 
-        ob_start();
-        // TODO: imagick should support all formats
-        /* $func */imagejpeg($image, null, 85);
+        $draw = new ImagickDraw();
+        $draw->setFont($font);
+        $draw->setfontsize(30);
+        $draw->setFillColor('gray');
+        $draw->setFillOpacity(.3);
+        $watermark->annotateimage($draw, 100, 200, -45, $text);
+        $watermark->annotateimage($draw, 550, 550, 45, $text);
 
-        $this->content = ob_get_clean();
-        $this->size = strlen($this->content);
+        $this->iMagick = $image->textureimage($watermark);
 
         return true;
     }
@@ -165,7 +145,20 @@ class Unsee_Image extends Unsee_Redis
 
         $comment = str_replace(array_keys($dict), $dict, $comment);
         $this->getImagick()->commentimage($comment);
-        $this->content = $this->getImagick()->getImageBlob();
+
         return true;
+    }
+
+    /**
+     * Returns image binary content
+     * @return type
+     */
+    public function getImageContent()
+    {
+        if ($this->iMagick) {
+            return $this->iMagick->getimageblob();
+        } else {
+            return $this->content;
+        }
     }
 }

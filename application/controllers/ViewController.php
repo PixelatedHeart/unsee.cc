@@ -386,15 +386,16 @@ class ViewController extends Zend_Controller_Action
         }
 
         // Watermark viewer's IP if required
-        $hashDoc->watermark_ip && $imgDoc->watermark();
+        if ($hashDoc->watermark_ip && !Unsee_Session::isOwner($hashDoc)) {
+            $imgDoc->watermark();
+        }
 
         // Embed comment if required
         $hashDoc->comment && $imgDoc->comment($hashDoc->comment);
 
         $this->getResponse()->setHeader('Content-type', $imgDoc->type);
 
-        // Dump image data
-        print $imgDoc->content;
+        print $imgDoc->getImageContent();
 
         // The hash itself was already outdated for one of the reasons.
         if (!$hashDoc->isViewable()) {

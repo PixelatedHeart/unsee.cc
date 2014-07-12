@@ -11,8 +11,9 @@ io.on('connection', function(socket) {
         socket.emit('joined');
         socket.room = hash;
 
-        if (typeof io.sockets.adapter.rooms[socket.room] === 'object') {
+        try {
             io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+        } catch (e) {
         }
 
         redisCli.select(0, function() {
@@ -34,7 +35,10 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
-        io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+        try {
+            io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
+        } catch (e) {
+        }
     });
 });
 server.listen(3001);

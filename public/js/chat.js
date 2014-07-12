@@ -3,8 +3,8 @@ $(function() {
         return false;
     }
 
-    $.getScript('https://' + domain + ':3000/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
-        var socket = io.connect('https://' + domain + ':3000');
+    $.getScript('https://' + domain + '/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
+        var socket = io.connect('https://' + domain);
         var room = location.pathname.split('/')[1];
 
         socket.on('connect', function(client) {
