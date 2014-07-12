@@ -1,7 +1,11 @@
 $(function() {
-    $.getScript('//'+domain+':3000/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
-        var socket = io.connect(window.location.protocol  + '//'+domain+':3000');
-        var room = 'nedori';
+    if (typeof domain === 'undefined') {
+        return false;
+    }
+
+    $.getScript('https://' + domain + ':3000/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
+        var socket = io.connect('https://' + domain + ':3000');
+        var room = location.pathname.split('/')[1];
 
         socket.on('connect', function(client) {
 
