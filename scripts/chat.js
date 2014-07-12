@@ -4,7 +4,6 @@ var crypto = require('crypto');
 var redis = require("redis");
 var redisCli = redis.createClient(null, 'localhost', {detect_buffers: true});
 var clientSess = '';
-var authorSess = '';
 
 io.on('connection', function(socket) {
     socket.on('hash', function(hash) {
@@ -18,17 +17,16 @@ io.on('connection', function(socket) {
                     return false;
                 }
 
-                authorSess = obj.sess;
+                socket.authorSess = obj.sess;
             });
         });
     });
 
     socket.on('message', function(msg) {
-
-        var ip = socket.handshake.address.address;
+        var ip = socket.client.request.headers['x-forwarded-for'];
         var ua = socket.client.request.headers['user-agent'];
         clientSess = crypto.createHash('md5').update(ua + ip).digest('hex');
-        io.to(socket.room).emit('message', {text: msg, author: clientSess === authorSess});
+        io.to(socket.room).emit('message', {text: msg, author: clientSess === socket.authorSess});
     });
 });
 server.listen(3001);
