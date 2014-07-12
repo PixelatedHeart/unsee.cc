@@ -24,7 +24,7 @@ class UploadController extends Zend_Controller_Action
 
         $upload->addValidator('Count', false, array('min' => 1, 'max' => 100));
         $upload->addValidator('IsImage', false);
-        $upload->addValidator('Size', false, array('max' => '8MB', 'bytestring' => false));
+        $upload->addValidator('Size', false, array('max' => '10MB', 'bytestring' => false));
         $translate = Zend_Registry::get('Zend_Translate');
 
         try {
