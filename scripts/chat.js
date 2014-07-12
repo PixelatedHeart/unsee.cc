@@ -11,7 +11,7 @@ io.on('connection', function(socket) {
         socket.emit('joined');
         socket.room = hash;
 
-        if (io.sockets.adapter.rooms[socket.room]) {
+        if (typeof io.sockets.adapter.rooms[socket.room] !== 'undefined') {
             io.to(socket.room).emit('number', Object.keys(io.sockets.adapter.rooms[socket.room]).length);
         }
 
