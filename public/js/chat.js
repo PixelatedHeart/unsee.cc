@@ -7,12 +7,14 @@ $(function() {
         var socket = io.connect('https://' + domain);
         var room = location.pathname.split('/')[1];
 
+        socket.removeAllListeners('connect');
         socket.on('connect', function(client) {
-
             $('#chat').show();
 
             socket.emit('hash', room);
+            socket.removeAllListeners('joined');
             socket.on('joined', function() {
+                $('#foo').unbind("keypress");
                 $('#send_message').keypress(function(e) {
                     if (e.which === 13 && $('#send_message').val().length > 1) {
                         socket.emit('message', $('#send_message').val().substr(0, 100));
@@ -20,6 +22,7 @@ $(function() {
                     }
                 });
 
+                socket.removeAllListeners('message');
                 socket.on('message', function(res) {
                     var mess = $('<li></li>');
                     mess.text(res.text);
@@ -34,6 +37,7 @@ $(function() {
                     }
                 });
 
+                socket.removeAllListeners('number');
                 socket.on('number', function(num) {
 
                     num--;
