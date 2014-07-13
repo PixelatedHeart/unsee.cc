@@ -292,7 +292,7 @@
         </tu>
         <tu tuid="click_settings">
             <tuv xml:lang="ru"><seg>Нажмите здесь, чтобы изменить настройки</seg></tuv>
-            <tuv xml:lang="en"><seg>Click to change settings</seg></tuv>
+            <tuv xml:lang="en"><seg>Click here to change settings</seg></tuv>
         </tu>
 
         <!-- Image settings translations -->
