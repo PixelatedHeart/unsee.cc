@@ -37,17 +37,27 @@ class UploadController extends Zend_Controller_Action
 
                 // Tell the page the name of the new hash
                 $response->hash = $hashDoc->key;
+                $imageAdded = false;
 
                 foreach ($files as $file => $info) {
                     if ($upload->isUploaded($file)) {
                         $imgDoc = new Unsee_Image($response->hash . '_' . uniqid());
-                        $imgDoc->setFile($info['tmp_name']);
+                        $res = $imgDoc->setFile($info['tmp_name']);
+
+                        if ($res) {
+                            $imageAdded = true;
+                        }
+
 
                         // Remove uploaded file from temporary dir if it wasn't removed
                         if (file_exists($info['tmp_name'])) {
                             @unlink($info['tmp_name']);
                         }
                     }
+                }
+
+                if (!$imageAdded) {
+                    throw new Exception();
                 }
 
                 $this->setExpiration($hashDoc);

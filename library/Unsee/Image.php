@@ -62,6 +62,10 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setFile($filePath)
     {
+        if (!file_exists($filePath)) {
+            return false;
+        }
+
         $info = getimagesize($filePath);
 
         $image = new Imagick();
