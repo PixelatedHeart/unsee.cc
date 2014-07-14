@@ -52,6 +52,15 @@ $(function() {
 
                     var mess = $('<li></li>');
                     mess.text(res.text);
+
+                    var expr = /(((https?:)?\/\/)?unsee.cc\/([a-z]+)\/?)/ig;
+                    var found = mess.text().match(expr);
+
+                    if (found && found.length) {
+                        //mess.addClass('link');
+                        mess.html(mess.html().replace(expr, ' <a href="https://unsee.cc/$4" target="_blank">$4</a> '));
+                    }
+
                     if (res.author) {
                         mess.addClass('author');
                     }
@@ -76,7 +85,7 @@ $(function() {
                         if (num % 10 !== 1) {
                             placeHolder += 's';
                         }
-                        
+
                         placeHolder += ' here)';
                     } else {
                         placeHolder += ' (nobody\'s here)';

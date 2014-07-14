@@ -38,17 +38,15 @@
     position: relative;
     top: 0;
     bottom: 20px;
+    list-style: none;
 }
 
 #chat li,
 #chat li.author {
     padding: 6px;
-    list-style: none;
     vertical-align: middle;
     text-align: left;
     color: #DDD;
-    line-height: 100%;
-    display: inline;
     clear: both;
     float: left;
     margin-top: 10px;
@@ -65,5 +63,4 @@
     color: darkgoldenrod;
     text-align: right;
     margin-left: auto;
-    
 }
