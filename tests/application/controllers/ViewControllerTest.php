@@ -14,7 +14,7 @@ class ViewControllerTest extends Zend_Test_PHPUnit_ControllerTestCase
         $hash = new Unsee_Hash();
 
         for ($x = 1; $x <= $imagesNum; $x++) {
-            $image = new Unsee_Image($hash->key . '_' . uniqid());
+            $image = new Unsee_Image($hash);
             $image->setFile(TEST_DATA_PATH . '/images/good/1mb.jpg');
         }
 

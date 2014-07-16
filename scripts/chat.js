@@ -5,6 +5,12 @@ var redis = require("redis");
 var redisCli = redis.createClient(null, 'localhost', {detect_buffers: true});
 var clientSess = '';
 
+function getSession(socket) {
+    var ip = socket.client.request.headers['x-forwarded-for'];
+    var ua = socket.client.request.headers['user-agent'];
+    return crypto.createHash('md5').update(ua + ip).digest('hex');
+}
+
 io.on('connection', function(socket) {
     socket.on('hash', function(hash) {
         socket.join(hash);
@@ -28,10 +34,25 @@ io.on('connection', function(socket) {
     });
 
     socket.on('message', function(msg) {
-        var ip = socket.client.request.headers['x-forwarded-for'];
-        var ua = socket.client.request.headers['user-agent'];
-        clientSess = crypto.createHash('md5').update(ua + ip).digest('hex');
-        io.to(socket.room).emit('message', {text: msg, author: clientSess === socket.authorSess});
+        io.to(socket.room).emit('message', {text: msg, author: getSession(socket) === socket.authorSess});
+    });
+
+    socket.on('require_tickets', function(imgs) {
+        io.to(socket.room).emit('require_tickets', imgs);
+    });
+
+    socket.on('issue_tickets', function(imgs) {
+
+        var sess = getSession(socket);
+
+        redisCli.select(2, function() {
+            imgs.forEach(function(img, index) {
+                imgs[index].imageTicket = crypto.createHash('md5').update(sess + img.hashKey).digest('hex');
+                redisCli.hset(sess, img.key, 1);
+            });
+
+            socket.emit('tickets_issued', imgs);
+        });
     });
 
     socket.on('disconnect', function() {

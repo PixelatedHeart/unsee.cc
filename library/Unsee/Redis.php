@@ -153,11 +153,11 @@ class Unsee_Redis
         return $this->redis->ttl($this->key);
     }
 
-    public static function keys($keys, $dbId = 0)
+    public static function keys($keys)
     {
         $redis = Zend_Registry::get('Redis');
-        $redis->select($dbId);
-        self::$prevDb = $dbId;
+        $redis->select(static::DB);
+        self::$prevDb = static::DB;
 
         return $redis->keys($keys);
     }

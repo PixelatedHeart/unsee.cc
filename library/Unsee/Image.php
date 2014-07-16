@@ -5,6 +5,7 @@
  */
 class Unsee_Image extends Unsee_Redis
 {
+
     const DB = 1;
 
     /**
@@ -24,9 +25,22 @@ class Unsee_Image extends Unsee_Redis
      */
     public $secureTtd = 0;
 
-    public function __construct($hash)
+    public function __construct(Unsee_Hash $hash, $imgKey = null)
     {
-        parent::__construct($hash);
+        $newImage = is_null($imgKey);
+
+        if ($newImage) {
+            $imgKey = uniqid();
+        }
+
+        parent::__construct($hash->key . '_' . $imgKey);
+
+        if ($newImage) {
+            $keys = Unsee_Image::keys($hash->key . '*');
+            $this->num = count($keys);
+            $this->expireAt(time() + $hash->ttl());
+        }
+
         $this->setSecureParams();
     }
 

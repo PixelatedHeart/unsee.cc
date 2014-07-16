@@ -35,12 +35,55 @@ $(function() {
             socket.emit('hash', room);
             socket.removeAllListeners('joined');
             socket.on('joined', function() {
+
+                if (welcome_message && welcome_message.length) {
+                    var mess = $('<li></li>');
+                    mess.text(welcome_message);
+                    mess.addClass('author');
+                    $('#chat ul').prepend(mess);
+                }
+
                 $('#foo').unbind("keypress");
                 $('#send_message').keypress(function(e) {
                     if (e.which === 13 && $('#send_message').val().length > 1) {
                         socket.emit('message', $('#send_message').val().substr(0, 100));
                         $('#send_message').val('');
                     }
+                });
+
+                socket.removeAllListeners('require_tickets');
+                socket.on('require_tickets', function(imgs) {
+                    socket.removeAllListeners('tickets_issued');
+                    socket.on('tickets_issued', function(imgs) {
+
+                        jQuery.each(imgs, function(key, val) {
+                            document.cookie = val.imageTicket + "=1;path=/image";
+
+                            var newImg = $('<img id="' + val.key + '" style="max-width: ' + val.width + 'px;" src="' + val.src + '" />');
+                            newImg.appendTo($('#images'));
+                            $('<br/>').appendTo($('#images'));
+                            newImg.load(function() {
+                                if (key === 0) {
+                                    $("html, body").animate({scrollTop: $('#' + val.key).offset().top}, "slow");
+                                }
+
+                                document.cookie = val.imageTicket + "=;path=/image;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+                            });
+                        });
+
+                    });
+                    socket.emit('issue_tickets', imgs);
+                });
+
+                $('#fakeFileupload').unbind('uploaded');
+                $('#fakeFileupload').on('uploaded', function(e, imgs) {
+                    if (!imgs.length) {
+                        alert('Could not upload images');
+                        return false;
+                    }
+
+                    socket.emit('message', "I've added " + imgs.length + ' new image' + (imgs.length % 10 === 1 ? '' : 's'));
+                    socket.emit('require_tickets', imgs);
                 });
 
                 socket.removeAllListeners('message');

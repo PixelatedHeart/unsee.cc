@@ -559,5 +559,13 @@
             <tuv xml:lang="ru"><seg>Применить</seg></tuv>
             <tuv xml:lang="en"><seg>Apply</seg></tuv>
         </tu>
+        <tu tuid="upload_more_owner">
+            <tuv xml:lang="ru"><seg>Можно загрузить ещё картинок перетащив их на страницу</seg></tuv>
+            <tuv xml:lang="en"><seg>You can upload more images by dropping them on the page</seg></tuv>
+        </tu>
+        <tu tuid="upload_more_anonymous">
+            <tuv xml:lang="ru"><seg>Можно загрузить свои изображения перетащив их на страницу</seg></tuv>
+            <tuv xml:lang="en"><seg>You can add your own images by dropping them on the page</seg></tuv>
+        </tu>
     </body>
 </tmx>

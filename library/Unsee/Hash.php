@@ -31,6 +31,7 @@ class Unsee_Hash extends Unsee_Redis
             $this->comment = Zend_Registry::get('config')->image_comment;
             $this->sess = Unsee_Session::getCurrent();
             $this->watermark_ip = true;
+            $this->allow_anonymous_images = false;
         }
     }
 
@@ -95,12 +96,22 @@ class Unsee_Hash extends Unsee_Redis
     public function getImages()
     {
         // read files in directory
-        $imagesKeys = Unsee_Redis::keys($this->key . '*', 1);
+        $imagesKeys = Unsee_Image::keys($this->key . '*');
         $imageDocs = array();
 
         foreach ($imagesKeys as $key) {
-            $imageDocs[] = new Unsee_Image($key);
+            list(, $imgKey) = explode('_', $key);
+            $imageDocs[] = new Unsee_Image($this, $imgKey);
         }
+
+        usort($imageDocs, function ($a, $b)
+        {
+            if ($a->num === $b->num) {
+                return 0;
+            }
+
+            return ($a->num < $b->num) ? -1 : 1;
+        });
 
         return $imageDocs;
     }
@@ -181,5 +192,16 @@ class Unsee_Hash extends Unsee_Redis
         }
 
         return $deleteTime;
+    }
+
+    static public function isValid($hash)
+    {
+        $hashConf = Zend_Registry::get('config')->hash->toArray();
+
+        $vovels = $hashConf['vovels'];
+        $consonants = $hashConf['consonants'];
+        $syllableNum = (int) $hashConf['syllables'];
+
+        return preg_match('~([' . $consonants . '][' . $vovels . ']){' . $syllableNum . '}~', $hash);
     }
 }

@@ -37,4 +37,51 @@ $(function() {
             }
         });
     }
+
+    //Don't redirect to what's dropped into the browser window
+    $(document).bind('drop dragover', function(e)
+    {
+        e.preventDefault();
+    });
+
+    $('<input type="file" id="fakeFileupload" name="image[]" multiple />')
+            .appendTo($('body'))
+            .hide();
+
+    var hash = location.pathname.split('/')[1];
+
+    //Start up ajax upload
+    $('#fakeFileupload').fileupload({
+        dataType: 'json',
+        singleFileUploads: false,
+        sequentialUploads: true,
+        url: '/upload/',
+        pasteZone: $(document),
+        //File added
+        add: function(e, data)
+        {
+            data.formData = {hash: location.pathname.split('/')[1]};
+            data.submit();
+            //$('#imgMessage').animate({'background-position-y': '100px', always: function (){this.css('background-position-y', 0);}}, 1000, 'linear');
+        },
+        start: function()
+        {
+            if (typeof yaCounter19067413 == 'object') {
+                yaCounter19067413.reachGoal('upload_start');
+            }
+        },
+        fail: function(e, res)
+        {
+        },
+        done: function(e, data)
+        {
+            $('#fakeFileupload').trigger('uploaded', [data.result]);
+        }
+    }).bind('fileuploaddrop', function(e, data)
+    {
+        $('#fileupload').fileupload('add', {files: data});
+    }).bind('fileuploadpaste', function(e, data)
+    {
+        $('#fileupload').fileupload('add', {files: data});
+    });
 });

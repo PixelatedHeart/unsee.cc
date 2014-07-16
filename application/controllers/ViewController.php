@@ -21,9 +21,12 @@ class ViewController extends Zend_Controller_Action
         // This page should never be indexed by robots
         $this->getResponse()->setHeader('X-Robots-Tag', 'noindex');
         $this->view->headScript()->appendFile('js/vendor/jquery-1.8.3.min.js');
+        $this->view->headScript()->appendFile('js/vendor/jquery.visibility.js');
+        $this->view->headScript()->appendFile('js/vendor/jquery.iframe-transport.js');
+        $this->view->headScript()->appendFile('js/vendor/jquery.ui.widget.js');
+        $this->view->headScript()->appendFile('js/vendor/jquery.fileupload.js');
         $this->view->headScript()->appendFile('js/view.js');
         $this->view->headScript()->appendFile('js/chat.js');
-        $this->view->headScript()->appendFile('js/jquery-visibility.js');
 
         $this->view->headLink()->appendStylesheet('css/normalize.css');
         $this->view->headLink()->appendStylesheet('css/h5bp.css');
@@ -216,6 +219,15 @@ class ViewController extends Zend_Controller_Action
         $this->view->images = $images;
         $this->view->groups = $form->getDisplayGroups();
 
+        $message = '';
+        if (Unsee_Session::isOwner($this->hashDoc)) {
+            $message = $this->view->translate('upload_more_owner');
+        } elseif ($hashDoc->allow_anonymous_images) {
+            $message = $this->view->translate('upload_more_anonymous');
+        }
+
+        $this->view->welcomeMessage = $message;
+
         return true;
     }
 
@@ -341,15 +353,7 @@ class ViewController extends Zend_Controller_Action
             $this->noContentAction();
         }
 
-        // Fetching the image Redis hash
-        $imgDoc = new Unsee_Image($imageId);
-
-        // It wasn't there
-        if (!$imgDoc) {
-            $this->noContentAction();
-        }
-
-        list($hashStr) = explode('_', $imgDoc->key);
+        list($hashStr, $imgKey) = explode('_', $imageId);
 
         if (!$hashStr) {
             $this->noContentAction();
@@ -358,10 +362,14 @@ class ViewController extends Zend_Controller_Action
         // Fetching the parent hash
         $hashDoc = new Unsee_Hash($hashStr);
 
-        // It didn't exist
         if (!$hashDoc) {
-            // But the image did, delete it
-            $imgDoc && $imgDoc->delete();
+            $this->noContentAction();
+        }
+
+        // Fetching the image Redis hash
+        $imgDoc = new Unsee_Image($hashDoc, $imgKey);
+
+        if (!$imgDoc) {
             $this->noContentAction();
         }
 
@@ -377,7 +385,7 @@ class ViewController extends Zend_Controller_Action
         $ticketDoc = new Unsee_Ticket();
 
         // Looks like a gatecrasher, no ticket and image is not allowed to be downloaded directly
-        if (!$ticketDoc->isAllowed($imgDoc) && ($hashDoc->no_download || $hashDoc->ttl === 'first')) {
+        if (!$ticketDoc->isAllowed($imgDoc) && $hashDoc->no_download) {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
             $this->noContentAction();
