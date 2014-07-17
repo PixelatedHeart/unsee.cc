@@ -81,9 +81,24 @@ class Unsee_Image extends Unsee_Redis
         }
 
         $info = getimagesize($filePath);
+        $imageWidth = $info[0];
+        $imageHeight = $info[1];
 
         $image = new Imagick();
         $image->readimage($filePath);
+
+        $image->setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 1);
+        $maxSize = 1920;
+
+        if ($imageWidth > $maxSize && $imageWidth > $imageHeight) {
+            $image->thumbnailimage($maxSize, null);
+        } elseif ($imageHeight > $maxSize && $imageHeight > $imageWidth) {
+            $image->thumbnailimage(null, $maxSize);
+        }
+
+        $image->setCompression(Imagick::COMPRESSION_JPEG);
+        $image->setCompressionQuality(80);
+
         $image->stripimage();
 
         $this->size = filesize($filePath);

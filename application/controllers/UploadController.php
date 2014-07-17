@@ -24,13 +24,13 @@ class UploadController extends Zend_Controller_Action
 
         $upload->addValidator('Count', false, array('min' => 1, 'max' => 100));
         $upload->addValidator('IsImage', false);
-        $upload->addValidator('Size', false, array('max' => '5MB', 'bytestring' => false));
+        $upload->addValidator('Size', false, array('max' => '10MB', 'bytestring' => false));
         $translate = Zend_Registry::get('Zend_Translate');
         $updating = false;
 
         try {
             if (!$upload->receive()) {
-                throw new Exception();
+                throw new Exception($translate->translate('error_uploading'));
             } else {
                 $files = $upload->getFileInfo();
 
@@ -89,7 +89,7 @@ class UploadController extends Zend_Controller_Action
                 }
             }
         } catch (Exception $e) {
-            $response->error = $translate->translate('error_uploading');
+            $response->error = $e->getMessage();
         }
         $this->_helper->json->sendJson($response);
     }
