@@ -12,7 +12,7 @@ class Unsee_Ticket extends Unsee_Redis
      * Titme to live
      * @var int
      */
-    static public $ttl = 30;
+    static public $ttl = 120;
 
     public function __construct()
     {
