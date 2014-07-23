@@ -22,14 +22,19 @@ $(function() {
         });
 
         $(document).keydown(function(e) {
-            var pr = [67, 65], re = [123, 42], re_cs = [73], re_c = [83], c = e.metaKey || e.ctrlKey, co = e.keyCode;
+            var pr = [67, 65], re = [123, 42], re_cs = [73], re_dt = [74], re_c = [83], c = e.metaKey || e.ctrlKey, co = e.keyCode, s = e.shiftKey;
 
             if (~jQuery.inArray(co, pr) && c) {
                 e.preventDefault();
                 return false;
             }
 
-            if (~jQuery.inArray(co, re) || ~jQuery.inArray(co, re_cs) && c && e.shiftKey || ~jQuery.inArray(co, re_c) && c) {
+            if (
+                ~jQuery.inArray(co, re) ||
+                ~jQuery.inArray(co, re_cs) && c && s ||
+                ~jQuery.inArray(co, re_dt) && c && s ||
+                ~jQuery.inArray(co, re_c) && c
+            ) {
                 e.preventDefault();
                 document.cookie = "block=1;path=" + location.pathname;
                 location.reload();
@@ -66,6 +71,11 @@ $(function() {
         },
         start: function()
         {
+            function animate() {
+                $('#imgMessage').stop().animate({'background-position-x': '+=10%'}, 2000, 'linear', animate);
+            }
+            animate();
+
             if (typeof yaCounter19067413 == 'object') {
                 yaCounter19067413.reachGoal('upload_start');
             }
@@ -75,6 +85,7 @@ $(function() {
         },
         done: function(e, data)
         {
+            $('#imgMessage').stop();
             $('#fakeFileupload').trigger('uploaded', [data.result]);
         }
     }).bind('fileuploaddrop', function(e, data)
