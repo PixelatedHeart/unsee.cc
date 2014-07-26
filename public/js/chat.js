@@ -49,7 +49,7 @@ $(function() {
                 $('#foo').unbind("keypress");
                 $('#send_message').keypress(function(e) {
                     if (e.which === 13 && $('#send_message').val().length > 1) {
-                        socket.emit('message', $('#send_message').val().substr(0, 100));
+                        socket.emit('message', $('#send_message').val().substr(0, 400));
                         $('#send_message').val('');
                     }
                 });
