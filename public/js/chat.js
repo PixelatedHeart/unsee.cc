@@ -24,6 +24,8 @@ $(function() {
         pageVisible = false;
     });
 
+    var welcomed = false;
+
     $.getScript('https://' + domain + '/socket.io/socket.io.js', function(data, textStatus, jqxhr) {
         var socket = io.connect('https://' + domain);
         var room = location.pathname.split('/')[1];
@@ -36,7 +38,8 @@ $(function() {
             socket.removeAllListeners('joined');
             socket.on('joined', function() {
 
-                if (welcome_message && welcome_message.length) {
+                if (welcome_message && welcome_message.length && !welcomed) {
+                    welcomed = true;
                     var mess = $('<li></li>');
                     mess.text(welcome_message);
                     mess.addClass('author');
@@ -95,6 +98,12 @@ $(function() {
 
                     var mess = $('<li></li>');
                     mess.text(res.text);
+                    mess.hide();
+
+                    if (res.color && !res.author) {
+                        mess.css({'background':'rgba(' + res.color + ',.7)'});
+                        mess.css({'border-color':'rgba(' + res.color + ',1)'});
+                    }
 
                     var expr = /(((https?:)?\/\/)?unsee.cc\/([a-z]+)\/?)/ig;
                     var found = mess.text().match(expr);
@@ -109,6 +118,8 @@ $(function() {
                     }
 
                     $('#chat ul').prepend(mess);
+
+                    mess.animate({height: 'toggle', opacity: 'toggle'}, 200);
 
                     if ($('#chat li').length > 10) {
                         $('#chat li').last().remove();

@@ -34,7 +34,8 @@ io.on('connection', function(socket) {
     });
 
     socket.on('message', function(msg) {
-        io.to(socket.room).emit('message', {text: msg, author: getSession(socket) === socket.authorSess});
+        var color = getSession(socket).replace(/[^\d.]/g, '').substr(0, 6).match(/.{2}/g).join(',');
+        io.to(socket.room).emit('message', {text: msg, author: getSession(socket) === socket.authorSess, color: color});
     });
 
     socket.on('require_tickets', function(imgs) {
