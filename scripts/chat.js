@@ -33,9 +33,18 @@ io.on('connection', function(socket) {
         });
     });
 
-    socket.on('message', function(msg) {
+    socket.on('message', function(ob) {
         var color = getSession(socket).replace(/[^\d.]/g, '').substr(0, 6).match(/.{2}/g).join(',');
-        io.to(socket.room).emit('message', {text: msg, author: getSession(socket) === socket.authorSess, color: color});
+        var resp = {text: ob.message, author: getSession(socket) === socket.authorSess, color: color};
+
+        if (typeof ob.imageId === 'string') {
+
+            resp.imageId = ob.imageId;
+            resp.percentX = ob.percentX;
+            resp.percentY = ob.percentY;
+        }
+
+        io.to(socket.room).emit('message', resp);
     });
 
     socket.on('require_tickets', function(imgs) {

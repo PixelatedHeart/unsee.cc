@@ -95,4 +95,76 @@ $(function() {
     {
         $('#fileupload').fileupload('add', {files: data});
     });
+
+    $('#imgHL').click(function() {
+        $(this).hide();
+        $('#chat').removeData('imageId');
+        $('#chat').removeData('percentX');
+        $('#chat').removeData('percentY');
+
+        $('#chat input').animate({width: '294px'});
+    });
+
+    $(document).click(function(e) {
+
+        var x = e.pageX;
+        var y = e.pageY;
+
+        if (
+            $(e.target).parents('#chat').length ||
+            e.target.id === 'imgHL' ||
+            e.target.id === 'chat' ||
+            e.target.id === 'imgMessage' ||
+            $(e.target).parents('#settings').length
+        ) {
+            return true;
+        }
+
+        $('#images img').each(function(key, el) {
+            var offset = $(el).offset();
+            var top = offset.top;
+            var left = offset.left;
+            var height = $(el).height();
+            var width = $(el).width();
+
+            if (x >= left && x <= left + width && y >= top && y <= top + height) {
+
+                var imageX = x - left;
+                var imageY = y - top;
+                var percentX = (imageX * 100 / width).toFixed(5);
+                var percentY = (imageY * 100 / height).toFixed(5);
+
+                $('#chat').data('imageId', el.id);
+                $('#chat').data('percentX', percentX);
+                $('#chat').data('percentY', percentY);
+
+                $('#chat input').animate({width: '86%'});
+                markImage(el.id, percentX, percentY);
+            }
+        });
+    });
+
+
+    $(document).keyup(function(e) {
+        if (e.keyCode === 27) {
+            $('#imgHL').trigger('click');
+        }
+    });
+
 });
+
+function markImage(imageId, percentX, percentY) {
+
+    var targetImage = $('#' + imageId);
+    var offset = targetImage.offset();
+    var imageX = offset.left;
+    var imageY = offset.top;
+    var imageWidth = targetImage.width();
+    var imageHeight = targetImage.height();
+    var relLeftX = Math.round(imageWidth * percentX / 100);
+    var relTopY = Math.round(imageHeight * percentY / 100);
+
+    $('#imgHL').css({left: imageX + relLeftX - 16, top: imageY + relTopY - 30, display: 'block'});
+
+    return true;
+}

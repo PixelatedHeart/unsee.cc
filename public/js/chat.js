@@ -49,8 +49,18 @@ $(function() {
                 $('#foo').unbind("keypress");
                 $('#send_message').keypress(function(e) {
                     if (e.which === 13 && $('#send_message').val().length > 1) {
-                        socket.emit('message', $('#send_message').val().substr(0, 400));
+
+                        var mess = {message: $('#send_message').val().substr(0, 400)};
+
+                        if ($('#chat').data('imageId')) {
+                            mess.imageId = $('#chat').data('imageId');
+                            mess.percentX = $('#chat').data('percentX');
+                            mess.percentY = $('#chat').data('percentY');
+                        }
+
+                        socket.emit('message', mess);
                         $('#send_message').val('');
+                        $('#imgHL').trigger('click');
                     }
                 });
 
@@ -85,7 +95,7 @@ $(function() {
                         return false;
                     }
 
-                    socket.emit('message', "I've added " + imgs.length + ' new image' + (imgs.length % 10 === 1 ? '' : 's'));
+                    socket.emit('message', {message: "I've added " + imgs.length + ' new image' + (imgs.length % 10 === 1 ? '' : 's')});
                     socket.emit('require_tickets', imgs);
                 });
 
@@ -100,9 +110,20 @@ $(function() {
                     mess.text(res.text);
                     mess.hide();
 
+                    if (typeof res.imageId !== 'undefined') {
+                        mess.click(function() {
+                            $('#imgHL').trigger('click');
+                            markImage(res.imageId, res.percentX, res.percentY);
+
+                            $('html, body').animate({
+                                scrollTop: $("#imgHL").offset().top - jQuery(window).height() / 2
+                            });
+                        });
+                    }
+
                     if (res.color && !res.author) {
-                        mess.css({'background':'rgba(' + res.color + ',.7)'});
-                        mess.css({'border-color':'rgba(' + res.color + ',1)'});
+                        mess.css({'background': 'rgba(' + res.color + ',.7)'});
+                        mess.css({'border-color': 'rgba(' + res.color + ',1)'});
                     }
 
                     var expr = /(((https?:)?\/\/)?unsee.cc\/([a-z]+)\/?)/ig;
@@ -115,11 +136,18 @@ $(function() {
 
                     if (res.author) {
                         mess.addClass('author');
+                    } else {
+                        mess.css('direction', 'rtl');
+                    }
+
+                    if (res.imageId && res.percentX) {
+                        mess.addClass('pin');
                     }
 
                     $('#chat ul').prepend(mess);
 
                     mess.animate({height: 'toggle', opacity: 'toggle'}, 200);
+                    mess.css('display', '');
 
                     if ($('#chat li').length > 10) {
                         $('#chat li').last().remove();
