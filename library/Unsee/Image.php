@@ -55,10 +55,10 @@ class Unsee_Image extends Unsee_Redis
         $linkTtl = Unsee_Ticket::$ttl;
 
         if (!$this->no_download) {
-            $linkTtl = $this->ttl(true);
+            $linkTtl = $this->ttl();
         }
 
-        $this->secureTtd = round(microtime(true) + $linkTtl);
+        $this->secureTtd = round(microtime(true)) + $linkTtl;
 
         // Preparing a hash for nginx's secure link
         $md5 = base64_encode(md5($this->key . $this->secureTtd, true));

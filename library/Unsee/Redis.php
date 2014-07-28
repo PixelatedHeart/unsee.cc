@@ -147,17 +147,10 @@ class Unsee_Redis
         return $this->redis->expireAt($this->key, $time);
     }
 
-    public function ttl($microtime = false)
+    public function ttl()
     {
         $this->selectDb();
-
-        $microtime = true;
-
-        if (!$microtime) {
-            return $this->redis->ttl($this->key);
-        }
-
-        return $this->redis->pttl($this->key) / 1000;
+        return $this->redis->ttl($this->key);
     }
 
     public static function keys($keys)
