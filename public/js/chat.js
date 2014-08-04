@@ -136,7 +136,7 @@ $(function() {
                     if (res.author) {
                         mess.addClass('author');
                     } else {
-                        mess.css('direction', 'rtl');
+                        mess.css('margin-left', 30);
                     }
 
                     if (res.imageId && res.percentX) {
