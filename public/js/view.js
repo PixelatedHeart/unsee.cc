@@ -12,13 +12,20 @@ $(function() {
             return document.body.parentNode.removeChild(document.body);
         }
 
-        document.cookie = b + "=1;path=/image";
+
+        var date = new Date();
+        date.setTime(date.getTime() + (60 * 60 * 1000));
+
+        document.cookie = b + "=1;path=/image;expires=" + date.toGMTString();
         jQuery.each(a, function(key, val) {
-            $('#images').append($('<img id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" src="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />').load(function() {
-                if (key + 1 === a.length) {
-                    document.cookie = b + "=;path=/image;expires=Thu, 01 Jan 1970 00:00:01 GMT";
-                }
-            }));
+            $('#images').append($('<img class="lazy" id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" data-original="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />'));
+
+            if (key + 1 === a.length) {
+                $('#images img').show().lazyload({
+                    threashold: 400,
+                    effect : "fadeIn"
+                });
+            }
         });
 
         $(document).keydown(function(e) {

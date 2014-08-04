@@ -12,7 +12,7 @@ class Unsee_Ticket extends Unsee_Redis
      * Titme to live
      * @var int
      */
-    static public $ttl = 120;
+    static public $ttl = 86400;
 
     public function __construct()
     {
@@ -22,12 +22,12 @@ class Unsee_Ticket extends Unsee_Redis
 
     /**
      * Create a ticket for the current session to access the image id
-     * @param string $imageId
+     * @param Unsee_Image $imageDoc
      * @return boolean
      */
-    public function issue($imageId)
+    public function issue(Unsee_Image $imageDoc)
     {
-        $this->$imageId = time();
+        $this->{$imageDoc->key} = time();
         return true;
     }
 

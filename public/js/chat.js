@@ -70,7 +70,9 @@ $(function() {
                     socket.on('tickets_issued', function(imgs) {
 
                         jQuery.each(imgs, function(key, val) {
-                            document.cookie = val.imageTicket + "=1;path=/image";
+                            var date = new Date();
+                            date.setTime(date.getTime() + (60 * 60 * 1000));
+                            document.cookie = val.imageTicket + "=1;path=/image;expires=" + date.toGMTString();
 
                             var newImg = $('<img id="' + val.key + '" style="max-width: ' + val.width + 'px;" src="' + val.src + '" />');
                             newImg.appendTo($('#images'));
@@ -79,11 +81,8 @@ $(function() {
                                 if (key === 0) {
                                     $("html, body").animate({scrollTop: $('#' + val.key).offset().top}, "slow");
                                 }
-
-                                document.cookie = val.imageTicket + "=;path=/image;expires=Thu, 01 Jan 1970 00:00:01 GMT";
                             });
                         });
-
                     });
                     socket.emit('issue_tickets', imgs);
                 });

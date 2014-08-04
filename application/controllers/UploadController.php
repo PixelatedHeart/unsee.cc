@@ -61,7 +61,7 @@ class UploadController extends Zend_Controller_Action
 
                         if ($updating) {
                             $ticket = new Unsee_Ticket();
-                            $ticket->issue($imgDoc->key);
+                            $ticket->issue($imgDoc);
 
                             $newImg = new stdClass();
                             $newImg->hashKey = $hashDoc->key;

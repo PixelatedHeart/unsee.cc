@@ -25,6 +25,7 @@ class ViewController extends Zend_Controller_Action
         $this->view->headScript()->appendFile('js/vendor/jquery.iframe-transport.js');
         $this->view->headScript()->appendFile('js/vendor/jquery.ui.widget.js');
         $this->view->headScript()->appendFile('js/vendor/jquery.fileupload.js');
+        $this->view->headScript()->appendFile('js/vendor/jquery.lazyload.min.js');
         $this->view->headScript()->appendFile('js/view.js');
         $this->view->headScript()->appendFile('js/chat.js');
 
@@ -165,7 +166,7 @@ class ViewController extends Zend_Controller_Action
 
         // Create a view "ticket" for every image of a hash
         foreach ($images as $image) {
-            $ticket->issue($image->key);
+            $ticket->issue($image);
         }
 
         // Handle current request based on what settins are set
@@ -233,8 +234,7 @@ class ViewController extends Zend_Controller_Action
 
     public function noContentAction()
     {
-        $this->getResponse()->setHeader('Status', '204 No content');
-        die();
+        return $this->_response->setHttpResponseCode(204);
     }
 
     /**
@@ -350,27 +350,27 @@ class ViewController extends Zend_Controller_Action
 
         // Dropping request if params are not right or the image is too old
         if (!$imageId || !$ticket || !$time || $time < time()) {
-            $this->noContentAction();
+            return $this->noContentAction();
         }
 
         list($hashStr, $imgKey) = explode('_', $imageId);
 
         if (!$hashStr) {
-            $this->noContentAction();
+            return $this->noContentAction();
         }
 
         // Fetching the parent hash
         $hashDoc = new Unsee_Hash($hashStr);
 
         if (!$hashDoc) {
-            $this->noContentAction();
+            return $this->noContentAction();
         }
 
         // Fetching the image Redis hash
         $imgDoc = new Unsee_Image($hashDoc, $imgKey);
 
         if (!$imgDoc) {
-            $this->noContentAction();
+            return $this->noContentAction();
         }
 
         /**
@@ -378,7 +378,7 @@ class ViewController extends Zend_Controller_Action
          * direct access. Direct access means no referrer.
          */
         if ($hashDoc->no_download && empty($_SERVER['HTTP_REFERER'])) {
-            $this->noContentAction();
+            return $this->noContentAction();
         }
 
         // Fetching ticket list for the hash, it should have a ticket for the requested image
@@ -388,7 +388,7 @@ class ViewController extends Zend_Controller_Action
         if (!$ticketDoc->isAllowed($imgDoc) && $hashDoc->no_download) {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
-            $this->noContentAction();
+            return $this->noContentAction();
         } else {
             // Delete the ticket
             $ticketDoc->invalidate($imgDoc);
