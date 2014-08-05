@@ -74,7 +74,8 @@ $(function() {
                             date.setTime(date.getTime() + (60 * 60 * 1000));
                             document.cookie = val.imageTicket + "=1;path=/image;expires=" + date.toGMTString();
 
-                            var newImg = $('<img id="' + val.key + '" style="max-width: ' + val.width + 'px;" src="' + val.src + '" />');
+                            var newImg = $('<img class="lazy" id="' + val.key + '" style="max-width: ' + val.width + 'px;" data-original="' + val.src + '" />');
+                            newImg.lazyload({effect: "fadeIn"});
                             newImg.appendTo($('#images'));
                             $('<br/>').appendTo($('#images'));
                             newImg.load(function() {

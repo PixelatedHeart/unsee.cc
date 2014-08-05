@@ -18,14 +18,9 @@ $(function() {
 
         document.cookie = b + "=1;path=/image;expires=" + date.toGMTString();
         jQuery.each(a, function(key, val) {
-            $('#images').append($('<img class="lazy" id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" data-original="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />'));
-
-            if (key + 1 === a.length) {
-                $('#images img').show().lazyload({
-                    threashold: 400,
-                    effect : "fadeIn"
-                });
-            }
+            var im = $('<img class="lazy" id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" data-original="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />');
+            $('#images').append(im);
+            $('#' + val[1]).lazyload({effect : "fadeIn"});
         });
 
         $(document).keydown(function(e) {
