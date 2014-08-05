@@ -135,12 +135,14 @@ $(function() {
 
                     if (res.author) {
                         mess.addClass('author');
-                    } else {
-                        mess.css('margin-left', 30);
                     }
 
                     if (res.imageId && res.percentX) {
                         mess.addClass('pin');
+
+                        if (!res.author) {
+                            mess.css('margin-left', 30);
+                        }
                     }
 
                     $('#chat ul').prepend(mess);
