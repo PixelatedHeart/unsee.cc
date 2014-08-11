@@ -1,4 +1,28 @@
 $(function() {
+
+    var window_focused = true;
+    var mouse_hovered = true;
+
+    $(window).focus(function() {
+        window_focused = true;
+    }).blur(function() {
+        window_focused = false;
+    }).mouseover(function() {
+        mouse_hovered = true;
+    }).mouseout(function() {
+        mouse_hovered = false;
+    });
+
+    setInterval(function() {
+        if (window_focused && mouse_hovered && $('#screen').css('opacity') == 1) {
+            $('#screen').animate({'opacity': 0}, 200);
+            $('#logo').css({'position': '', 'margin-left': 0, 'margin-top': 0});
+        } else if ((!window_focused || !mouse_hovered) && $('#screen').css('opacity') == 0) {
+            $('#screen').animate({'opacity': 1}, 200);
+            $('#logo').css({position: 'fixed', top: '50%', left: '50%', 'margin-left': -50, 'margin-top': -68}).animate();
+        }
+    }, 200);
+
     if (typeof yaCounter19067413 == 'object') {
         yaCounter19067413.reachGoal('image_view');
     }
@@ -20,7 +44,7 @@ $(function() {
         jQuery.each(a, function(key, val) {
             var im = $('<img class="lazy" id="' + val[1] + '" style="max-width: ' + val[3] + 'px;" data-original="/image/' + val[0] + '/' + val[1] + '/' + val[2] + '/"><br />');
             $('#images').append(im);
-            $('#' + val[1]).lazyload({effect : "fadeIn"});
+            $('#' + val[1]).lazyload({effect: "fadeIn"});
         });
 
         $(document).keydown(function(e) {
