@@ -4,24 +4,18 @@ $(function() {
     var mouse_hovered = true;
 
     $(window).focus(function() {
-        window_focused = true;
+        setVisible(window_focused = true, mouse_hovered);
     }).blur(function() {
-        window_focused = false;
+        setVisible(window_focused = false, mouse_hovered);
     }).mouseover(function() {
-        mouse_hovered = true;
+        setVisible(window_focused, mouse_hovered = true);
     }).mouseout(function() {
-        mouse_hovered = false;
+        setVisible(window_focused, mouse_hovered = false);
     });
 
-    setInterval(function() {
-        if (window_focused && mouse_hovered && $('#screen').css('opacity') == 1) {
-            $('#screen').animate({'opacity': 0}, 200);
-            $('#logo').css({'position': '', 'margin-left': 0, 'margin-top': 0});
-        } else if ((!window_focused || !mouse_hovered) && $('#screen').css('opacity') == 0) {
-            $('#screen').animate({'opacity': 1}, 200);
-            $('#logo').css({position: 'fixed', top: '50%', left: '50%', 'margin-left': -50, 'margin-top': -68}).animate();
-        }
-    }, 200);
+    function setVisible(focused, hovered) {
+        $('#images img').css({opacity: +(focused && hovered)});
+    }
 
     if (typeof yaCounter19067413 == 'object') {
         yaCounter19067413.reachGoal('image_view');
