@@ -40,6 +40,14 @@
             <tuv xml:lang="ru"><seg>после просмотра</seg></tuv>
             <tuv xml:lang="en"><seg>after first view</seg></tuv>
         </tu>
+        <tu tuid="after_ten">
+            <tuv xml:lang="ru"><seg>10 минут</seg></tuv>
+            <tuv xml:lang="en"><seg>in 10 minutes</seg></tuv>
+        </tu>
+        <tu tuid="after_thirty">
+            <tuv xml:lang="ru"><seg>30 минут</seg></tuv>
+            <tuv xml:lang="en"><seg>in 30 minutes</seg></tuv>
+        </tu>
         <tu tuid="after_hour">
             <tuv xml:lang="ru"><seg>через час</seg></tuv>
             <tuv xml:lang="en"><seg>in one hour</seg></tuv>
