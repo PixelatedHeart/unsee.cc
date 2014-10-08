@@ -12,7 +12,7 @@ class Unsee_Hash extends Unsee_Redis
      * Associative array of periods of life for hashes
      * @var array
      */
-    public static $ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
+    public static $ttlTypes = array(-1 => 'now', 0 => 'first', 600 => 'ten', 1800 => 'thirty', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
     public function __construct($key = null)
     {
