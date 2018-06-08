@@ -12,6 +12,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         if (empty($_SERVER['HTTP_USER_AGENT'])) {
             $_SERVER['HTTP_USER_AGENT'] = 'cli';
         }
+
+        if (empty($_SERVER['SERVER_NAME'])) {
+            $_SERVER['SERVER_NAME'] = 'unsee.cc';
+        }
     }
 
     protected function _initDocType()

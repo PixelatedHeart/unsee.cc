@@ -6,17 +6,7 @@
 class Unsee_Image extends Unsee_Redis
 {
 
-    /**
-     * Image content
-     * @var string
-     */
-    public $data;
-
-    /**
-     * Database id
-     * @var int
-     */
-    protected $db = 1;
+    const DB = 1;
 
     /**
      * Image Magick instance
@@ -35,25 +25,22 @@ class Unsee_Image extends Unsee_Redis
      */
     public $secureTtd = 0;
 
-    /**
-     * Deletes the image model and the file associated with it
-     */
-    public function delete()
+    public function __construct(Unsee_Hash $hash, $imgKey = null)
     {
-        unlink($this->getFilePath());
-        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->hash;
-        !glob($dir . '/*') && rmdir($dir);
-        parent::delete();
-    }
+        $newImage = is_null($imgKey);
 
-    public function __construct($key = null)
-    {
-
-        if (empty($key)) {
-            $key = uniqid();
+        if ($newImage) {
+            $imgKey = uniqid();
         }
 
-        parent::__construct($key, 1);
+        parent::__construct($hash->key . '_' . $imgKey);
+
+        if ($newImage) {
+            $keys = Unsee_Image::keys($hash->key . '*');
+            $this->num = count($keys);
+            $this->expireAt(time() + $hash->ttl());
+        }
+
         $this->setSecureParams();
     }
 
@@ -64,7 +51,14 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setSecureParams()
     {
-        $this->secureTtd = time() + Unsee_Ticket::$ttl;
+
+        $linkTtl = Unsee_Ticket::$ttl;
+
+        if (!$this->no_download) {
+            $linkTtl = $this->ttl();
+        }
+
+        $this->secureTtd = round(microtime(true)) + $linkTtl;
 
         // Preparing a hash for nginx's secure link
         $md5 = base64_encode(md5($this->key . $this->secureTtd, true));
@@ -82,51 +76,39 @@ class Unsee_Image extends Unsee_Redis
      */
     public function setFile($filePath)
     {
-        $image = new Imagick();
-        $image->readimage($filePath);
-        $image->stripimage();
-
-        $filePath = $this->getFilePath();
-        $filePathDir = dirname($filePath);
-
-        if (!is_dir($filePathDir)) {
-            mkdir($filePathDir, 0755);
+        if (!file_exists($filePath)) {
+            return false;
         }
 
-        file_put_contents($filePath, $image->getimageblob());
-
         $info = getimagesize($filePath);
+        $imageWidth = $info[0];
+        $imageHeight = $info[1];
+
+        $image = new Imagick();
+        $image->readimage($filePath);
+
+        $image->setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 1);
+        $maxSize = 1920;
+
+        if ($imageWidth > $maxSize && $imageWidth > $imageHeight) {
+            $image->thumbnailimage($maxSize, null);
+        } elseif ($imageHeight > $maxSize && $imageHeight > $imageWidth) {
+            $image->thumbnailimage(null, $maxSize);
+        }
+
+        $image->setCompression(Imagick::COMPRESSION_JPEG);
+        $image->setCompressionQuality(80);
+
+        $image->stripimage();
 
         $this->size = filesize($filePath);
         $this->type = $info['mime'];
         $this->width = $info[0];
         $this->height = $info[1];
+        $this->content = $image->getImageBlob();
+        $this->expireAt(time() + static::EXP_DAY);
 
         return true;
-    }
-
-    /**
-     * Returns the file path of for the model's image
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        $storage = Zend_Registry::get('config')->storagePath;
-        $file = $storage . $this->hash . '/' . $this->key;
-        return $file;
-    }
-
-    /**
-     * Sets and returns the content of the image file
-     * @return string
-     */
-    public function getImageData()
-    {
-        if (empty($this->data)) {
-            $this->data = file_get_contents($this->getFilePath());
-        }
-
-        return $this->data;
     }
 
     /**
@@ -137,7 +119,7 @@ class Unsee_Image extends Unsee_Redis
     {
         if (!$this->iMagick) {
             $iMagick = new Imagick();
-            $iMagick->readimageblob($this->getImageData());
+            $iMagick->readimageblob($this->content);
             $this->iMagick = $iMagick;
         }
 
@@ -160,33 +142,24 @@ class Unsee_Image extends Unsee_Redis
      */
     public function watermark()
     {
-        if (Unsee_Session::isOwner(new Unsee_Hash($this->hash))) {
-            return true;
-        }
-
         $text = $_SERVER['REMOTE_ADDR'];
-        $image = imagecreatefromstring($this->getImageData());
         $font = $_SERVER['DOCUMENT_ROOT'] . '/pixel.ttf';
-        $im = imagecreatetruecolor(800, 800);
+        $image = $this->getImagick();
 
-        imagesavealpha($im, true);
-        imagefill($im, 0, 0, imagecolorallocatealpha($im, 0, 0, 0, 127));
-        imagettftext($im, 12, 0, 100, 100, -imagecolorallocatealpha($im, 150, 150, 150, 70), $font, $text);
-        imagealphablending($im, true);
-        imagesettile($image, $im);
-        imagefilledrectangle($image, 0, 0, imagesx($image), imagesy($image), IMG_COLOR_TILED);
+        $width = $image->getimagewidth();
 
-        $func = str_replace('/', '', $this->type);
-        if (strpos($func, 'image') !== 0 || !function_exists($func)) {
-            $func = 'imagejpeg';
-        }
+        $watermark = new Imagick();
+        $watermark->newImage(1000, 1000, new ImagickPixel('none'));
 
-        ob_start();
-        // TODO: imagick should support all formats
-        /* $func */imagejpeg($image, null, 85);
+        $draw = new ImagickDraw();
+        $draw->setFont($font);
+        $draw->setfontsize(30);
+        $draw->setFillColor('gray');
+        $draw->setFillOpacity(.3);
+        $watermark->annotateimage($draw, 100, 200, -45, $text);
+        $watermark->annotateimage($draw, 550, 550, 45, $text);
 
-        $this->data = ob_get_clean();
-        $this->size = strlen($this->data);
+        $this->iMagick = $image->textureimage($watermark);
 
         return true;
     }
@@ -205,7 +178,20 @@ class Unsee_Image extends Unsee_Redis
 
         $comment = str_replace(array_keys($dict), $dict, $comment);
         $this->getImagick()->commentimage($comment);
-        $this->data = $this->getImagick()->getImageBlob();
+
         return true;
+    }
+
+    /**
+     * Returns image binary content
+     * @return type
+     */
+    public function getImageContent()
+    {
+        if ($this->iMagick) {
+            return $this->iMagick->getimageblob();
+        } else {
+            return $this->content;
+        }
     }
 }

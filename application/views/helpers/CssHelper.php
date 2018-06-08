@@ -15,6 +15,8 @@ class Zend_View_Helper_CssHelper extends Zend_View_Helper_Abstract
         foreach ($links as $item) {
             if ($combining) {
                 $urls[] = str_replace('css/', '', $item->href);
+            } else {
+                $item->href = '/' . $item->href;
             }
         }
 

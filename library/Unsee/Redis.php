@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -6,6 +5,10 @@
  */
 class Unsee_Redis
 {
+
+    const EXP_HOUR = 3600;
+    const EXP_DAY = 86400;
+    const DB = 0;
 
     /**
      * @var int Id of previously used database
@@ -21,11 +24,6 @@ class Unsee_Redis
      * @var string Key of Redis hash field
      */
     public $key;
-
-    /**
-     * @var int Id of the database
-     */
-    protected $db = 0;
 
     /**
      * Creates the Redis model
@@ -88,9 +86,9 @@ class Unsee_Redis
      */
     private function selectDb()
     {
-        if (self::$prevDb !== $this->db) {
-            $this->redis->select($this->db);
-            self::$prevDb = $this->db;
+        if (self::$prevDb !== static::DB) {
+            $this->redis->select(static::DB);
+            self::$prevDb = static::DB;
         }
 
         return true;
@@ -141,5 +139,26 @@ class Unsee_Redis
     {
         $this->selectDb();
         return $this->redis->hIncrBy($this->key, $key, $num);
+    }
+
+    public function expireAt($time)
+    {
+        $this->selectDb();
+        return $this->redis->expireAt($this->key, $time);
+    }
+
+    public function ttl()
+    {
+        $this->selectDb();
+        return $this->redis->ttl($this->key);
+    }
+
+    public static function keys($keys)
+    {
+        $redis = Zend_Registry::get('Redis');
+        $redis->select(static::DB);
+        self::$prevDb = static::DB;
+
+        return $redis->keys($keys);
     }
 }

@@ -40,6 +40,14 @@
             <tuv xml:lang="ru"><seg>после просмотра</seg></tuv>
             <tuv xml:lang="en"><seg>after first view</seg></tuv>
         </tu>
+        <tu tuid="after_ten">
+            <tuv xml:lang="ru"><seg>10 минут</seg></tuv>
+            <tuv xml:lang="en"><seg>in 10 minutes</seg></tuv>
+        </tu>
+        <tu tuid="after_thirty">
+            <tuv xml:lang="ru"><seg>30 минут</seg></tuv>
+            <tuv xml:lang="en"><seg>in 30 minutes</seg></tuv>
+        </tu>
         <tu tuid="after_hour">
             <tuv xml:lang="ru"><seg>через час</seg></tuv>
             <tuv xml:lang="en"><seg>in one hour</seg></tuv>
@@ -292,7 +300,7 @@
         </tu>
         <tu tuid="click_settings">
             <tuv xml:lang="ru"><seg>Нажмите здесь, чтобы изменить настройки</seg></tuv>
-            <tuv xml:lang="en"><seg>Click to change settings</seg></tuv>
+            <tuv xml:lang="en"><seg>Click here to change settings</seg></tuv>
         </tu>
 
         <!-- Image settings translations -->
@@ -362,7 +370,7 @@
         </tu>
         <tu tuid="settings_security_no_download_caption">
             <tuv xml:lang="ru"><seg>Не позволять пользователям совершать правый клик по картинке чтобы сохранить её</seg></tuv>
-            <tuv xml:lang="en"><seg>Restrict right-clicking images to save them</seg></tuv>
+            <tuv xml:lang="en"><seg>Restrict right-clicking images to save them, can't be disabled for single-view images</seg></tuv>
         </tu>
 
         <tu tuid="settings_security_password">
@@ -535,7 +543,7 @@
         </tu>
         
         <tu tuid="minute_one">
-            <tuv xml:lang="ru"><seg>минута</seg></tuv>
+            <tuv xml:lang="ru"><seg>минуту</seg></tuv>
             <tuv xml:lang="en"><seg>minute</seg></tuv>
         </tu>
         <tu tuid="minute_couple">
@@ -558,6 +566,14 @@
         <tu tuid="apply">
             <tuv xml:lang="ru"><seg>Применить</seg></tuv>
             <tuv xml:lang="en"><seg>Apply</seg></tuv>
+        </tu>
+        <tu tuid="upload_more_owner">
+            <tuv xml:lang="ru"><seg>Можно загрузить ещё картинок перетащив их на страницу</seg></tuv>
+            <tuv xml:lang="en"><seg>You can upload more images by dropping them on the page</seg></tuv>
+        </tu>
+        <tu tuid="upload_more_anonymous">
+            <tuv xml:lang="ru"><seg>Можно загрузить свои изображения перетащив их на страницу</seg></tuv>
+            <tuv xml:lang="en"><seg>You can add your own images by dropping them on the page</seg></tuv>
         </tu>
     </body>
 </tmx>

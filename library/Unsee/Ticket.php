@@ -6,31 +6,28 @@
 class Unsee_Ticket extends Unsee_Redis
 {
 
-    /**
-     * Database id
-     * @var int
-     */
-    protected $db = 2;
+    const DB = 2;
 
     /**
      * Titme to live
      * @var int
      */
-    static public $ttl = 30;
+    static public $ttl = 86400;
 
     public function __construct()
     {
         parent::__construct(Unsee_Session::getCurrent());
+        $this->expireAt(time() + static::$ttl);
     }
 
     /**
      * Create a ticket for the current session to access the image id
-     * @param string $imageId
+     * @param Unsee_Image $imageDoc
      * @return boolean
      */
-    public function issue($imageId)
+    public function issue(Unsee_Image $imageDoc)
     {
-        $this->$imageId = time();
+        $this->{$imageDoc->key} = time();
         return true;
     }
 
@@ -41,7 +38,8 @@ class Unsee_Ticket extends Unsee_Redis
      */
     public function isAllowed($imageDoc)
     {
-        return isset($this->{$imageDoc->key}) && isset($_COOKIE[md5(Unsee_Session::getCurrent() . $imageDoc->hash)]);
+        list($hash) = explode('_', $imageDoc->key);
+        return isset($this->{$imageDoc->key}) && isset($_COOKIE[md5(Unsee_Session::getCurrent() . $hash)]);
     }
 
     /**

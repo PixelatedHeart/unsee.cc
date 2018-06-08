@@ -234,7 +234,7 @@ $(function ()
         //multipart: false,
 
         formData: function(){
-            return {test: 123};
+            return {hash: null};
         },
         //File added
         add: function (e, data)

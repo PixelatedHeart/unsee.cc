@@ -6,11 +6,13 @@
 class Unsee_Hash extends Unsee_Redis
 {
 
+    const DB = 0;
+
     /**
      * Associative array of periods of life for hashes
      * @var array
      */
-    public static $_ttlTypes = array(-1 => 'now', 0 => 'first', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
+    public static $ttlTypes = array(-1 => 'now', 0 => 'first', 600 => 'ten', 1800 => 'thirty', 3600 => 'hour', 86400 => 'day', 604800 => 'week');
 
     public function __construct($key = null)
     {
@@ -20,14 +22,33 @@ class Unsee_Hash extends Unsee_Redis
         if (empty($key)) {
             $this->setNewHash();
             $this->timestamp = time();
-            $this->ttl = self::$_ttlTypes[0];
+            $this->ttl = self::$ttlTypes[0];
+            $this->expireAt(time() + static::EXP_DAY);
+            $this->max_views = 1;
             $this->views = 0;
             $this->no_download = true;
             $this->strip_exif = true;
             $this->comment = Zend_Registry::get('config')->image_comment;
             $this->sess = Unsee_Session::getCurrent();
             $this->watermark_ip = true;
+            $this->allow_anonymous_images = false;
         }
+    }
+
+    /**
+     * Set expiration time for the hash and also for the related images
+     * @param int $time
+     * @return bool
+     */
+    public function expireAt($time)
+    {
+        $images = $this->getImages();
+
+        foreach ($images as $imgDoc) {
+            $imgDoc->expireAt($time);
+        }
+
+        return parent::expireAt($time);
     }
 
     /**
@@ -54,10 +75,15 @@ class Unsee_Hash extends Unsee_Redis
         // This is all it takes to set a hash
         $this->key = $hash;
 
-        // Check if the found hash exists and outdated, while we're at it
-        if ($this->exists() && $this->isViewable()) {
-            $this->delete();
-            $this->setNewHash();
+        // Check if the found hash exists
+        if ($this->exists()) {
+            // Delete it if it's outdated.
+            if (!$this->isViewable()) {
+                $this->delete();
+            }
+
+            // Anyway try generating a new one
+            return $this->setNewHash();
         }
 
         return true;
@@ -70,12 +96,22 @@ class Unsee_Hash extends Unsee_Redis
     public function getImages()
     {
         // read files in directory
-        $storage = Zend_Registry::get('config')->storagePath;
-        $files = glob($storage . $this->key . '/*');
+        $imagesKeys = Unsee_Image::keys($this->key . '*');
         $imageDocs = array();
-        foreach ($files as $file) {
-            $imageDocs[] = new Unsee_Image(basename($file));
+
+        foreach ($imagesKeys as $key) {
+            list(, $imgKey) = explode('_', $key);
+            $imageDocs[] = new Unsee_Image($this, $imgKey);
         }
+
+        usort($imageDocs, function ($a, $b)
+        {
+            if ($a->num === $b->num) {
+                return 0;
+            }
+
+            return ($a->num < $b->num) ? -1 : 1;
+        });
 
         return $imageDocs;
     }
@@ -92,12 +128,6 @@ class Unsee_Hash extends Unsee_Redis
             $item->delete();
         }
 
-        // Remove hash storage sub-dir
-        $dir = Zend_Registry::get('config')->storagePath . '/' . $this->key;
-        if (is_dir($dir)) {
-            rmdir($dir);
-        }
-
         parent::delete();
     }
 
@@ -107,41 +137,7 @@ class Unsee_Hash extends Unsee_Redis
      */
     public function isViewable()
     {
-        if ($this->ttl === 'first' && !$this->views) {
-            // Single-view image hasn't been viewed yet
-            return true;
-        } elseif ($this->ttl !== 'first' && $this->getTtlSeconds() > 0) {
-            // Image not yet outdated
-            return true;
-        } else {
-            // Dead
-            return false;
-        }
-    }
-
-    /**
-     * Returns number of seconds left for the hash to live
-     * @return int
-     */
-    public function getTtlSeconds()
-    {
-        // Converting ttl into strtotime acceptable string
-        switch ($this->ttl) {
-            // Date in past for right now
-            case 'now':
-                $ttl = '-1 day';
-                break;
-            // Delete on first view, use one second
-            case 'first':
-                return 1;
-            // almost strtotime-ready otherwise (time value)
-            default:
-                $ttl = '+1 ' . $this->ttl;
-                break;
-        }
-
-        // Get time to die
-        return strtotime($ttl, $this->timestamp) - time();
+        return !$this->max_views || $this->max_views > $this->views;
     }
 
     /**
@@ -150,7 +146,7 @@ class Unsee_Hash extends Unsee_Redis
      */
     public function getTtlWords()
     {
-        $secondsLeft = $this->getTtlSeconds();
+        $secondsLeft = $this->ttl();
         $lang = Zend_Registry::get('Zend_Translate');
 
         if ($secondsLeft < 60) {
@@ -196,5 +192,16 @@ class Unsee_Hash extends Unsee_Redis
         }
 
         return $deleteTime;
+    }
+
+    static public function isValid($hash)
+    {
+        $hashConf = Zend_Registry::get('config')->hash->toArray();
+
+        $vovels = $hashConf['vovels'];
+        $consonants = $hashConf['consonants'];
+        $syllableNum = (int) $hashConf['syllables'];
+
+        return preg_match('~([' . $consonants . '][' . $vovels . ']){' . $syllableNum . '}~', $hash);
     }
 }

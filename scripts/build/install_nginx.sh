@@ -1,11 +1,6 @@
 #!/bin/sh
 
-# (re)Installs nginx with concat module
-
-if [ -n $(2>&1 nginx -V | tr -- - '\n' | grep concat) ]; then
-    echo Nginx already has concat module
-    exit;
-fi
+# Reinstalls nginx with concat module
 
 tmpDir=/tmp/nginx_install/
 mkdir -p $tmpDir

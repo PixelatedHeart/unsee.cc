@@ -15,6 +15,8 @@ class Zend_View_Helper_JavascriptHelper extends Zend_View_Helper_Abstract
         foreach ($links as $item) {
             if ($combining) {
                 $urls[] = str_replace('js/', '', $item->attributes['src']);
+            } else {
+                $item->attributes['src'] = '/' . $item->attributes['src'];
             }
         }
 
